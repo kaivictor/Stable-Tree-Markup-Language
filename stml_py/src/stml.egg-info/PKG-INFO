@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: stml
+Version: 1.3.0
+Summary: STML — Stable Tree Markup Language parser and serializer
+Author: STML Authors
+License-Expression: MIT
+Keywords: stml,parser,serializer,data-format,markup-language
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/plain
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+
+STML — Stable Tree Markup Language: a visually YAML-like plain-text data format. Provides loads/load/dumps/to_json with C++ core and Python bindings.
