@@ -2,19 +2,16 @@
 
 #include "ast/ast.h"
 #include "parser/line.h"
+#include "diagnostics/error.h"
 #include <vector>
 
 namespace stml {
 
 // =========================================================================
-// AstBuilder — converts a Line tree into an AstNode.
+// AstBuilder — Phase 2: Line 树 → AST
 //
-// Usage:
-//   AstBuilder builder;
-//   AstNode doc_ast = builder.build(lines);
-//
-//   // Build all documents
-//   std::vector<AstNode> docs = builder.build_all(doc_line_trees);
+// 将 LineTreeBuilder 产生的 Line 树转换为标准 AST 节点。
+// 处理语义分发（mapping vs sequence）和兄弟键收集。
 // =========================================================================
 class AstBuilder {
 public:
@@ -26,9 +23,17 @@ public:
     /// Build ASTs from multiple documents' line trees.
     std::vector<AstNode> build_all(const std::vector<std::vector<Line>>& doc_lines);
 
+    /// Accumulated warnings from the build phase.
+    std::vector<Warning>& warnings() { return warnings_; }
+
 private:
-    AstNode build_line(const Line& line);
-    AstNode build_children(const std::vector<Line>& children);
+    AstMap build_mapping(const std::vector<Line>& lines);
+    AstNode build_sequence(const std::vector<Line>& lines);
+    AstList build_simple_sequence(const std::vector<Line>& lines);
+    AstList build_complex_sequence(const std::vector<Line>& lines);
+    void absorb_children_as_siblings(AstMap& map, const std::vector<Line>& children);
+
+    std::vector<Warning> warnings_;
 };
 
 } // namespace stml

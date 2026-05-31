@@ -38,11 +38,14 @@ private:
     // 文档列表（每个文档是一组根级行）
     std::vector<std::vector<Line>> docs_;
 
-    // 当前文档的根级行
-    std::vector<Line> root_lines_;
-
     // 缩进块栈：blocks_.back() 是当前缩进级别的行集合
     std::vector<std::vector<Line>> blocks_;
+
+    // 当前实际缩进值（从 INDENT token 累积）
+    int current_indent_ = 0;
+
+    // 每层 INDENT 的增量，用于 DEDENT 时回退
+    std::vector<int> indent_deltas_;
 
     // 当前正在构建的行
     Line pending_;

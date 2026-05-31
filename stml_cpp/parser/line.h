@@ -41,6 +41,12 @@ struct Line {
         return kind == Kind::DASH_EMPTY || kind == Kind::DASH_SCALAR
             || kind == Kind::DASH_KEY_VAL;
     }
+
+    /// True when this line has a non-null inline value (scalar, list, etc.).
+    bool has_inline_value() const { return !inline_value.is_null(); }
+
+    /// True when this line has indented child lines.
+    bool has_children() const { return !children.empty(); }
 };
 
 } // namespace stml

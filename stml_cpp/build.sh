@@ -25,7 +25,8 @@ INCLUDES="-I$SCRIPT_DIR"
 # Source files for the library (relative to SCRIPT_DIR)
 LIB_SOURCES=(
     lexer/lexer.cpp
-    parser/parser.cpp
+    parser/line_tree_builder.cpp
+    parser/ast_builder.cpp
     ast/ast.cpp
     serializer/to_stml.cpp
     serializer/to_json.cpp

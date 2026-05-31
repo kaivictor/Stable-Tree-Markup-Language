@@ -7,9 +7,10 @@ namespace stml {
 // ============================================================
 void LineTreeBuilder::reset() {
     docs_.clear();
-    root_lines_.clear();
     blocks_.clear();
     blocks_.push_back({});
+    current_indent_ = 0;
+    indent_deltas_.clear();
     pending_ = Line{};
     has_pending_ = false;
     pending_has_dash_ = false;
@@ -34,17 +35,22 @@ void LineTreeBuilder::process(const std::vector<Token>& tokens) {
 // O(1) per token
 // ============================================================
 void LineTreeBuilder::process_token(const Token& token) {
-    int block_indent = (int)(blocks_.size() - 1) * 2;
-
     switch (token.type) {
-    case TokenType::INDENT:
+    case TokenType::INDENT: {
         finalize_line();
+        int delta = std::stoi(std::get<std::string>(token.value));
+        current_indent_ += delta;
+        indent_deltas_.push_back(delta);
         blocks_.push_back({});
         break;
-
+    }
     case TokenType::DEDENT:
         finalize_line();
         close_indent_level();
+        if (!indent_deltas_.empty()) {
+            current_indent_ -= indent_deltas_.back();
+            indent_deltas_.pop_back();
+        }
         break;
 
     case TokenType::DASH:
@@ -53,7 +59,7 @@ void LineTreeBuilder::process_token(const Token& token) {
         pending_has_dash_ = true;
         pending_has_colon_ = false;
         pending_has_key_ = false;
-        pending_.indent = block_indent;
+        pending_.indent = current_indent_;
         pending_.line_no = token.line;
         break;
 
@@ -70,7 +76,7 @@ void LineTreeBuilder::process_token(const Token& token) {
             pending_has_key_ = true;
             pending_has_colon_ = false;
             pending_has_dash_ = false;
-            pending_.indent = block_indent;
+            pending_.indent = current_indent_;
             pending_.line_no = token.line;
         }
         break;
@@ -103,7 +109,7 @@ void LineTreeBuilder::process_token(const Token& token) {
             pending_has_key_ = true;
             pending_has_dash_ = false;
             pending_has_colon_ = false;
-            pending_.indent = block_indent;
+            pending_.indent = current_indent_;
             pending_.line_no = token.line;
         }
         break;
@@ -121,12 +127,11 @@ void LineTreeBuilder::process_token(const Token& token) {
             if (has_content_ || has_pushed_doc_) {
                 docs_.push_back(std::move(blocks_[0]));
                 has_pushed_doc_ = true;
-            } else {
-                docs_.push_back(std::move(blocks_[0]));
-                has_pushed_doc_ = true;
             }
             blocks_[0].clear();
             has_content_ = false;
+            current_indent_ = 0;
+            indent_deltas_.clear();
         }
         break;
 
@@ -154,7 +159,7 @@ void LineTreeBuilder::finalize_line() {
     if (!has_pending_) return;
 
     if (pending_.indent == 0 && blocks_.size() > 1) {
-        pending_.indent = (int)(blocks_.size() - 1) * 2;
+        pending_.indent = current_indent_;
     }
 
     blocks_.back().push_back(std::move(pending_));
@@ -181,18 +186,82 @@ void LineTreeBuilder::start_new_line(Line::Kind kind) {
 
 // ============================================================
 // Close indent level: pop current block, attach to parent
+//
+// 核心洞察：DEDENT 的语义取决于弹出块和父块的内容类型兼容性。
+// 四个规则按优先级判断，确保不规则缩进也能正确解析。
 // ============================================================
 void LineTreeBuilder::close_indent_level() {
     if (blocks_.size() <= 1) return;
 
-    auto children = std::move(blocks_.back());
+    auto child = std::move(blocks_.back());
     blocks_.pop_back();
 
-    if (!children.empty() && !blocks_.back().empty()) {
-        blocks_.back().back().children = std::move(children);
-    } else if (!children.empty()) {
-        blocks_.back() = std::move(children);
+    if (child.empty()) return;
+
+    auto& parent = blocks_.back();
+    if (parent.empty()) {
+        parent = std::move(child);
+        return;
     }
+
+    // 检查父块是否包含 dash 行
+    bool parent_has_dash = false;
+    for (const auto& line : parent) {
+        if (line.is_dash()) { parent_has_dash = true; break; }
+    }
+
+    Line& parent_last = parent.back();
+
+    // 检查子块属性
+    bool child_all_dash = true;
+    bool child_has_key = false;
+    for (const auto& line : child) {
+        if (!line.is_dash()) child_all_dash = false;
+        if (line.kind == Line::Kind::KEY_VAL || line.kind == Line::Kind::BARE_KEY)
+            child_has_key = true;
+    }
+
+    // 判断父块最后一行是否为"开放键"
+    auto is_open = [](const Line& l) -> bool {
+        return (l.kind == Line::Kind::KEY_VAL
+                || l.kind == Line::Kind::DASH_KEY_VAL
+                || l.kind == Line::Kind::BARE_KEY)
+            && !l.has_inline_value()
+            && l.children.empty();
+    };
+
+    // 规则 1：父块最后行为开放键且父块非 dash 上下文 → child 是该键的值块
+    if (is_open(parent_last) && !parent_has_dash) {
+        parent_last.children = std::move(child);
+        return;
+    }
+
+    // 规则 2：父块为 dash 上下文，child 包含 key →
+    //         child 吸收为父块最后 dash 条目的兄弟键
+    if (parent_has_dash && child_has_key) {
+        parent_last.children = std::move(child);
+        return;
+    }
+
+    // 规则 3：child 全是 dash → 合并到父块作为兄弟
+    //        （不规则缩进导致子块 dash 提升到父块）
+    if (child_all_dash) {
+        for (auto& line : child) {
+            parent.push_back(std::move(line));
+        }
+        return;
+    }
+
+    // 规则 4：非 dash 父块 + 非全 dash 子块 → 合并为兄弟（不规则缩进）
+    if (!child_all_dash && !parent_has_dash) {
+        for (auto& line : child) {
+            parent.push_back(std::move(line));
+        }
+        return;
+    }
+
+    // 默认：真正的嵌套
+    parent_last.children = std::move(child);
 }
 
 // ============================================================

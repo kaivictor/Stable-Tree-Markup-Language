@@ -15,13 +15,14 @@
 /// -----
 ///   TokenType, Token, Warning, ParseError
 ///   AstNode, AstList, AstMap, AstValue
-///   STMLLexer, STMLParser
+///   STMLLexer, LineTreeBuilder, AstBuilder
 
 #include "diagnostics/error.h"
 #include "lexer/token.h"
 #include "lexer/lexer.h"
 #include "ast/ast.h"
-#include "parser/parser.h"
+#include "parser/line_tree_builder.h"
+#include "parser/ast_builder.h"
 #include "serializer/serializer.h"
 
 #include <string>
