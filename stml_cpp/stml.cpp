@@ -1,74 +1,103 @@
-/// STML — public API implementations.
-/// Non-inline functions for the main entry points.
-
 #include "stml.h"
-
+#include "lexer/lexer.h"
+#include "parser/parser.h"
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 #include <fstream>
-#include <stdexcept>
+#include <sstream>
+#include <utility>
 
 namespace stml {
 
 // =========================================================================
-// loads — parse STML text
+// High-level API
 // =========================================================================
 
-LoadResult loads(const std::string& text)
-{
-    STMLLexer lexer(text);
-    auto [tokens, lex_warnings] = lexer.tokenize();
+LoadResult loads(const std::string& text) {
+    Lexer lexer;
+    std::vector<Token> tokens = lexer.tokenize(text);
+    std::vector<Warning> warnings = lexer.warnings();
 
-    auto [docs_list, parse_warnings] = STMLParser(std::move(tokens)).parse();
+    Parser parser;
+    AstNode ast = parser.parse(tokens);
 
-    std::vector<Warning> all_warnings;
-    all_warnings.reserve(lex_warnings.size() + parse_warnings.size());
-    all_warnings.insert(all_warnings.end(),
-                         std::make_move_iterator(lex_warnings.begin()),
-                         std::make_move_iterator(lex_warnings.end()));
-    all_warnings.insert(all_warnings.end(),
-                         std::make_move_iterator(parse_warnings.begin()),
-                         std::make_move_iterator(parse_warnings.end()));
+    // Merge lexer warnings with parser warnings
+    const auto& p_warnings = parser.warnings();
+    warnings.insert(warnings.end(), p_warnings.begin(), p_warnings.end());
 
-    // Wrap in {"docs": [{...}, ...]} per the spec
-    AstMap wrapper;
-    wrapper.emplace_back("docs", AstNode(std::move(docs_list)));
-    return {AstNode(std::move(wrapper)), std::move(all_warnings)};
+    return LoadResult(std::move(ast), std::move(warnings));
 }
 
-// =========================================================================
-// load — parse an STML file
-// =========================================================================
-
-LoadResult load(const std::string& filename)
-{
-    std::ifstream file(filename);
+LoadResult load(const std::string& filepath) {
+    std::ifstream file(filepath, std::ios::binary);
     if (!file.is_open()) {
-        throw std::runtime_error("Cannot open file: " + filename);
+        throw ParseError(0, 0, "Cannot open file: " + filepath);
     }
-    std::string text((std::istreambuf_iterator<char>(file)),
-                      std::istreambuf_iterator<char>());
-    return loads(text);
+<<<<<<< Updated upstream
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    return loads(ss.str());
+=======
+=======
+#include "serializer/serializer.h"
+#include <fstream>
+#include <sstream>
+
+namespace stml {
+
+AstList loads(const std::string& input) {
+    Lexer lexer;
+    auto tokens = lexer.tokenize(input);
+
+    Parser parser;
+    return parser.parse(tokens);
+>>>>>>> Stashed changes
 }
 
+AstList load(const std::string& filepath) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        throw ParseError(0, 0, "Cannot open file: " + filepath);
+    }
+
+>>>>>>> Stashed changes
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    return loads(ss.str());
+}
+
+<<<<<<< Updated upstream
 // =========================================================================
-// tokenize — lex only (debug utility)
+// Low-level / debugging API
 // =========================================================================
 
 std::pair<std::vector<Token>, std::vector<Warning>>
-tokenize(const std::string& text)
-{
-    STMLLexer lexer(text);
-    return lexer.tokenize();
+tokenize(const std::string& text) {
+    Lexer lexer;
+    std::vector<Token> tokens = lexer.tokenize(text);
+    std::vector<Warning> warnings = lexer.warnings();
+    return {std::move(tokens), std::move(warnings)};
 }
 
-// =========================================================================
-// parse — parse only (debug utility)
-// =========================================================================
+std::pair<AstNode, std::vector<Warning>>
+parse(const std::vector<Token>& tokens) {
+    Parser parser;
+    AstNode ast = parser.parse(tokens);
+    std::vector<Warning> warnings = parser.warnings();
+    return {std::move(ast), std::move(warnings)};
+<<<<<<< Updated upstream
+=======
+=======
+std::string dumps(const AstList& docs, int indent) {
+    return docs_to_stml(docs, indent);
+}
 
-std::pair<AstList, std::vector<Warning>>
-parse(const std::vector<Token>& tokens)
-{
-    STMLParser parser(tokens);
-    return parser.parse();
+std::string to_json(const AstList& docs, int indent) {
+    return docs_to_json(docs, indent);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
 
 } // namespace stml

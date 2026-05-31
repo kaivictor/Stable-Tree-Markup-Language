@@ -1,196 +1,647 @@
-/// Minimal JSON parser for test verification only.
-/// Parses a JSON string into AstNode for comparison with parser output.
-
+<<<<<<< Updated upstream
+#include "tests/test_json.h"
+#include "diagnostics/error.h"
+#include <cctype>
+#include <sstream>
+=======
+<<<<<<< Updated upstream
+#include "tests/test_json.h"
+#include "diagnostics/error.h"
+#include <cctype>
+#include <sstream>
+=======
 #include "test_json.h"
 #include <cctype>
 #include <stdexcept>
-#include <string>
+#include <vector>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
+namespace stml {
 namespace test_json {
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+// =========================================================================
+// Forward declarations
+// =========================================================================
+static AstNode parse_value(const std::string& json, size_t& pos);
+<<<<<<< Updated upstream
+
+// =========================================================================
+// Skip whitespace
+// =========================================================================
+static void skip_ws(const std::string& json, size_t& pos) {
+    while (pos < json.size() && (json[pos] == ' ' || json[pos] == '\t'
+           || json[pos] == '\n' || json[pos] == '\r')) {
+        ++pos;
+    }
+}
+
+// =========================================================================
+// Parse a JSON string
+// =========================================================================
+static std::string parse_string(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '"') {
+        throw ParseError(0, 0, "Expected '\"' at position " + std::to_string(pos));
+    }
+    ++pos; // skip opening "
+
+    std::string result;
+    while (pos < json.size()) {
+        char c = json[pos];
+        if (c == '"') {
+            ++pos;
+            return result;
+        }
+        if (c == '\\') {
+            ++pos;
+            if (pos >= json.size()) break;
+            switch (json[pos]) {
+                case '"':  result += '"';  break;
+                case '\\': result += '\\'; break;
+                case '/':  result += '/';  break;
+                case 'n':  result += '\n'; break;
+                case 't':  result += '\t'; break;
+                case 'r':  result += '\r'; break;
+                case 'b':  result += '\b'; break;
+                case 'f':  result += '\f'; break;
+                case 'u': {
+                    // \uXXXX — read 4 hex digits
+                    if (pos + 4 >= json.size()) {
+                        result += '\\';
+                        result += 'u';
+                        break;
+                    }
+                    uint16_t codepoint = 0;
+                    for (int i = 0; i < 4; ++i) {
+                        ++pos;
+                        char h = json[pos];
+                        codepoint <<= 4;
+                        if (h >= '0' && h <= '9') codepoint |= (h - '0');
+                        else if (h >= 'a' && h <= 'f') codepoint |= (h - 'a' + 10);
+                        else if (h >= 'A' && h <= 'F') codepoint |= (h - 'A' + 10);
+                        else {
+                            --pos;
+                            result += '?';
+                            break;
+                        }
+                    }
+                    // Simple UTF-8 encoding (BMP only)
+                    if (codepoint < 0x80) {
+                        result += static_cast<char>(codepoint);
+                    } else if (codepoint < 0x800) {
+                        result += static_cast<char>(0xC0 | (codepoint >> 6));
+                        result += static_cast<char>(0x80 | (codepoint & 0x3F));
+                    } else {
+                        result += static_cast<char>(0xE0 | (codepoint >> 12));
+                        result += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                        result += static_cast<char>(0x80 | (codepoint & 0x3F));
+                    }
+                    break;
+                }
+                default:
+                    result += json[pos];
+                    break;
+            }
+        } else {
+            result += c;
+        }
+        ++pos;
+    }
+
+    throw ParseError(0, 0, "Unclosed string at position " + std::to_string(pos));
+}
+
+// =========================================================================
+// Parse a JSON object
+// =========================================================================
+static AstNode parse_object(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '{') {
+        throw ParseError(0, 0, "Expected '{'");
+    }
+    ++pos; // skip '{'
+
+    AstMap map;
+    skip_ws(json, pos);
+
+    if (pos < json.size() && json[pos] == '}') {
+        ++pos;
+        return AstNode(std::move(map));
+    }
+
+    while (pos < json.size()) {
+        skip_ws(json, pos);
+        std::string key = parse_string(json, pos);
+        skip_ws(json, pos);
+
+        if (pos >= json.size() || json[pos] != ':') {
+            throw ParseError(0, 0, "Expected ':' after key \"" + key + "\"");
+        }
+        ++pos; // skip ':'
+
+        skip_ws(json, pos);
+        AstNode value = parse_value(json, pos);
+        map.emplace_back(std::move(key), std::move(value));
+
+        skip_ws(json, pos);
+        if (pos < json.size() && json[pos] == ',') {
+            ++pos;
+            skip_ws(json, pos);
+            if (pos < json.size() && json[pos] == '}') {
+                // Trailing comma — ok, we're lenient
+                ++pos;
+                return AstNode(std::move(map));
+            }
+        } else if (pos < json.size() && json[pos] == '}') {
+            ++pos;
+            return AstNode(std::move(map));
+        } else {
+            throw ParseError(0, 0, "Expected ',' or '}' in object");
+        }
+    }
+
+    throw ParseError(0, 0, "Unclosed object");
+}
+
+// =========================================================================
+// Parse a JSON array
+// =========================================================================
+static AstNode parse_array(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '[') {
+        throw ParseError(0, 0, "Expected '['");
+    }
+    ++pos; // skip '['
+
+    AstList list;
+    skip_ws(json, pos);
+
+    if (pos < json.size() && json[pos] == ']') {
+        ++pos;
+        return AstNode(std::move(list));
+    }
+
+    while (pos < json.size()) {
+        skip_ws(json, pos);
+        list.push_back(parse_value(json, pos));
+        skip_ws(json, pos);
+
+        if (pos < json.size() && json[pos] == ',') {
+            ++pos;
+            skip_ws(json, pos);
+            if (pos < json.size() && json[pos] == ']') {
+                ++pos;
+                return AstNode(std::move(list));
+            }
+        } else if (pos < json.size() && json[pos] == ']') {
+            ++pos;
+            return AstNode(std::move(list));
+        } else {
+            throw ParseError(0, 0, "Expected ',' or ']' in array");
+        }
+    }
+
+    throw ParseError(0, 0, "Unclosed array");
+}
+
+// =========================================================================
+// Parse a JSON value (dispatched)
+// =========================================================================
+static AstNode parse_value(const std::string& json, size_t& pos) {
+    skip_ws(json, pos);
+    if (pos >= json.size()) {
+        throw ParseError(0, 0, "Unexpected end of JSON input");
+    }
+
+    char c = json[pos];
+
+    if (c == '"') {
+        // String
+        return AstNode(AstScalar(parse_string(json, pos)));
+    }
+    if (c == '{') {
+        return parse_object(json, pos);
+    }
+    if (c == '[') {
+        return parse_array(json, pos);
+    }
+    if (c == 'n' && json.substr(pos, 4) == "null") {
+        pos += 4;
+        return AstNode();
+    }
+    if (c == 't' && json.substr(pos, 4) == "true") {
+        pos += 4;
+        return AstNode(AstScalar("true"));
+    }
+    if (c == 'f' && json.substr(pos, 5) == "false") {
+        pos += 5;
+        return AstNode(AstScalar("false"));
+    }
+
+    // Number: read until non-digit-or-dot-or-e
+    size_t start = pos;
+    while (pos < json.size() && (std::isdigit(static_cast<unsigned char>(json[pos]))
+           || json[pos] == '.' || json[pos] == '-' || json[pos] == '+'
+           || json[pos] == 'e' || json[pos] == 'E')) {
+        ++pos;
+    }
+    if (pos > start) {
+        return AstNode(AstScalar(json.substr(start, pos - start)));
+    }
+
+    throw ParseError(0, 0,
+        std::string("Unexpected character '") + c + "' at position "
+        + std::to_string(pos));
+}
+
+// =========================================================================
+// Public API
+// =========================================================================
+AstNode parse(const std::string& json) {
+    size_t pos = 0;
+    skip_ws(json, pos);
+    if (pos >= json.size()) {
+        return AstNode(); // empty input
+    }
+    return parse_value(json, pos);
+}
+
+=======
+
+// =========================================================================
+// Skip whitespace
+// =========================================================================
+static void skip_ws(const std::string& json, size_t& pos) {
+    while (pos < json.size() && (json[pos] == ' ' || json[pos] == '\t'
+           || json[pos] == '\n' || json[pos] == '\r')) {
+        ++pos;
+    }
+}
+
+// =========================================================================
+// Parse a JSON string
+// =========================================================================
+static std::string parse_string(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '"') {
+        throw ParseError(0, 0, "Expected '\"' at position " + std::to_string(pos));
+    }
+    ++pos; // skip opening "
+
+    std::string result;
+    while (pos < json.size()) {
+        char c = json[pos];
+        if (c == '"') {
+            ++pos;
+            return result;
+        }
+        if (c == '\\') {
+            ++pos;
+            if (pos >= json.size()) break;
+            switch (json[pos]) {
+                case '"':  result += '"';  break;
+                case '\\': result += '\\'; break;
+                case '/':  result += '/';  break;
+                case 'n':  result += '\n'; break;
+                case 't':  result += '\t'; break;
+                case 'r':  result += '\r'; break;
+                case 'b':  result += '\b'; break;
+                case 'f':  result += '\f'; break;
+                case 'u': {
+                    // \uXXXX — read 4 hex digits
+                    if (pos + 4 >= json.size()) {
+                        result += '\\';
+                        result += 'u';
+                        break;
+                    }
+                    uint16_t codepoint = 0;
+                    for (int i = 0; i < 4; ++i) {
+                        ++pos;
+                        char h = json[pos];
+                        codepoint <<= 4;
+                        if (h >= '0' && h <= '9') codepoint |= (h - '0');
+                        else if (h >= 'a' && h <= 'f') codepoint |= (h - 'a' + 10);
+                        else if (h >= 'A' && h <= 'F') codepoint |= (h - 'A' + 10);
+                        else {
+                            --pos;
+                            result += '?';
+                            break;
+                        }
+                    }
+                    // Simple UTF-8 encoding (BMP only)
+                    if (codepoint < 0x80) {
+                        result += static_cast<char>(codepoint);
+                    } else if (codepoint < 0x800) {
+                        result += static_cast<char>(0xC0 | (codepoint >> 6));
+                        result += static_cast<char>(0x80 | (codepoint & 0x3F));
+                    } else {
+                        result += static_cast<char>(0xE0 | (codepoint >> 12));
+                        result += static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F));
+                        result += static_cast<char>(0x80 | (codepoint & 0x3F));
+                    }
+                    break;
+                }
+                default:
+                    result += json[pos];
+                    break;
+            }
+        } else {
+            result += c;
+        }
+        ++pos;
+    }
+
+    throw ParseError(0, 0, "Unclosed string at position " + std::to_string(pos));
+}
+
+// =========================================================================
+// Parse a JSON object
+// =========================================================================
+static AstNode parse_object(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '{') {
+        throw ParseError(0, 0, "Expected '{'");
+    }
+    ++pos; // skip '{'
+
+    AstMap map;
+    skip_ws(json, pos);
+
+    if (pos < json.size() && json[pos] == '}') {
+        ++pos;
+        return AstNode(std::move(map));
+    }
+
+    while (pos < json.size()) {
+        skip_ws(json, pos);
+        std::string key = parse_string(json, pos);
+        skip_ws(json, pos);
+
+        if (pos >= json.size() || json[pos] != ':') {
+            throw ParseError(0, 0, "Expected ':' after key \"" + key + "\"");
+        }
+        ++pos; // skip ':'
+
+        skip_ws(json, pos);
+        AstNode value = parse_value(json, pos);
+        map.emplace_back(std::move(key), std::move(value));
+
+        skip_ws(json, pos);
+        if (pos < json.size() && json[pos] == ',') {
+            ++pos;
+            skip_ws(json, pos);
+            if (pos < json.size() && json[pos] == '}') {
+                // Trailing comma — ok, we're lenient
+                ++pos;
+                return AstNode(std::move(map));
+            }
+        } else if (pos < json.size() && json[pos] == '}') {
+            ++pos;
+            return AstNode(std::move(map));
+        } else {
+            throw ParseError(0, 0, "Expected ',' or '}' in object");
+        }
+    }
+
+    throw ParseError(0, 0, "Unclosed object");
+}
+
+// =========================================================================
+// Parse a JSON array
+// =========================================================================
+static AstNode parse_array(const std::string& json, size_t& pos) {
+    if (pos >= json.size() || json[pos] != '[') {
+        throw ParseError(0, 0, "Expected '['");
+    }
+    ++pos; // skip '['
+
+    AstList list;
+    skip_ws(json, pos);
+
+    if (pos < json.size() && json[pos] == ']') {
+        ++pos;
+        return AstNode(std::move(list));
+    }
+
+    while (pos < json.size()) {
+        skip_ws(json, pos);
+        list.push_back(parse_value(json, pos));
+        skip_ws(json, pos);
+
+        if (pos < json.size() && json[pos] == ',') {
+            ++pos;
+            skip_ws(json, pos);
+            if (pos < json.size() && json[pos] == ']') {
+                ++pos;
+                return AstNode(std::move(list));
+            }
+        } else if (pos < json.size() && json[pos] == ']') {
+            ++pos;
+            return AstNode(std::move(list));
+        } else {
+            throw ParseError(0, 0, "Expected ',' or ']' in array");
+        }
+    }
+
+    throw ParseError(0, 0, "Unclosed array");
+}
+
+// =========================================================================
+// Parse a JSON value (dispatched)
+// =========================================================================
+static AstNode parse_value(const std::string& json, size_t& pos) {
+    skip_ws(json, pos);
+    if (pos >= json.size()) {
+        throw ParseError(0, 0, "Unexpected end of JSON input");
+    }
+
+    char c = json[pos];
+
+    if (c == '"') {
+        // String
+        return AstNode(AstScalar(parse_string(json, pos)));
+    }
+    if (c == '{') {
+        return parse_object(json, pos);
+    }
+    if (c == '[') {
+        return parse_array(json, pos);
+    }
+    if (c == 'n' && json.substr(pos, 4) == "null") {
+        pos += 4;
+        return AstNode();
+    }
+    if (c == 't' && json.substr(pos, 4) == "true") {
+        pos += 4;
+        return AstNode(AstScalar("true"));
+    }
+    if (c == 'f' && json.substr(pos, 5) == "false") {
+        pos += 5;
+        return AstNode(AstScalar("false"));
+    }
+
+    // Number: read until non-digit-or-dot-or-e
+    size_t start = pos;
+    while (pos < json.size() && (std::isdigit(static_cast<unsigned char>(json[pos]))
+           || json[pos] == '.' || json[pos] == '-' || json[pos] == '+'
+           || json[pos] == 'e' || json[pos] == 'E')) {
+        ++pos;
+    }
+    if (pos > start) {
+        return AstNode(AstScalar(json.substr(start, pos - start)));
+    }
+
+    throw ParseError(0, 0,
+        std::string("Unexpected character '") + c + "' at position "
+        + std::to_string(pos));
+}
+
+// =========================================================================
+// Public API
+// =========================================================================
+AstNode parse(const std::string& json) {
+    size_t pos = 0;
+    skip_ws(json, pos);
+    if (pos >= json.size()) {
+        return AstNode(); // empty input
+    }
+    return parse_value(json, pos);
+}
+
+=======
 class Parser {
 public:
-    explicit Parser(const std::string& text) : m_text(text), m_pos(0), m_len(static_cast<int>(text.size())) {}
+    explicit Parser(const std::string& text) : text_(text), pos_(0) {}
 
     stml::AstNode parse_value() {
         skip_ws();
-        if (m_pos >= m_len) throw std::runtime_error("Unexpected EOF");
-
-        char ch = m_text[m_pos];
-        if (ch == '"') return parse_string();
-        if (ch == '{') return parse_object();
-        if (ch == '[') return parse_array();
-        if (ch == 'n') {
-            expect("null");
-            return stml::AstNode();
-        }
-        if (ch == 't' || ch == 'f') {
-            // booleans → treated as strings in STML
-            return parse_string();
-        }
-        if (ch == '-' || (ch >= '0' && ch <= '9')) {
-            return parse_number();
-        }
-        throw std::runtime_error(std::string("Unexpected char: ") + ch);
+        if (pos_ >= text_.size()) throw std::runtime_error("Unexpected EOF");
+        char c = text_[pos_];
+        if (c == '"') return parse_string();
+        if (c == '{') return parse_object();
+        if (c == '[') return parse_array();
+        if (c == 'n') { expect("null"); return stml::AstNode(stml::NullNode{}); }
+        if (c == 't' || c == 'f') return parse_bool_or_string();
+        if (c == '-' || std::isdigit(static_cast<unsigned char>(c))) return parse_number();
+        throw std::runtime_error(std::string("Unexpected char: ") + c);
     }
 
 private:
+    const std::string& text_;
+    size_t pos_;
+
     void skip_ws() {
-        while (m_pos < m_len) {
-            char ch = m_text[m_pos];
-            if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r')
-                ++m_pos;
-            else
-                break;
+        while (pos_ < text_.size() && (text_[pos_] == ' ' || text_[pos_] == '\t' ||
+                                        text_[pos_] == '\n' || text_[pos_] == '\r')) {
+            ++pos_;
         }
     }
+    void expect(const char* s) {
+        for (; *s; ++s) {
+            if (pos_ >= text_.size() || text_[pos_] != *s)
+                throw std::runtime_error("Expected " + std::string(s));
+            ++pos_;
+        }
+    }
+    char peek() const { return pos_ < text_.size() ? text_[pos_] : '\0'; }
 
     stml::AstNode parse_string() {
-        ++m_pos; // skip opening "
-        std::string result;
-        while (m_pos < m_len) {
-            char ch = m_text[m_pos++];
-            if (ch == '"') {
-                return stml::AstNode(result);
-            }
-            if (ch == '\\') {
-                if (m_pos >= m_len) throw std::runtime_error("Unexpected EOF in escape");
-                char esc = m_text[m_pos++];
-                switch (esc) {
-                    case '"':  result.push_back('"'); break;
-                    case '\\': result.push_back('\\'); break;
-                    case '/':  result.push_back('/'); break;
-                    case 'n':  result.push_back('\n'); break;
-                    case 'r':  result.push_back('\r'); break;
-                    case 't':  result.push_back('\t'); break;
-                    case 'b':  result.push_back('\b'); break;
-                    case 'f':  result.push_back('\f'); break;
-                    case 'u': {
-                        // Simple unicode escape (only handles BMP)
-                        if (m_pos + 4 > m_len) throw std::runtime_error("Unexpected EOF in \\u");
-                        std::string hex = m_text.substr(m_pos, 4);
-                        m_pos += 4;
-                        int codepoint = std::stoi(hex, nullptr, 16);
-                        if (codepoint < 0x80) {
-                            result.push_back(static_cast<char>(codepoint));
-                        } else if (codepoint < 0x800) {
-                            result.push_back(static_cast<char>(0xC0 | (codepoint >> 6)));
-                            result.push_back(static_cast<char>(0x80 | (codepoint & 0x3F)));
-                        } else {
-                            result.push_back(static_cast<char>(0xE0 | (codepoint >> 12)));
-                            result.push_back(static_cast<char>(0x80 | ((codepoint >> 6) & 0x3F)));
-                            result.push_back(static_cast<char>(0x80 | (codepoint & 0x3F)));
-                        }
-                        break;
-                    }
-                    default: result.push_back('\\'); result.push_back(esc); break;
+        ++pos_; // skip opening "
+        std::string val;
+        while (pos_ < text_.size() && text_[pos_] != '"') {
+            if (text_[pos_] == '\\' && pos_ + 1 < text_.size()) {
+                ++pos_;
+                switch (text_[pos_]) {
+                    case '"':  val += '"'; break;
+                    case '\\': val += '\\'; break;
+                    case '/':  val += '/'; break;
+                    case 'n':  val += '\n'; break;
+                    case 'r':  val += '\r'; break;
+                    case 't':  val += '\t'; break;
+                    case 'b':  val += '\b'; break;
+                    case 'f':  val += '\f'; break;
+                    case 'u':  val += "\\u"; break; // 简化处理
+                    default:   val += text_[pos_]; break;
                 }
             } else {
-                result.push_back(ch);
+                val += text_[pos_];
             }
+            ++pos_;
         }
-        throw std::runtime_error("Unclosed string");
+        if (pos_ < text_.size()) ++pos_; // skip closing "
+        return stml::AstNode(stml::AstScalar{val});
     }
 
     stml::AstNode parse_object() {
-        ++m_pos; // skip {
+        ++pos_; // skip '{'
         stml::AstMap map;
         skip_ws();
-        if (m_pos < m_len && m_text[m_pos] == '}') {
-            ++m_pos;
-            return stml::AstNode(std::move(map));
-        }
+        if (peek() == '}') { ++pos_; return stml::AstNode(std::move(map)); }
+
         while (true) {
             skip_ws();
-            if (m_text[m_pos] != '"') throw std::runtime_error("Expected string key");
-            stml::AstNode key_node = parse_string();
-            std::string key = *key_node.as_string();
+            auto key_node = parse_string();
+            std::string key = key_node.as_scalar()->value;
             skip_ws();
-            if (m_text[m_pos++] != ':') throw std::runtime_error("Expected ':'");
+            if (peek() == ':') ++pos_;
             skip_ws();
-            stml::AstNode val = parse_value();
-            map.emplace_back(std::move(key), std::move(val));
+            auto val = parse_value();
+            map.emplace_back(key, std::move(val));
             skip_ws();
-            if (m_pos < m_len && m_text[m_pos] == ',') {
-                ++m_pos;
-                continue;
-            }
-            if (m_text[m_pos] == '}') {
-                ++m_pos;
-                break;
-            }
+            if (peek() == ',') { ++pos_; continue; }
+            if (peek() == '}') { ++pos_; break; }
             throw std::runtime_error("Expected ',' or '}' in object");
         }
         return stml::AstNode(std::move(map));
     }
 
     stml::AstNode parse_array() {
-        ++m_pos; // skip [
+        ++pos_; // skip '['
         stml::AstList list;
         skip_ws();
-        if (m_pos < m_len && m_text[m_pos] == ']') {
-            ++m_pos;
-            return stml::AstNode(std::move(list));
-        }
+        if (peek() == ']') { ++pos_; return stml::AstNode(std::move(list)); }
+
         while (true) {
             skip_ws();
-            list.push_back(parse_value());
+            list.items.push_back(parse_value());
             skip_ws();
-            if (m_pos < m_len && m_text[m_pos] == ',') {
-                ++m_pos;
-                continue;
-            }
-            if (m_text[m_pos] == ']') {
-                ++m_pos;
-                break;
-            }
+            if (peek() == ',') { ++pos_; continue; }
+            if (peek() == ']') { ++pos_; break; }
             throw std::runtime_error("Expected ',' or ']' in array");
         }
         return stml::AstNode(std::move(list));
     }
 
     stml::AstNode parse_number() {
-        int start = m_pos;
-        if (m_text[m_pos] == '-') ++m_pos;
-        while (m_pos < m_len && std::isdigit(m_text[m_pos])) ++m_pos;
-        if (m_pos < m_len && m_text[m_pos] == '.') {
-            ++m_pos;
-            while (m_pos < m_len && std::isdigit(m_text[m_pos])) ++m_pos;
+        size_t start = pos_;
+        if (peek() == '-') ++pos_;
+        while (pos_ < text_.size() && std::isdigit(static_cast<unsigned char>(text_[pos_]))) ++pos_;
+        if (peek() == '.') {
+            ++pos_;
+            while (pos_ < text_.size() && std::isdigit(static_cast<unsigned char>(text_[pos_]))) ++pos_;
         }
-        if (m_pos < m_len && (m_text[m_pos] == 'e' || m_text[m_pos] == 'E')) {
-            ++m_pos;
-            if (m_pos < m_len && (m_text[m_pos] == '+' || m_text[m_pos] == '-')) ++m_pos;
-            while (m_pos < m_len && std::isdigit(m_text[m_pos])) ++m_pos;
+        if (peek() == 'e' || peek() == 'E') {
+            ++pos_;
+            if (peek() == '+' || peek() == '-') ++pos_;
+            while (pos_ < text_.size() && std::isdigit(static_cast<unsigned char>(text_[pos_]))) ++pos_;
         }
-        // All STML scalars are strings, so return as string
-        return stml::AstNode(m_text.substr(start, m_pos - start));
+        return stml::AstNode(stml::AstScalar{text_.substr(start, pos_ - start)});
     }
 
-    void expect(const char* word) {
-        while (*word) {
-            if (m_pos >= m_len || m_text[m_pos++] != *word++)
-                throw std::runtime_error("Expected " + std::string(word));
-        }
+    stml::AstNode parse_bool_or_string() {
+        // JSON booleans → treated as strings in STML context
+        size_t start = pos_;
+        while (pos_ < text_.size() && std::isalpha(static_cast<unsigned char>(text_[pos_]))) ++pos_;
+        return stml::AstNode(stml::AstScalar{text_.substr(start, pos_ - start)});
     }
-
-    std::string m_text;
-    int m_pos;
-    int m_len;
 };
 
-stml::AstNode parse(const std::string& json_text) {
-    Parser p(json_text);
+stml::AstNode parse(const std::string& json) {
+    Parser p(json);
     return p.parse_value();
 }
 
-stml::AstNode load(const std::string& filepath) {
-    std::ifstream file(filepath);
-    if (!file.is_open()) {
-        throw std::runtime_error("Cannot open file: " + filepath);
-    }
-    std::string text((std::istreambuf_iterator<char>(file)),
-                      std::istreambuf_iterator<char>());
-    return parse(text);
-}
-
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 } // namespace test_json
+} // namespace stml

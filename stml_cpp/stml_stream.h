@@ -1,57 +1,111 @@
-#pragma once
+#ifndef STML_STML_STREAM_H
+#define STML_STML_STREAM_H
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+/// \file stml_stream.h
+/// Streaming API for incremental STML parsing.
+
+#include "ast/ast.h"
+#include "diagnostics/error.h"
+#include <functional>
+<<<<<<< Updated upstream
+=======
+=======
+#include "lexer/lexer.h"
+#include "parser/parser.h"
+#include "ast/ast.h"
+#include "diagnostics/error.h"
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 #include <string>
 #include <vector>
 
-#include "diagnostics/error.h"
-#include "ast/ast.h"
-
-// Include for LoadResult (circular but guarded by #pragma once)
-#include "stml.h"
-
 namespace stml {
 
-// Forward declarations
-class StreamingLexer;
-class StreamingParser;
-
+<<<<<<< Updated upstream
 // =========================================================================
-// STMLStreamer — streaming STML parser for incremental input.
+// STMLStreamer — incrementally feed text and receive callbacks.
+=======
+<<<<<<< Updated upstream
+// =========================================================================
+// STMLStreamer — incrementally feed text and receive callbacks.
+=======
+// ============================================================
+// STMLStreamer — 流式便利包装
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 //
-// Usage:
+// 将 Lexer 和 Parser 串联：
+//   feed(text) → Lexer → Parser
+//   finish()  → 返回 AST
+//
+// 用法:
 //   STMLStreamer streamer;
-//   for (chunk : llm_output_chunks) {
-//       streamer.feed(chunk);
-//   }
-//   LoadResult result = streamer.finalize();
-//   // result.ast → {"docs": [{...}, ...]}
-//   // result.warnings → all accumulated warnings
-//
-// Tokens are piped internally: StreamingLexer → StreamingParser.
-// AST is only available after finalize().
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+//   streamer.on_document([](const AstNode& doc) { ... });
+//   streamer.feed(chunk1);
+//   streamer.feed(chunk2);
+//   streamer.finish();
+//   for (auto& w : streamer.warnings()) { ... }
 // =========================================================================
 class STMLStreamer {
 public:
-    STMLStreamer();
-    ~STMLStreamer();
+    using DocumentCallback = std::function<void(const AstNode& doc)>;
 
-    /// Feed a text chunk. May emit warnings internally (retrievable via warnings()).
+    STMLStreamer() = default;
+
+    /// Set a callback invoked for each completed document.
+    void on_document(DocumentCallback cb);
+
+    /// Feed a chunk of text. Complete documents trigger the callback.
     void feed(const std::string& chunk);
 
-    /// Signal end of input. Returns the complete AST + all warnings.
-    LoadResult finalize();
+    /// Signal end of input. Flushes any remaining document.
+    void finish();
 
-    /// Accumulated warnings so far (useful for progress reporting).
-    const std::vector<Warning>& warnings() const;
+    /// Get accumulated warnings.
+    const std::vector<Warning>& warnings() const { return warnings_; }
 
 private:
-    // Using PIMPL to avoid exposing internal headers
-    class Impl;
-    Impl* m_impl;
+    DocumentCallback doc_callback_;
+    std::vector<Warning> warnings_;
+    std::string buffer_;
+    bool finished_ = false;
+
+    void process_complete_documents();
+<<<<<<< Updated upstream
+=======
+=======
+//   streamer.feed(chunk1);
+//   streamer.feed(chunk2);
+//   AstList docs = streamer.finish();
+// ============================================================
+class STMLStreamer {
+public:
+    STMLStreamer();
+
+    void feed(const std::string& text);
+    AstList finish();
+
+    const std::vector<Warning>& warnings() const { return warnings_; }
+
+private:
+    Lexer lexer_;
+    Parser parser_;
+    std::vector<Warning> warnings_;
+    bool finished_ = false;
+
+    void collect_warnings();
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 };
 
-/// Convenience: stream-parse complete text in one call.
-/// Equivalent to constructing STMLStreamer, feed(text), finalize().
-LoadResult stream_parse(const std::string& text);
-
 } // namespace stml
+
+#endif // STML_STML_STREAM_H

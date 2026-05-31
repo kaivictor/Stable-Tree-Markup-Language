@@ -1,94 +1,159 @@
-#pragma once
+#ifndef STML_LEXER_H
+#define STML_LEXER_H
 
-#include <string>
-#include <vector>
-#include <optional>
-#include <tuple>
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+/// \file lexer.h
+/// Unified batch + streaming lexer for STML.
 
 #include "lexer/token.h"
 #include "diagnostics/error.h"
+#include <functional>
+#include <string>
+#include <vector>
 
 namespace stml {
 
 // =========================================================================
-// STMLLexer — converts STML text into a token stream.
+// Lexer — unified batch + streaming STML lexer.
 //
-// Single entry point: tokenize().
-// All deterministic recovery rules live here so the resulting token stream
-// is fully determined for any input.
+// Batch usage:
+//   Lexer lexer;
+//   auto tokens = lexer.tokenize(input);
+//
+// Streaming usage:
+//   Lexer lexer;
+//   lexer.on_token([](const Token& t) { ... });
+//   lexer.feed(chunk1);
+//   lexer.feed(chunk2);
+//   lexer.finish();
 // =========================================================================
-class STMLLexer {
+class Lexer {
 public:
-    explicit STMLLexer(std::string text);
+    using TokenCallback = std::function<void(const Token&)>;
 
-    /// Run the full lexer. Returns (tokens, warnings).
-    std::pair<std::vector<Token>, std::vector<Warning>> tokenize();
+    Lexer();
+
+    // ---- Batch mode ----
+    /// Tokenize a complete input string and return all tokens.
+    std::vector<Token> tokenize(const std::string& input);
+
+    // ---- Streaming mode ----
+    /// Set callback for each token emitted.
+    void on_token(TokenCallback cb);
+
+    /// Feed a chunk of input text.
+    void feed(const std::string& data);
+
+    /// Signal end of input. Flushes remaining content and emits DEDENT/END.
+    void finish();
+
+    // ---- Diagnostics ----
+    const std::vector<Warning>& warnings() const { return warnings_; }
 
 private:
-    // Input
-    std::vector<std::string> m_lines;
-    int m_line_count;
+    // =====================================================================
+    // State
+    // =====================================================================
+    std::string buffer_;            // accumulated raw input not yet processed
+    size_t pos_ = 0;               // current position in buffer_
+    bool done_ = false;            // finish() has been called
+    int current_line_ = 1;         // 1-based line number
+    int current_column_ = 1;       // 1-based column within current line
+    std::vector<int> indent_stack_;// stack of current indentation levels (0-based)
+    int current_indent_ = 0;       // indent of the line currently being processed
+    int pending_indent_ = -1;      // indent queued for the next logical line
 
-    // Accumulators
-    std::vector<Token> m_tokens;
-    std::vector<Warning> m_warnings;
+    // Multiline text state
+    bool in_multiline_ = false;
+    std::string multiline_text_;
+    std::string multiline_key_line_; // original key line for warning context
+    int multiline_base_indent_ = 0;
+    int multiline_line_ = 0;
 
-    // Indentation stack (starts with implicit root at indent 0)
-    std::vector<int> m_indent_stack;
+    // Output
+    TokenCallback token_cb_;
+    std::vector<Token> batch_tokens_;  // used in batch mode
+    std::vector<Warning> warnings_;
 
-    // Current position in m_lines
-    int m_line_idx;
+    // =====================================================================
+    // Internal methods
+    // =====================================================================
+    void process_buffer();
+    void process_line(std::string line);
+    void tokenize_line_content(const std::string& content, int line_no, int indent);
+    void parse_inline_list(const std::string& content, size_t start,
+                           int line_no, size_t& out_end,
+                           std::vector<InlineElem>& out_elems);
+    int count_indent(const std::string& line);
+    void flush_indents(int new_indent, int line_no);
+    void emit(Token token);
+    void emit_token(Token token);  // same as emit
+    void emit_newline(int line_no);
+    void emit_dedents_to(int target_indent, int line_no);
 
-    // Deferred DEDENT target: set by multiline-string parsing.
-    // The main loop emits DEDENTs at the correct position (between lines).
-    std::optional<int> m_deferred_dedent_to;
+    // Quote helpers
+    static size_t find_closing_quote(const std::string& s, size_t start);
+    static size_t find_closing_quote_from_end(const std::string& s, size_t end_pos);
+    static bool try_unquote(std::string& val);
+    static void unescape_quoted(std::string& val, size_t start, size_t end);
 
-    // ---- token factory ----
-    void _add_token(TokenType type, TokenValue value, int line, int column);
-    void _add_warning(int line, int column, const std::string& message);
-    int  _col(int indent, int offset_in_content) const;
+    // Null detection
+    static bool is_null_literal(const std::string& s);
+<<<<<<< Updated upstream
+=======
+=======
+#include "token.h"
+#include "../diagnostics/error.h"
+#include <string>
+#include <vector>
+#include <functional>
 
-    // ---- indentation ----
-    int  _calc_indent(const std::string& line) const;
-    bool _is_blank_or_comment(const std::string& content) const;
-    void _process_indent(int indent);
-    void _emit_dedents_to(int target);
+namespace stml {
 
-    // ---- line dispatch ----
-    void _lex_sequence_line(const std::string& content, int indent);
-    void _lex_mapping_line(const std::string& content, int indent);
+class Lexer {
+public:
+    using TokenCallback = std::function<void(Token)>;
 
-    // ---- value parsing ----
-    void _lex_remainder_after_colon(const std::string& rest, int indent, int line_no);
-    void _lex_value_or_key_on_line(const std::string& text, int indent, bool scan_colon);
-    void _lex_scalar_or_null(const std::string& text, int indent);
+    Lexer();
 
-    // ---- quoted key ----
-    std::tuple<std::string, std::string, bool, int>
-    _try_quoted_key(const std::string& content, int indent);
+    std::vector<Token> tokenize(const std::string& input);
+    void feed(const std::string& data);
+    void finish();
+    void on_token(TokenCallback cb) { callback_ = std::move(cb); }
+    const std::vector<Warning>& warnings() const { return warnings_; }
 
-    // ---- structural colon ----
-    int _find_unquoted_colon(const std::string& s) const;
+private:
+    struct IndentEntry { int indent; int line_no; };
 
-    // ---- quote matching ----
-    int _find_first_unescaped_quote(const std::string& s, int start) const;
-    int _find_last_unescaped_quote(const std::string& s, int start) const;
+    std::string buffer_;
+    size_t pos_ = 0;
+    int current_line_ = 0;
+    bool done_ = false;
+    std::vector<IndentEntry> indent_stack_;
+    std::vector<Warning> warnings_;
+    TokenCallback callback_;
 
-    // ---- escape processing ----
-    std::string _unescape(const std::string& s, int col_offset = 0);
+    // 多行文本状态
+    bool in_multiline_ = false;
+    std::string multiline_text_;
+    int multiline_key_line_ = 0;
+    int multiline_base_indent_ = 0;
 
-    // ---- quoted value (greedy) ----
-    std::tuple<std::string, int, bool> _parse_quoted_value(const std::string& s, int start, int indent);
-
-    // ---- inline list ----
-    std::tuple<std::vector<InlineElem>, bool, int> _parse_inline_list(const std::string& s, int indent);
-
-    // ---- multiline ----
-    std::tuple<std::string, int, int> _read_multiline(int key_indent);
-
-    // ---- bare key helpers ----
-    static std::string _bare_key_from_content(const std::string& content);
-    std::string _reconstruct_empty_key(const std::string& content);
+    void process_line(const std::string& raw_line);
+    int count_indent(const std::string& s);
+    int current_indent() const;
+    void flush_indents(int new_indent, int line_no, bool is_dash = false);
+    void tokenize_line_content(const std::string& content, int indent, int line_no);
+    void parse_inline_list(const std::string& text, int ln, int col, std::vector<InlineElem>& items);
+    void emit(Token t);
+    void emit_newline(int line_no);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 };
 
 } // namespace stml
+
+#endif

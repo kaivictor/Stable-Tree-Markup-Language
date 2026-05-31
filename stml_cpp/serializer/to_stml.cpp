@@ -1,226 +1,413 @@
+<<<<<<< Updated upstream
 #include "serializer/serializer.h"
-
-#include <algorithm>
+<<<<<<< Updated upstream
+=======
+=======
+#include "serializer.h"
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 #include <sstream>
-#include <stdexcept>
-#include <vector>
 
 namespace stml {
 
+<<<<<<< Updated upstream
 // =========================================================================
-// Escape helpers
+// STML string escaping (for quoted values)
 // =========================================================================
-
-std::string escape_string(const std::string& s)
-{
-    std::string result;
-    result.reserve(s.size() + 8);
-    for (char ch : s) {
-        switch (ch) {
-            case '\\': result += "\\\\"; break;
-            case '"':  result += "\\\""; break;
-            case '\n': result += "\\n";  break;
-            case '\t': result += "\\t";  break;
-            default:   result.push_back(ch); break;
+static void stml_escape(const std::string& src, std::string& dst) {
+    dst.reserve(dst.size() + src.size() + 4);
+    for (unsigned char c : src) {
+        switch (c) {
+            case '"':  dst += "\\\""; break;
+            case '\\': dst += "\\\\"; break;
+            case '\n': dst += "\\n";  break;
+            case '\t': dst += "\\t";  break;
+            case '\r': dst += "\\r";  break;
+            default:
+                dst += static_cast<char>(c);
+                break;
         }
     }
-    return result;
-}
-
-std::string quote_key(const std::string& key)
-{
-    return "\"" + escape_string(key) + "\"";
 }
 
 // =========================================================================
-// format_scalar
+// Helper: can this node be printed inline?
 // =========================================================================
-
-std::string format_scalar(const AstNode& node)
-{
-    if (node.is_null()) {
-        return "null";
-    }
-    if (node.is_string()) {
-        return "\"" + escape_string(*node.as_string()) + "\"";
-    }
-    // For non-scalar nodes, shouldn't happen but handle gracefully
-    if (node.is_map() && node.as_map()->empty()) {
-        return "null";
-    }
-    if (node.is_list() && node.as_list()->empty()) {
-        return "null";
-    }
-    throw std::runtime_error("format_scalar called on non-scalar node");
-}
-
-// =========================================================================
-// serialize_node
-// =========================================================================
-
-// Internal helper
-static bool values_are_all_scalars(const AstList& lst)
-{
-    for (const auto& v : lst) {
-        if (v.is_list() || v.is_map()) return false;
-    }
-    return true;
-}
-
-static std::string format_inline_list(const AstList& lst)
-{
-    std::string result = "[";
-    for (size_t i = 0; i < lst.size(); ++i) {
-        if (i > 0) result += ", ";
-        result += format_scalar(lst[i]);
-    }
-    result += "]";
-    return result;
-}
-
-std::string serialize_node(const AstNode& node, int indent_level)
-{
-    std::string indent(indent_level * 2, ' ');
-    std::string next_indent((indent_level + 1) * 2, ' ');
-
-    // 1. Null
-    if (node.is_null()) {
-        return indent + "null";
-    }
-
-    // 2. String (scalar)
-    if (node.is_string()) {
-        return indent + "\"" + escape_string(*node.as_string()) + "\"";
-    }
-
-    // 3. List (sequence)
+static bool is_inline_candidate(const AstNode& node) {
+    if (node.is_null() || node.is_scalar()) return true;
     if (node.is_list()) {
-        const auto& lst = *node.as_list();
-        if (lst.empty()) {
-            return indent + "- null";
+        const auto& l = *node.as_list();
+        // Only scalars and nulls in a short list can be inline
+        if (l.size() > 10) return false;
+        for (const auto& e : l) {
+            if (!e.is_null() && !e.is_scalar()) return false;
+            if (e.is_scalar() && e.as_scalar()->value.size() > 40) return false;
         }
-
-        std::vector<std::string> lines;
-        for (const auto& item : lst) {
-            if (item.is_null() || item.is_string()) {
-                // Scalar entry: - value
-                lines.push_back(indent + "- " + format_scalar(item));
-            } else if (item.is_list()) {
-                // Nested list item
-                const auto& inner_lst = *item.as_list();
-                if (inner_lst.empty()) {
-                    lines.push_back(indent + "- null");
-                } else if (values_are_all_scalars(inner_lst)) {
-                    // Inline list: - [v1, v2, v3]
-                    lines.push_back(indent + "- " + format_inline_list(inner_lst));
-                } else {
-                    // Complex nested list: sub-block
-                    lines.push_back(indent + "- ");
-                    lines.push_back(serialize_node(item, indent_level + 1));
-                }
-            } else if (item.is_map()) {
-                // Map entry (supports multi-key)
-                const auto& item_map = *item.as_map();
-                if (item_map.empty()) {
-                    lines.push_back(indent + "- null");
-                    continue;
-                }
-                bool first = true;
-                for (const auto& [key, val] : item_map) {
-                    int entry_level = first ? indent_level : indent_level + 1;
-                    std::string entry_indent(entry_level * 2, ' ');
-                    std::string prefix = first ? "- " : "";
-                    if (val.is_list() || val.is_map()) {
-                        // Compound value
-                        lines.push_back(entry_indent + prefix + quote_key(key) + ":");
-                        lines.push_back(serialize_node(val, entry_level + 1));
-                    } else {
-                        // Scalar value
-                        lines.push_back(entry_indent + prefix + quote_key(key) + ": " + format_scalar(val));
-                    }
-                    first = false;
-                }
-            }
-        }
-        // Join lines with newlines
-        std::string result;
-        for (size_t i = 0; i < lines.size(); ++i) {
-            if (i > 0) result += "\n";
-            result += lines[i];
-        }
-        return result;
+        return true;
     }
+    return false;
+}
 
-    // 4. Map (mapping)
-    if (node.is_map()) {
-        const auto& map = *node.as_map();
-        if (map.empty()) {
-            return indent + "null";
+// =========================================================================
+// Forward declaration
+// =========================================================================
+static void serialize_node(const AstNode& node, std::string& out, int indent,
+                            bool is_list_item, bool inline_ok);
+
+// =========================================================================
+// Serialize a scalar value (quoted or null)
+// =========================================================================
+static void serialize_scalar(const std::string& value, std::string& out) {
+    out += '"';
+    stml_escape(value, out);
+    out += '"';
+}
+
+// =========================================================================
+// Serialize a map
+// =========================================================================
+static void serialize_map(const AstMap& map, std::string& out, int indent,
+                           bool is_list_item) {
+    std::string pad(indent, ' ');
+    bool first = true;
+
+    for (const auto& [key, val] : map) {
+        if (!first) out += '\n';
+        first = false;
+
+        out += pad;
+        serialize_scalar(key, out); // key always quoted
+
+        if (val.is_null()) {
+            out += ": null";
         }
+        else if (val.is_scalar()) {
+            out += ": ";
+            serialize_scalar(val.as_scalar()->value, out);
+        }
+        else if (is_inline_candidate(val)) {
+            out += ": ";
+            serialize_node(val, out, indent, false, true);
+        }
+        else {
+            out += ':';
+            if (val.is_list() && !val.as_list()->empty()) {
+                out += '\n';
+                serialize_node(val, out, indent + 2, false, false);
+            }
+            else if (val.is_map() && !val.as_map()->empty()) {
+                out += '\n';
+                serialize_node(val, out, indent + 2, false, false);
+            }
+            // empty lists/maps stay inline
+        }
+    }
+}
 
-        std::vector<std::string> lines;
-        for (const auto& [key, val] : map) {
-            std::string k_str = quote_key(key);
-            if (val.is_list() || val.is_map()) {
-                // Compound value
-                std::string sub = serialize_node(val, indent_level + 1);
-                // Strip trailing whitespace for null check
-                const char* sp = sub.c_str();
-                while (*sp == ' ') ++sp; // shouldn't happen for indented
-                if (*sp == '\0' || sub.empty()) {
-                    lines.push_back(indent + k_str + ": null");
+// =========================================================================
+// Serialize a list (block format)
+// =========================================================================
+static void serialize_list_block(const AstList& list, std::string& out, int indent) {
+    std::string pad(indent, ' ');
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) out += '\n';
+        const auto& elem = list[i];
+
+        out += pad;
+        out += "- ";
+
+        if (elem.is_null()) {
+            out += "null";
+        }
+        else if (elem.is_scalar()) {
+            serialize_scalar(elem.as_scalar()->value, out);
+        }
+        else if (elem.is_map()) {
+            const auto& m = *elem.as_map();
+            if (m.empty()) {
+                // skip empty map
+            } else if (m.size() == 1) {
+                // Inline single-entry map on same line as dash
+                const auto& [k, v] = m[0];
+                serialize_scalar(k, out);
+                if (v.is_null()) {
+                    out += ": null";
+                } else if (v.is_scalar()) {
+                    out += ": ";
+                    serialize_scalar(v.as_scalar()->value, out);
                 } else {
-                    lines.push_back(indent + k_str + ":");
-                    lines.push_back(sub);
+                    out += ':';
+                    if (!v.is_null() || (v.is_list() && !v.as_list()->empty())) {
+                        out += '\n';
+                        serialize_node(v, out, indent + 2, false, false);
+                    }
                 }
             } else {
-                // Scalar value
-                lines.push_back(indent + k_str + ": " + format_scalar(val));
+                // Multi-entry map after dash
+                out += '\n';
+                serialize_map(m, out, indent + 2, false);
             }
         }
-
-        std::string result;
-        for (size_t i = 0; i < lines.size(); ++i) {
-            if (i > 0) result += "\n";
-            result += lines[i];
+        else if (elem.is_list()) {
+            const auto& l = *elem.as_list();
+            if (is_inline_candidate(elem)) {
+                serialize_node(elem, out, indent, false, true);
+            } else if (!l.empty()) {
+                out += '\n';
+                serialize_list_block(l, out, indent + 2);
+            }
         }
-        return result;
     }
-
-    throw std::runtime_error("Unsupported node type in serialize_node");
 }
 
 // =========================================================================
-// dumps — top-level serialization
+// Serialize an inline list: [a, b, c]
 // =========================================================================
-
-std::string dumps(const AstNode& node)
-{
-    if (node.is_map()) {
-        const auto& map = *node.as_map();
-        // Check if it's a "docs"-wrapped document list
-        const AstNode* docs_node = map_find(map, "docs");
-        if (docs_node != nullptr && docs_node->is_list()) {
-            const auto& docs = *docs_node->as_list();
-
-            std::vector<std::string> parts;
-            for (const auto& doc : docs) {
-                parts.push_back(serialize_node(doc, 0));
-            }
-            // Join with "\n---\n" document separator
-            std::string result;
-            for (size_t i = 0; i < parts.size(); ++i) {
-                result += parts[i];
-                if (i + 1 < parts.size())
-                    result += "\n---";
-                result += "\n";
-            }
-            return result;
+static void serialize_inline_list(const AstList& list, std::string& out) {
+    out += '[';
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) out += ", ";
+        const auto& elem = list[i];
+        if (elem.is_null()) {
+            out += "null";
+        } else if (elem.is_scalar()) {
+            serialize_scalar(elem.as_scalar()->value, out);
+<<<<<<< Updated upstream
         }
     }
+    out += ']';
+}
 
-    // Unwrapped single document
-    return serialize_node(node, 0) + "\n";
+=======
+=======
+// ============================================================
+// STML 值是否需要引号
+// ============================================================
+static bool needs_quoting(const std::string& s) {
+    if (s.empty()) return true;
+    for (char c : s) {
+        if (c == ':' || c == '#' || c == '[' || c == ']' ||
+            c == '{' || c == '}' || c == '"' || c == '\'' ||
+            c == '\n' || c == '\r' || c == '|') {
+            return true;
+        }
+    }
+    // 以特殊字符开头
+    if (s[0] == '-' || s[0] == ' ' || s[0] == '\t' ||
+        s[0] == '>' || s[0] == '!' || s[0] == '@' ||
+        s[0] == '`' || s[0] == '%' || s[0] == '&' ||
+        s[0] == '*') {
+        return true;
+    }
+    // null 关键字
+    if (s == "null" || s == "NULL" || s == "Null") return true;
+    // 纯数字可能被误解
+    return false;
+}
+
+// ============================================================
+// 引号包裹
+// ============================================================
+static std::string quote_value(const std::string& s) {
+    std::string out = "\"";
+    for (char c : s) {
+        switch (c) {
+            case '"':  out += "\\\""; break;
+            case '\\': out += "\\\\"; break;
+            case '\n': out += "\\n";  break;
+            case '\r': out += "\\r";  break;
+            case '\t': out += "\\t";  break;
+            default:   out += c;      break;
+        }
+    }
+    out += "\"";
+    return out;
+}
+
+// ============================================================
+// 判断节点是否需要展开（嵌套输出）
+// ============================================================
+static bool is_expandable(const AstNode& node) {
+    if (node.is_map()) {
+        return !node.as_map()->empty();
+    }
+    if (node.is_list()) {
+        return !node.as_list()->items.empty();
+    }
+    return false;
+}
+
+// ============================================================
+// 递归 STML 输出
+// ============================================================
+static void to_stml_impl(std::ostringstream& ss, const AstNode& node,
+                          int indent, int indent_step, bool is_list_item) {
+    std::string pad(indent, ' ');
+
+    switch (node.kind) {
+    case AstNode::Kind::Null:
+        // 不输出任何值
+        break;
+
+    case AstNode::Kind::Scalar: {
+        const std::string& val = node.as_scalar()->value;
+        if (needs_quoting(val)) {
+            ss << quote_value(val);
+        } else {
+            ss << val;
+        }
+        break;
+    }
+
+    case AstNode::Kind::List: {
+        const auto& items = node.as_list()->items;
+        for (size_t i = 0; i < items.size(); ++i) {
+            ss << pad << "- ";
+            if (is_expandable(items[i])) {
+                ss << "\n";
+                to_stml_impl(ss, items[i], indent + indent_step, indent_step, true);
+            } else {
+                to_stml_impl(ss, items[i], indent, indent_step, true);
+            }
+            if (i + 1 < items.size()) ss << "\n";
+        }
+        break;
+    }
+
+    case AstNode::Kind::Map: {
+        const auto& map = *node.as_map();
+        for (size_t i = 0; i < map.size(); ++i) {
+            const auto& [k, v] = map[i];
+
+            ss << pad << k << ":";
+
+            if (v.is_null() || (v.is_scalar() && v.as_scalar()->value.empty())) {
+                // 空值 → 冒号后面不输出
+            } else if (v.is_scalar()) {
+                ss << " ";
+                to_stml_impl(ss, v, indent, indent_step, false);
+            } else if (v.is_map()) {
+                if (v.as_map()->empty()) {
+                    ss << " {}";
+                } else {
+                    ss << "\n";
+                    to_stml_impl(ss, v, indent + indent_step, indent_step, false);
+                }
+            } else if (v.is_list()) {
+                if (v.as_list()->items.empty()) {
+                    ss << " []";
+                } else {
+                    ss << "\n";
+                    to_stml_impl(ss, v, indent + indent_step, indent_step, true);
+                }
+            }
+
+            if (i + 1 < map.size()) {
+                ss << "\n";
+            }
+        }
+        break;
+    }
+    }
+}
+
+std::string to_stml(const AstNode& node, int base_indent, int indent_step) {
+    std::ostringstream ss;
+    to_stml_impl(ss, node, base_indent, indent_step, false);
+    return ss.str();
+}
+
+// ============================================================
+// 文档列表 → STML 多文档
+// ============================================================
+std::string docs_to_stml(const AstList& docs, int indent_step) {
+    std::ostringstream ss;
+
+    for (size_t i = 0; i < docs.items.size(); ++i) {
+        if (i > 0) {
+            ss << "---\n";
+        }
+        ss << to_stml(docs.items[i], 0, indent_step);
+        if (i + 1 < docs.items.size() && !to_stml(docs.items[i], 0, indent_step).empty()) {
+            ss << "\n";
+>>>>>>> Stashed changes
+        }
+    }
+    out += ']';
+}
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+// =========================================================================
+// Main recursive serializer
+// =========================================================================
+static void serialize_node(const AstNode& node, std::string& out, int indent,
+                            bool is_list_item, bool inline_ok) {
+    if (node.is_null()) {
+        out += "null";
+    }
+    else if (node.is_scalar()) {
+        serialize_scalar(node.as_scalar()->value, out);
+    }
+    else if (node.is_list()) {
+        const auto& list = *node.as_list();
+        if (inline_ok && is_inline_candidate(node)) {
+            serialize_inline_list(list, out);
+        } else {
+            serialize_list_block(list, out, indent);
+        }
+    }
+    else if (node.is_map()) {
+        const auto& map = *node.as_map();
+        serialize_map(map, out, indent, is_list_item);
+    }
+}
+
+// =========================================================================
+// Top-level: unwrap {"docs": [...]} and output each doc with --- separator
+// =========================================================================
+std::string to_stml(const AstNode& node) {
+    std::string result;
+
+    // The top-level node should be {"docs": [...]}
+    const AstMap* top_map = node.as_map();
+    if (!top_map) return result;
+
+    const AstNode* docs_node = map_find(*top_map, "docs");
+    if (!docs_node || !docs_node->is_list()) return result;
+
+    const auto& docs_list = *docs_node->as_list();
+
+    for (size_t i = 0; i < docs_list.size(); ++i) {
+        if (i > 0) {
+            result += "---\n";
+        }
+
+        const auto& doc = docs_list[i];
+        if (doc.is_map()) {
+            const auto& map = *doc.as_map();
+            serialize_map(map, result, 0, false);
+        }
+        else if (doc.is_list()) {
+            serialize_list_block(*doc.as_list(), result, 0);
+        }
+        else if (doc.is_null()) {
+            result += "null";
+        }
+        else if (doc.is_scalar()) {
+            serialize_scalar(doc.as_scalar()->value, result);
+        }
+
+        result += '\n';
+    }
+
+    return result;
+<<<<<<< Updated upstream
+=======
+=======
+    return ss.str();
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
 
 } // namespace stml

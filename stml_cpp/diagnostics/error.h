@@ -1,38 +1,37 @@
-#pragma once
+#ifndef STML_DIAGNOSTICS_ERROR_H
+#define STML_DIAGNOSTICS_ERROR_H
 
-#include <stdexcept>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 namespace stml {
 
-// =========================================================================
-// Warning — non-fatal diagnostic during parsing.
-// The AST is still well-formed; warnings describe potential user mistakes.
-// =========================================================================
+// ============================================================
+// Warning — 解析警告（非错误，解析结果可能和用户预期不同）
+// ============================================================
 struct Warning {
-    int line;       // 1-based
-    int column;     // 1-based
+    int line = 0;
+    int col = 0;
     std::string message;
 
-    Warning(int line, int column, std::string message)
-        : line(line), column(column), message(std::move(message)) {}
+    Warning() = default;
+    Warning(int l, int c, std::string msg)
+        : line(l), col(c), message(std::move(msg)) {}
 };
 
-// =========================================================================
-// ParseError — fatal error during parsing. Cannot recover an AST.
-// =========================================================================
+// ============================================================
+// ParseError — 解析异常（程序级错误）
+// ============================================================
 class ParseError : public std::runtime_error {
 public:
-    int line;
-    int column;
-    std::string message;
+    int line = 0;
+    int col = 0;
 
-    ParseError(int line, int column, std::string message)
-        : std::runtime_error(std::to_string(line) + ":" + std::to_string(column) + ": " + message)
-        , line(line)
-        , column(column)
-        , message(std::move(message)) {}
+    ParseError(int l, int c, const std::string& msg)
+        : std::runtime_error(msg), line(l), col(c) {}
 };
 
 } // namespace stml
+
+#endif // STML_DIAGNOSTICS_ERROR_H
