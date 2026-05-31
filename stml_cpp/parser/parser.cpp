@@ -334,12 +334,9 @@ std::pair<AstList, int> STMLParser::_parse_sequence(int pos)
                 pos = next_p + 1;
                 continue;
             }
-            if (after == TokenType::DASH) {
-                // DEDENT + DASH = sibling block ended, next entry follows
-                pos = next_p;
-                continue;
-            }
-            break; // parent-level DEDENT, sequence really ends
+            // DEDENT at base level with DASH → the DASH belongs to
+            // the parent block. Let the caller decide how to handle it.
+            break;
         }
 
         if (ttype == TokenType::NEWLINE) {
