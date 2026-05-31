@@ -87,4 +87,24 @@ void STMLStreamer::process_complete_documents() {
     }
 }
 
+LoadResult STMLStreamer::finalize() {
+    AstList docs;
+    auto prev_cb = std::move(doc_callback_);
+    doc_callback_ = [&docs](const AstNode& doc) {
+        docs.push_back(doc);
+    };
+    finish();
+    doc_callback_ = std::move(prev_cb);
+
+    AstMap wrapper;
+    wrapper.emplace_back("docs", AstNode(std::move(docs)));
+    return {AstNode(std::move(wrapper)), std::move(warnings_)};
+}
+
+LoadResult stream_parse(const std::string& text) {
+    STMLStreamer streamer;
+    streamer.feed(text);
+    return streamer.finalize();
+}
+
 } // namespace stml

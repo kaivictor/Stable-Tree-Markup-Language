@@ -364,19 +364,20 @@ std::pair<AstList, int> STMLParser::_parse_sequence(int pos)
         }
 
         // Parse one sequence entry
-        auto [item, new_pos] = _parse_sequence_item(pos, complex_mode);
-        seq.push_back(std::move(item));
+        auto [items, new_pos] = _parse_sequence_item(pos, complex_mode);
+        for (auto& item : items)
+            seq.push_back(std::move(item));
         pos = new_pos;
     }
 
     return {std::move(seq), pos};
 }
 
-std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_mode)
+std::pair<std::vector<AstNode>, int> STMLParser::_parse_sequence_item(int pos, bool complex_mode)
 {
     // Expect DASH
     if (pos >= m_n || m_tokens[pos].type != TokenType::DASH)
-        return {AstNode(), pos};
+        return {{AstNode()}, pos};
     ++pos; // consume DASH
 
     auto nxt = _peek_type_at(pos);
@@ -395,13 +396,22 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
             if (complex_mode) {
                 AstMap m;
                 m.emplace_back("", std::move(block_val));
-                return {AstNode(std::move(m)), new_pos};
+                return {{AstNode(std::move(m))}, new_pos};
             } else {
-                return {std::move(block_val), new_pos};
+                // Simple mode: promote children of list block (DASH_EMPTY promotion)
+                if (block_val.is_list()) {
+                    std::vector<AstNode> items;
+                    items.push_back(AstNode()); // null for the empty DASH
+                    auto& children = *block_val.as_list_mut();
+                    for (auto& child : children)
+                        items.push_back(std::move(child));
+                    return {std::move(items), new_pos};
+                }
+                return {{std::move(block_val)}, new_pos};
             }
         }
         // Empty entry, no sub-block → null
-        return {AstNode(), newline_pos};
+        return {{AstNode()}, newline_pos};
     }
 
     // ---- NULL ----
@@ -409,14 +419,14 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
         auto [val, new_pos] = _consume_value(pos);
         (void)val;
         new_pos = _consume_newline(new_pos);
-        return {AstNode(), new_pos};
+        return {{AstNode()}, new_pos};
     }
 
     // ---- INLINE_LIST ----
     if (nxt == TokenType::INLINE_LIST) {
         auto [val, new_pos] = _consume_value(pos);
         new_pos = _consume_newline(new_pos);
-        return {std::move(val), new_pos};
+        return {{std::move(val)}, new_pos};
     }
 
     // ---- KEY → inline mapping ----
@@ -437,7 +447,7 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
             m.emplace_back(std::move(key), std::move(val));
             // Check for sibling keys at content-indent level
             new_pos = _parse_sibling_map_entries(m, new_pos);
-            return {AstNode(std::move(m)), new_pos};
+            return {{AstNode(std::move(m))}, new_pos};
         }
 
         if (after == TokenType::NEWLINE) {
@@ -459,7 +469,7 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
                         AstMap m;
                         m.emplace_back(std::move(key), AstNode());
                         int sib_pos = _parse_sibling_map_entries(m, newline_pos);
-                        return {AstNode(std::move(m)), sib_pos};
+                        return {{AstNode(std::move(m))}, sib_pos};
                     }
 
                     // Block value (DASH, SCALAR, NULL, etc.)
@@ -469,7 +479,7 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
                         ++new_pos;
                     AstMap m;
                     m.emplace_back(std::move(key), std::move(block_val));
-                    return {AstNode(std::move(m)), new_pos};
+                    return {{AstNode(std::move(m))}, new_pos};
                 }
                 // Block value (diff > 2)
                 pos = newline_pos + 1; // consume NEWLINE + INDENT
@@ -478,26 +488,41 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
                     ++new_pos;
                 AstMap m;
                 m.emplace_back(std::move(key), std::move(block_val));
-                return {AstNode(std::move(m)), new_pos};
+                return {{AstNode(std::move(m))}, new_pos};
             } else if (after2 == TokenType::DASH) {
                 // Same-indent sequence as block value
                 pos = newline_pos;
                 auto [block_val, new_pos] = _parse_sequence(pos);
                 AstMap m;
                 m.emplace_back(std::move(key), AstNode(std::move(block_val)));
-                return {AstNode(std::move(m)), new_pos};
+                return {{AstNode(std::move(m))}, new_pos};
             } else {
                 // No block, no inline → null
                 AstMap m;
                 m.emplace_back(std::move(key), AstNode());
-                return {AstNode(std::move(m)), newline_pos};
+                return {{AstNode(std::move(m))}, newline_pos};
             }
         }
 
         // DEDENT, EOF, etc.
         AstMap m;
         m.emplace_back(std::move(key), AstNode());
-        return {AstNode(std::move(m)), pos};
+        return {{AstNode(std::move(m))}, pos};
+    }
+
+    // ---- BARE_KEY ----
+    if (nxt == TokenType::BARE_KEY) {
+        std::string key = std::get<std::string>(m_tokens[pos].value);
+        ++pos; // consume BARE_KEY
+        pos = _consume_newline(pos);
+        if (complex_mode) {
+            AstMap m;
+            m.emplace_back(std::move(key), AstNode());
+            pos = _parse_sibling_map_entries(m, pos);
+            return {{AstNode(std::move(m))}, pos};
+        } else {
+            return {{AstNode(std::move(key))}, pos};
+        }
     }
 
     // ---- SCALAR, RAW_STRING ----
@@ -508,9 +533,9 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
             AstMap m;
             m.emplace_back(std::move(*val.as_string_mut()), AstNode());
             new_pos = _parse_sibling_map_entries(m, new_pos);
-            return {AstNode(std::move(m)), new_pos};
+            return {{AstNode(std::move(m))}, new_pos};
         } else {
-            return {std::move(val), new_pos};
+            return {{std::move(val)}, new_pos};
         }
     }
 
@@ -522,14 +547,14 @@ std::pair<AstNode, int> STMLParser::_parse_sequence_item(int pos, bool complex_m
             AstMap m;
             m.emplace_back(std::move(*val.as_string_mut()), AstNode());
             new_pos = _parse_sibling_map_entries(m, new_pos);
-            return {AstNode(std::move(m)), new_pos};
+            return {{AstNode(std::move(m))}, new_pos};
         } else {
-            return {std::move(val), new_pos};
+            return {{std::move(val)}, new_pos};
         }
     }
 
     // Fallback
-    return {AstNode(), pos};
+    return {{AstNode()}, pos};
 }
 
 // =========================================================================
@@ -554,10 +579,6 @@ int STMLParser::_parse_sibling_map_entries(AstMap& map, int pos)
             } else {
                 break; // Not a key → not a sibling
             }
-        } else if (peek == TokenType::KEY || peek == TokenType::BARE_KEY) {
-            // Sibling at same indent level (no INDENT needed).
-            // Covers both regular subsequent siblings and irregular first sibling
-            // (where sibling is at DASH indent rather than content-indent).
         } else {
             break;
         }
@@ -696,7 +717,17 @@ bool STMLParser::_is_complex_sequence(int start_pos) const
                     continue;
                 }
                 if (st == TokenType::KEY) return true;   // DASH + KEY → inline mapping
-                if (st == TokenType::INDENT) return true; // DASH + INDENT → sub-block
+                if (st == TokenType::INDENT) {
+                    // DASH + INDENT → could be nested list or sub-block.
+                    // Peek past NEWLINE+INDENT: if next is DASH → nested list, not complex.
+                    int after_indent = scan + 1;
+                    while (after_indent < m_n && m_tokens[after_indent].type == TokenType::NEWLINE)
+                        ++after_indent;
+                    auto st2 = _peek_type_at(after_indent);
+                    if (st2 == TokenType::KEY || st2 == TokenType::BARE_KEY)
+                        return true; // sub-block with keys → complex
+                    // DASH or value after INDENT → nested list / simple sub-block
+                }
                 break;
             }
             pos = scan; // advance past this entry

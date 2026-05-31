@@ -9,8 +9,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(stml
     lexer/lexer.cpp
     parser/parser.cpp
-    parser/line_tree_builder.cpp
-    parser/ast_builder.cpp
     ast/ast.cpp
     serializer/to_stml.cpp
     serializer/to_json.cpp

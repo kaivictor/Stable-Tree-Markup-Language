@@ -2,56 +2,50 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 #include "diagnostics/error.h"
 #include "ast/ast.h"
-
-// Include for LoadResult (circular but guarded by #pragma once)
 #include "stml.h"
 
 namespace stml {
 
-// Forward declarations
-class StreamingLexer;
-class StreamingParser;
-
 // =========================================================================
 // STMLStreamer — streaming STML parser for incremental input.
-//
-// Usage:
-//   STMLStreamer streamer;
-//   for (chunk : llm_output_chunks) {
-//       streamer.feed(chunk);
-//   }
-//   LoadResult result = streamer.finalize();
-//   // result.ast → {"docs": [{...}, ...]}
-//   // result.warnings → all accumulated warnings
-//
-// Tokens are piped internally: StreamingLexer → StreamingParser.
-// AST is only available after finalize().
 // =========================================================================
 class STMLStreamer {
 public:
-    STMLStreamer();
-    ~STMLStreamer();
+    STMLStreamer() = default;
 
-    /// Feed a text chunk. May emit warnings internally (retrievable via warnings()).
+    /// Callback type: invoked for each complete document parsed.
+    using DocumentCallback = std::function<void(const AstNode&)>;
+
+    /// Set a callback to receive each document as it's parsed.
+    void on_document(DocumentCallback cb);
+
+    /// Feed a text chunk.
     void feed(const std::string& chunk);
 
-    /// Signal end of input. Returns the complete AST + all warnings.
+    /// Signal end of input. Parses any remaining text.
+    void finish();
+
+    /// Convenience: signal end of input and return the complete result.
+    /// This is a non-streaming convenience; the callback-based finish() is preferred.
     LoadResult finalize();
 
-    /// Accumulated warnings so far (useful for progress reporting).
-    const std::vector<Warning>& warnings() const;
+    /// Accumulated warnings.
+    const std::vector<Warning>& warnings() const { return warnings_; }
 
 private:
-    // Using PIMPL to avoid exposing internal headers
-    class Impl;
-    Impl* m_impl;
+    void process_complete_documents();
+
+    std::string buffer_;
+    bool finished_ = false;
+    std::vector<Warning> warnings_;
+    DocumentCallback doc_callback_;
 };
 
 /// Convenience: stream-parse complete text in one call.
-/// Equivalent to constructing STMLStreamer, feed(text), finalize().
 LoadResult stream_parse(const std::string& text);
 
 } // namespace stml

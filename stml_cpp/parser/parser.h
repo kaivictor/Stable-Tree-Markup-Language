@@ -52,7 +52,10 @@ private:
 
     // ---- sequence ----
     std::pair<AstList, int> _parse_sequence(int pos);
-    std::pair<AstNode, int> _parse_sequence_item(int pos, bool complex_mode);
+    /// Returns (list of AST nodes for this entry, new position).
+    /// For DASH_EMPTY with sub-block children, the list has multiple items
+    /// (null for the empty entry + promoted children).
+    std::pair<std::vector<AstNode>, int> _parse_sequence_item(int pos, bool complex_mode);
     bool _is_complex_sequence(int start_pos) const;
     /// Parse sibling keys in a multi-key sequence entry map.
     /// Reads INDENT(diff=2)+KEY/BARE_KEY patterns at content-indent level
