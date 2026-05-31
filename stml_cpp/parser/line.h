@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ast/ast.h"
+#include <cstdint>
 #include <string>
 #include <vector>
 

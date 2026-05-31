@@ -1,93 +1,67 @@
-#ifndef STML_PARSER_PARSER_H
-#define STML_PARSER_PARSER_H
+#pragma once
 
-<<<<<<< Updated upstream
-#include "ast/ast.h"
-#include "lexer/token.h"
-#include "diagnostics/error.h"
-=======
-<<<<<<< Updated upstream
-#include "ast/ast.h"
-#include "lexer/token.h"
-#include "diagnostics/error.h"
-=======
-#include "line_tree_builder.h"
-#include "ast_builder.h"
-#include "../ast/ast.h"
-#include "../diagnostics/error.h"
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+#include <string>
 #include <vector>
+#include <optional>
+
+#include "lexer/token.h"
+#include "ast/ast.h"
+#include "diagnostics/error.h"
 
 namespace stml {
 
-<<<<<<< Updated upstream
 // =========================================================================
-// Parser — converts a token stream into an AST.
+// STMLParser — recursive-descent parser operating on a flat token list.
 //
-// Internally delegates to LineTreeBuilder (tokens → line tree) and
-// AstBuilder (line tree → AST).
+// INDENT / DEDENT tokens drive block nesting.  The parser never computes
+// indentation values — it trusts the lexer's INDENT/DEDENT pairing.
 // =========================================================================
-class Parser {
+class STMLParser {
 public:
-    Parser() = default;
+    explicit STMLParser(std::vector<Token> tokens);
 
-    /// Parse a complete token stream into an AST node.
-    /// The result is an AstMap {"docs": [doc1, doc2, ...]}.
-    AstNode parse(const std::vector<Token>& tokens);
-
-    /// Get warnings accumulated during parsing.
-    const std::vector<Warning>& warnings() const { return warnings_; }
+    /// Parse the full token stream.
+    /// Returns (list of document AST nodes, warnings).
+    /// Caller wraps in {"docs": [...]} for the public API shape.
+    std::pair<AstList, std::vector<Warning>> parse();
 
 private:
-    std::vector<Warning> warnings_;
-<<<<<<< Updated upstream
-=======
-=======
-// ============================================================
-// Parser — 统一批量+流式解析器
-//
-// 批量用法:
-//   Lexer lexer;
-//   auto tokens = lexer.tokenize(input);
-//   Parser parser;
-//   AstList docs = parser.parse(tokens);
-//
-// 流式用法:
-//   Parser parser;
-//   parser.feed_token(token1);
-//   parser.feed_token(token2);
-//   ...
-//   AstList docs = parser.finish();
-//
-// 批量使用同一套逻辑，O(n)
-// ============================================================
-class Parser {
-public:
-    Parser() { reset(); }
+    std::vector<Token> m_tokens;
+    int m_n;
+    int m_pos;
+    std::vector<Warning> m_warnings;
 
-    // ── 批量接口 ──
-    AstList parse(const std::vector<Token>& tokens);
+    // ---- token stream helpers ----
+    std::optional<TokenType> _peek_type() const;
+    std::optional<TokenType> _peek_type_at(int pos) const;
+    void _skip_newlines();
+    int  _skip_newlines_from(int pos) const;
+    int  _consume_newline(int pos) const;
 
-    // ── 流式接口（同一套逻辑） ──
-    void feed_token(const Token& token);
-    AstList finish();
+    // ---- value consumption ----
+    std::pair<AstNode, int> _consume_value(int pos);
 
-    // ── 警告 ──
-    const std::vector<Warning>& warnings() const { return warnings_; }
+    // ---- document level ----
+    std::pair<AstNode, int> _parse_document(int pos);
 
-    // ── 重置 ──
-    void reset();
+    // ---- node dispatch ----
+    std::pair<AstNode, int> _parse_node(int pos);
 
-private:
-    LineTreeBuilder line_tree_;
-    std::vector<Warning> warnings_;
-    bool finished_ = false;
-    bool end_seen_ = false;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+    // ---- mapping ----
+    std::pair<AstMap, int> _parse_mapping(int pos);
+
+    // ---- sequence ----
+    std::pair<AstList, int> _parse_sequence(int pos);
+    std::pair<AstNode, int> _parse_sequence_item(int pos, bool complex_mode);
+    bool _is_complex_sequence(int start_pos) const;
+    /// Parse sibling keys in a multi-key sequence entry map.
+    /// Reads INDENT(diff=2)+KEY/BARE_KEY patterns at content-indent level
+    /// and appends to `map`. Returns updated position.
+    int _parse_sibling_map_entries(AstMap& map, int pos);
+
+    // ---- diagnostics ----
+    void _add_warning_at(int pos, const std::string& message);
+    [[noreturn]] void _add_error_at(int pos, const std::string& message);
 };
 
 } // namespace stml
-
-#endif // STML_PARSER_PARSER_H

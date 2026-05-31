@@ -1,41 +1,18 @@
-#ifndef STML_TESTS_TEST_JSON_H
-#define STML_TESTS_TEST_JSON_H
+#pragma once
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-/// Minimal JSON parser used for testing comparisons only.
-/// Not a general-purpose JSON library.
+/// Minimal JSON parser for test verification only.
+/// Parses a JSON string into AstNode for comparison with parser output.
 
 #include "ast/ast.h"
-<<<<<<< Updated upstream
-=======
-=======
-#include "../ast/ast.h"
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+#include <fstream>
 #include <string>
 
-namespace stml {
 namespace test_json {
 
-<<<<<<< Updated upstream
 /// Parse a JSON string into an AstNode.
-/// Supports: objects, arrays, strings, numbers (as strings), null, true, false, boolean.
-/// Throws ParseError on malformed input.
-AstNode parse(const std::string& json);
+stml::AstNode parse(const std::string& json_text);
+
+/// Load and parse a JSON file.
+stml::AstNode load(const std::string& filepath);
 
 } // namespace test_json
-} // namespace stml
-<<<<<<< Updated upstream
-=======
-=======
-// Parse JSON string → AstNode (for test comparison)
-stml::AstNode parse(const std::string& json);
-
-} // namespace test_json
-
-#endif
->>>>>>> Stashed changes
->>>>>>> Stashed changes

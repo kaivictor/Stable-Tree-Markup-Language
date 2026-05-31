@@ -1,14 +1,18 @@
 #!/bin/bash
 # Build script for STML C++ library (MinGW / MSYS2)
 # Usage: ./build.sh [release|debug]
+# The library has ZERO external dependencies.
 
 set -e
 
 BUILD_MODE="${1:-release}"
+
+# Paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$SCRIPT_DIR/build"
 OBJ_DIR="$BUILD_DIR/obj"
 
+# Compiler flags
 CXX="${CXX:-g++}"
 CXX_STD="-std=c++17"
 if [ "$BUILD_MODE" = "debug" ]; then
@@ -18,23 +22,12 @@ else
 fi
 INCLUDES="-I$SCRIPT_DIR"
 
+# Source files for the library (relative to SCRIPT_DIR)
 LIB_SOURCES=(
     lexer/lexer.cpp
-<<<<<<< Updated upstream
     parser/parser.cpp
     parser/line_tree_builder.cpp
     parser/ast_builder.cpp
-=======
-<<<<<<< Updated upstream
-    parser/parser.cpp
-    parser/line_tree_builder.cpp
-    parser/ast_builder.cpp
-=======
-    parser/line_tree_builder.cpp
-    parser/ast_builder.cpp
-    parser/parser.cpp
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     ast/ast.cpp
     serializer/to_stml.cpp
     serializer/to_json.cpp
@@ -42,6 +35,7 @@ LIB_SOURCES=(
     stml_stream.cpp
 )
 
+# Test source files
 TEST_SOURCES=(
     tests/test_lexer.cpp
     tests/test_parser.cpp
@@ -51,15 +45,9 @@ TEST_SOURCES=(
     tests/test_full_roundtrip.cpp
 )
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-# Tests that need test_json.cpp linked
+# Supported tests that need test_json.cpp
 NEED_JSON="test_regression test_streaming test_full_roundtrip"
 
-=======
->>>>>>> Stashed changes
 echo "======================================"
 echo "  STML C++ Library Build"
 echo "  Mode: $BUILD_MODE"
@@ -67,6 +55,7 @@ echo "======================================"
 
 mkdir -p "$OBJ_DIR"
 
+# --- Build library objects ---
 echo ""
 echo "Building library objects..."
 OBJECTS=()
@@ -78,45 +67,25 @@ for src in "${LIB_SOURCES[@]}"; do
     OBJECTS+=("$obj_path")
 done
 
+# Generate a static library (optional)
+echo ""
+echo "Creating static library..."
 ar rcs "$BUILD_DIR/libstml.a" "${OBJECTS[@]}"
 echo "  -> $BUILD_DIR/libstml.a"
 
-<<<<<<< Updated upstream
 # --- Build tests ---
 echo ""
 echo "Building tests..."
 
-# Compile test_json helper first (if it exists)
-<<<<<<< Updated upstream
-=======
-=======
-# ---- Build test_json helper ----
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+# Compile test_json helper first
 JSON_OBJ="$OBJ_DIR/test_json.o"
-if [ -f "$SCRIPT_DIR/tests/test_json.cpp" ]; then
-    $CXX $CXX_STD $CXX_FLAGS $INCLUDES -c "$SCRIPT_DIR/tests/test_json.cpp" -o "$JSON_OBJ"
-    echo "  Compiled test_json.cpp"
-else
-    # Create an empty object for linking
-    echo "  test_json.cpp not found, creating stub"
-    echo "namespace stml { namespace test_json { } }" > "$OBJ_DIR/stub_test_json.cpp"
-    $CXX $CXX_STD $CXX_FLAGS $INCLUDES -c "$OBJ_DIR/stub_test_json.cpp" -o "$JSON_OBJ"
-fi
+$CXX $CXX_STD $CXX_FLAGS $INCLUDES -c "$SCRIPT_DIR/tests/test_json.cpp" -o "$JSON_OBJ"
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
+ALL_TESTS_PASSED=0
+TOTAL_TESTS=0
 for test_src in "${TEST_SOURCES[@]}"; do
     test_name="$(basename "$test_src" .cpp)"
     test_exe="$BUILD_DIR/$test_name.exe"
-
-    if [ ! -f "$SCRIPT_DIR/$test_src" ]; then
-        echo "  Skipping $test_name (source not found)"
-        continue
-<<<<<<< Updated upstream
-    fi
 
     echo "  Building $test_name"
 
@@ -128,21 +97,7 @@ for test_src in "${TEST_SOURCES[@]}"; do
         $CXX $CXX_STD $CXX_FLAGS $INCLUDES \
             "${OBJECTS[@]}" \
             "$SCRIPT_DIR/$test_src" -o "$test_exe"
-=======
->>>>>>> Stashed changes
     fi
-
-=======
-echo ""
-echo "Building tests..."
-for test_src in "${TEST_SOURCES[@]}"; do
-    test_name="$(basename "$test_src" .cpp)"
-    test_exe="$BUILD_DIR/$test_name.exe"
->>>>>>> Stashed changes
-    echo "  Building $test_name"
-    $CXX $CXX_STD $CXX_FLAGS $INCLUDES \
-        "${OBJECTS[@]}" "$JSON_OBJ" \
-        "$SCRIPT_DIR/$test_src" -o "$test_exe"
 done
 
 echo ""
@@ -156,3 +111,7 @@ for test_src in "${TEST_SOURCES[@]}"; do
     test_name="$(basename "$test_src" .cpp)"
     echo "  - $test_name.exe"
 done
+
+echo ""
+echo "Run tests with: cd $BUILD_DIR && ./test_lexer.exe && ./test_parser.exe && ./test_serializer.exe"
+echo "Regression tests need TestData path: ./test_regression.exe /path/to/TestData"

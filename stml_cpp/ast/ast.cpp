@@ -1,137 +1,147 @@
-<<<<<<< Updated upstream
 #include "ast/ast.h"
+
+#include <functional> // for std::function in walk
 
 namespace stml {
 
-// =========================================================================
-// Deep equality comparison of AstNodes.
-// =========================================================================
-bool operator==(const AstNode& a, const AstNode& b) {
-    // Different variant indices → not equal
-    if (a.value.index() != b.value.index()) return false;
+// -----------------------------------------------------------------------
+// AstNode accessors
+// -----------------------------------------------------------------------
 
-    if (a.is_null()) return true; // both null
-
-    if (a.is_scalar()) {
-        return a.as_scalar()->value == b.as_scalar()->value;
-    }
-
-    if (a.is_list()) {
-        const auto& la = *a.as_list();
-        const auto& lb = *b.as_list();
-        if (la.size() != lb.size()) return false;
-        for (size_t i = 0; i < la.size(); ++i) {
-            if (la[i] != lb[i]) return false;
-        }
-        return true;
-    }
-
-    if (a.is_map()) {
-        const auto& ma = *a.as_map();
-        const auto& mb = *b.as_map();
-        if (ma.size() != mb.size()) return false;
-        for (size_t i = 0; i < ma.size(); ++i) {
-            if (ma[i].first != mb[i].first) return false;
-            if (ma[i].second != mb[i].second) return false;
-        }
-        return true;
-    }
-
-    return false;
+const std::string* AstNode::as_string() const {
+    if (auto* p = std::get_if<std::string>(&value)) return p;
+    return nullptr;
 }
 
-// =========================================================================
-// Deep clone of an AstNode.
-// =========================================================================
-AstNode clone_ast(const AstNode& node) {
+const AstList* AstNode::as_list() const {
+    if (auto* p = std::get_if<AstList>(&value)) return p;
+    return nullptr;
+}
+
+const AstMap* AstNode::as_map() const {
+    if (auto* p = std::get_if<AstMap>(&value)) return p;
+    return nullptr;
+}
+
+std::string* AstNode::as_string_mut() {
+    if (auto* p = std::get_if<std::string>(&value)) return p;
+    return nullptr;
+}
+
+AstList* AstNode::as_list_mut() {
+    if (auto* p = std::get_if<AstList>(&value)) return p;
+    return nullptr;
+}
+
+AstMap* AstNode::as_map_mut() {
+    if (auto* p = std::get_if<AstMap>(&value)) return p;
+    return nullptr;
+}
+
+// -----------------------------------------------------------------------
+// Comparison
+// -----------------------------------------------------------------------
+
+bool operator==(const AstNode& a, const AstNode& b) {
+    return a.value == b.value;
+}
+
+bool operator!=(const AstNode& a, const AstNode& b) {
+    return !(a == b);
+}
+
+bool operator==(const AstList& a, const AstList& b) {
+    if (a.size() != b.size()) return false;
+    for (size_t i = 0; i < a.size(); ++i) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+bool operator!=(const AstList& a, const AstList& b) {
+    return !(a == b);
+}
+
+bool operator==(const AstMap& a, const AstMap& b) {
+    if (a.size() != b.size()) return false;
+    auto ai = a.begin();
+    auto bi = b.begin();
+    while (ai != a.end()) {
+        if (ai->first != bi->first) return false;
+        if (ai->second != bi->second) return false;
+        ++ai; ++bi;
+    }
+    return true;
+}
+
+bool operator!=(const AstMap& a, const AstMap& b) {
+    return !(a == b);
+}
+
+// -----------------------------------------------------------------------
+// clone — deep copy
+// -----------------------------------------------------------------------
+
+AstNode clone(const AstNode& node) {
     if (node.is_null()) {
         return AstNode();
     }
-    if (node.is_scalar()) {
-        return AstNode(AstScalar(node.as_scalar()->value));
+    if (node.is_string()) {
+        return AstNode(*node.as_string());
     }
     if (node.is_list()) {
         AstList list;
-        for (const auto& child : *node.as_list()) {
-            list.push_back(clone_ast(child));
+        for (const auto& item : *node.as_list()) {
+            list.push_back(clone(item));
         }
         return AstNode(std::move(list));
     }
     if (node.is_map()) {
         AstMap map;
         for (const auto& [k, v] : *node.as_map()) {
-            map.emplace_back(k, clone_ast(v));
+            map.emplace_back(k, clone(v));
         }
         return AstNode(std::move(map));
     }
     return AstNode();
-=======
-#include "ast.h"
-
-<<<<<<< Updated upstream
-=======
-namespace stml {
-
-// ============================================================
-// AstNode 深拷贝
-// ============================================================
-AstNode clone_ast(const AstNode& node) {
-    switch (node.kind) {
-        case AstNode::Kind::Null:
-            return AstNode(NullNode{});
-        case AstNode::Kind::Scalar:
-            return AstNode(AstScalar{node.as_scalar()->value});
-        case AstNode::Kind::List: {
-            AstList new_list;
-            for (const auto& item : node.as_list()->items) {
-                new_list.items.push_back(clone_ast(item));
-            }
-            return AstNode(std::move(new_list));
-        }
-        case AstNode::Kind::Map: {
-            AstMap new_map;
-            for (const auto& [k, v] : *node.as_map()) {
-                new_map.emplace_back(k, clone_ast(v));
-            }
-            return AstNode(std::move(new_map));
-        }
-    }
-    return AstNode(NullNode{});
 }
 
-// ============================================================
-// AstNode 比较
-// ============================================================
-bool operator==(const AstNode& a, const AstNode& b) {
-    if (a.kind != b.kind) return false;
-    switch (a.kind) {
-        case AstNode::Kind::Null:
-            return true;
-        case AstNode::Kind::Scalar:
-            return a.as_scalar()->value == b.as_scalar()->value;
-        case AstNode::Kind::List: {
-            const auto& la = a.as_list()->items;
-            const auto& lb = b.as_list()->items;
-            if (la.size() != lb.size()) return false;
-            for (size_t i = 0; i < la.size(); ++i) {
-                if (la[i] != lb[i]) return false;
-            }
-            return true;
+// -----------------------------------------------------------------------
+// walk — depth-first traversal of leaf values
+// An internal helper uses std::function for recursion.
+// -----------------------------------------------------------------------
+
+namespace {
+
+void walk_impl(const AstNode& node, std::vector<std::string>& path,
+               const std::function<void(const std::vector<std::string>&, const AstNode&)>& visitor) {
+    if (node.is_null() || node.is_string()) {
+        visitor(path, node);
+    } else if (node.is_list()) {
+        const auto& list = *node.as_list();
+        for (size_t i = 0; i < list.size(); ++i) {
+            path.push_back(std::to_string(i));
+            walk_impl(list[i], path, visitor);
+            path.pop_back();
         }
-        case AstNode::Kind::Map: {
-            const auto& ma = *a.as_map();
-            const auto& mb = *b.as_map();
-            if (ma.size() != mb.size()) return false;
-            for (size_t i = 0; i < ma.size(); ++i) {
-                if (ma[i].first != mb[i].first) return false;
-                if (ma[i].second != mb[i].second) return false;
-            }
-            return true;
+    } else if (node.is_map()) {
+        for (const auto& [k, v] : *node.as_map()) {
+            path.push_back(k);
+            walk_impl(v, path, visitor);
+            path.pop_back();
         }
     }
-    return false;
->>>>>>> Stashed changes
 }
 
->>>>>>> Stashed changes
+} // anonymous namespace
+
+void walk(const AstNode& node, AstVisitor visitor) {
+    std::vector<std::string> path;
+    // Wrap the raw function pointer in a lambda that calls it
+    auto wrapped = [visitor](const std::vector<std::string>& p, const AstNode& n) {
+        visitor(p, n);
+    };
+    walk_impl(node, path, std::function<void(const std::vector<std::string>&, const AstNode&)>(wrapped));
+}
+
 } // namespace stml
