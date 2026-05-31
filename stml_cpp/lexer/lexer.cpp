@@ -690,9 +690,10 @@ std::tuple<std::string, int, int> STMLLexer::_read_multiline(int key_indent)
         while (ce > cp && *(ce - 1) == ' ') --ce;
         std::string stripped(cp, ce - cp);
 
-        // Standalone '}' at correct indentation → close
+        // Standalone '}' at any indentation → close
+        // The closing brace is syntax, not content — indent after
+        // multiline always restores to the key's indent level.
         if (stripped == "}" && line_indent <= key_indent) {
-            close_indent = line_indent;
             ++i; // consume closing '}'
             break;
         }

@@ -88,26 +88,7 @@ static void test_regression_2() { run_regression(2); }
 static void test_regression_3() { run_regression(3); }
 static void test_regression_4() { run_regression(4); }
 static void test_regression_5() { run_regression(5); }
-static void test_regression_6() {
-    std::string stml_file = g_testdata_path + "/test6.stml";
-
-    // Check file exists
-    std::ifstream stml_check(stml_file);
-    if (!stml_check.is_open()) {
-        std::cout << "  SKIP test6: file not found: " << stml_file << "\n";
-        ++tests_passed;
-        return;
-    }
-    stml_check.close();
-
-    // test6.stml contains unsupported structural conflicts → ParseError
-    try {
-        load(stml_file);
-        throw std::runtime_error("Expected ParseError for test6 but none was thrown");
-    } catch (const ParseError& e) {
-        // Expected
-    }
-}
+static void test_regression_6() { run_regression(6); }
 static void test_regression_7() { run_regression(7); }
 static void test_regression_8() { run_regression(8); }
 static void test_regression_9() { run_regression(9); }

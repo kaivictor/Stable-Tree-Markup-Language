@@ -9,8 +9,7 @@ void LineTreeBuilder::reset() {
     docs_.clear();
     blocks_.clear();
     blocks_.push_back({});
-    current_indent_ = 0;
-    indent_deltas_.clear();
+    indent_stack_ = {0};
     pending_ = Line{};
     has_pending_ = false;
     pending_has_dash_ = false;
@@ -39,17 +38,16 @@ void LineTreeBuilder::process_token(const Token& token) {
     case TokenType::INDENT: {
         finalize_line();
         int delta = std::stoi(std::get<std::string>(token.value));
-        current_indent_ += delta;
-        indent_deltas_.push_back(delta);
+        int absolute_indent = indent_stack_.back() + delta;
+        indent_stack_.push_back(absolute_indent);
         blocks_.push_back({});
         break;
     }
     case TokenType::DEDENT:
         finalize_line();
         close_indent_level();
-        if (!indent_deltas_.empty()) {
-            current_indent_ -= indent_deltas_.back();
-            indent_deltas_.pop_back();
+        if (indent_stack_.size() > 1) {
+            indent_stack_.pop_back();
         }
         break;
 
@@ -59,7 +57,7 @@ void LineTreeBuilder::process_token(const Token& token) {
         pending_has_dash_ = true;
         pending_has_colon_ = false;
         pending_has_key_ = false;
-        pending_.indent = current_indent_;
+        pending_.indent = indent_stack_.back();
         pending_.line_no = token.line;
         break;
 
@@ -76,7 +74,7 @@ void LineTreeBuilder::process_token(const Token& token) {
             pending_has_key_ = true;
             pending_has_colon_ = false;
             pending_has_dash_ = false;
-            pending_.indent = current_indent_;
+            pending_.indent = indent_stack_.back();
             pending_.line_no = token.line;
         }
         break;
@@ -109,7 +107,7 @@ void LineTreeBuilder::process_token(const Token& token) {
             pending_has_key_ = true;
             pending_has_dash_ = false;
             pending_has_colon_ = false;
-            pending_.indent = current_indent_;
+            pending_.indent = indent_stack_.back();
             pending_.line_no = token.line;
         }
         break;
@@ -124,14 +122,12 @@ void LineTreeBuilder::process_token(const Token& token) {
             close_indent_level();
         }
         if (!blocks_.empty()) {
-            if (has_content_ || has_pushed_doc_) {
-                docs_.push_back(std::move(blocks_[0]));
-                has_pushed_doc_ = true;
-            }
+            // 总是推入当前文档（可能是空文档 → null）
+            docs_.push_back(std::move(blocks_[0]));
+            has_pushed_doc_ = true;
             blocks_[0].clear();
             has_content_ = false;
-            current_indent_ = 0;
-            indent_deltas_.clear();
+            indent_stack_ = {0};
         }
         break;
 
@@ -159,7 +155,7 @@ void LineTreeBuilder::finalize_line() {
     if (!has_pending_) return;
 
     if (pending_.indent == 0 && blocks_.size() > 1) {
-        pending_.indent = current_indent_;
+        pending_.indent = indent_stack_.back();
     }
 
     blocks_.back().push_back(std::move(pending_));
@@ -221,19 +217,41 @@ void LineTreeBuilder::close_indent_level() {
             child_has_key = true;
     }
 
-    // 判断父块最后一行是否为"开放键"
+    // 判断父块最后一行是否为"开放键"（可吸收更多同类子行）
+    // 开放键 = 无行内值 + children 不混合 dash 和 key
     auto is_open = [](const Line& l) -> bool {
-        return (l.kind == Line::Kind::KEY_VAL
-                || l.kind == Line::Kind::DASH_KEY_VAL
-                || l.kind == Line::Kind::BARE_KEY)
-            && !l.has_inline_value()
-            && l.children.empty();
+        if (l.kind != Line::Kind::KEY_VAL
+            && l.kind != Line::Kind::DASH_KEY_VAL
+            && l.kind != Line::Kind::BARE_KEY)
+            return false;
+        if (l.has_inline_value()) return false;
+        bool has_key = false, has_dash = false;
+        for (const auto& c : l.children) {
+            if (c.is_dash()) has_dash = true;
+            else has_key = true;
+        }
+        return !(has_key && has_dash);  // 不能同时有 key 和 dash
     };
 
-    // 规则 1：父块最后行为开放键且父块非 dash 上下文 → child 是该键的值块
-    if (is_open(parent_last) && !parent_has_dash) {
-        parent_last.children = std::move(child);
-        return;
+    // 规则 1：父块最后行为开放键，且子块类型兼容 → 合并到该键的值块
+    //         类型兼容：已有 children 全 dash → 只吸收全 dash 子块
+    //                   已有 children 全 key  → 只吸收含 key 子块
+    //                   无 children          → 吸收任意类型
+    if (is_open(parent_last)) {
+        bool parent_children_all_dash = true;
+        for (const auto& c : parent_last.children) {
+            if (!c.is_dash()) { parent_children_all_dash = false; break; }
+        }
+        bool compatible = parent_last.children.empty()
+            || (parent_children_all_dash && child_all_dash)
+            || (!parent_children_all_dash && child_has_key);
+        if (compatible) {
+            for (auto& line : child) {
+                parent_last.children.push_back(std::move(line));
+            }
+            return;
+        }
+        // 类型不兼容 → 继续检查后续规则
     }
 
     // 规则 2：父块为 dash 上下文，child 包含 key →
