@@ -102,7 +102,10 @@ std::string serialize_node(const AstNode& node, int indent_level)
 
         std::vector<std::string> lines;
         for (const auto& item : lst) {
-            if (item.is_null() || item.is_string()) {
+            if (item.is_null()) {
+                // Null entry: just "-" (avoids "- null" re-parsing as {"": null})
+                lines.push_back(indent + "-");
+            } else if (item.is_string()) {
                 // Scalar entry: - value
                 lines.push_back(indent + "- " + format_scalar(item));
             } else if (item.is_list()) {
@@ -134,6 +137,11 @@ std::string serialize_node(const AstNode& node, int indent_level)
                         // Compound value
                         lines.push_back(entry_indent + prefix + quote_key(key) + ":");
                         lines.push_back(serialize_node(val, entry_level + 1));
+                    } else if (val.is_null()) {
+                        // Null value: omit ": null" to avoid ambiguity
+                        // (": null" makes has_inline_value()=false, causing
+                        //  children to be treated as the key's value)
+                        lines.push_back(entry_indent + prefix + quote_key(key));
                     } else {
                         // Scalar value
                         lines.push_back(entry_indent + prefix + quote_key(key) + ": " + format_scalar(val));

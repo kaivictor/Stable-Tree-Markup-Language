@@ -158,12 +158,32 @@ void LineTreeBuilder::finalize_line() {
         pending_.indent = indent_stack_.back();
     }
 
+    // ── 同级吸收：不规则缩进中，非 dash 的 BARE_KEY 应吸收到末尾 dash 条目 ──
+    if (!pending_.is_dash() && pending_.kind == Line::Kind::BARE_KEY
+        && !blocks_.back().empty()) {
+        bool block_has_dash = false;
+        for (const auto& l : blocks_.back()) {
+            if (l.is_dash()) { block_has_dash = true; break; }
+        }
+        if (block_has_dash) {
+            Line* last_dash = nullptr;
+            for (auto it = blocks_.back().rbegin(); it != blocks_.back().rend(); ++it) {
+                if (it->is_dash()) { last_dash = &(*it); break; }
+            }
+            if (last_dash) {
+                last_dash->children.push_back(std::move(pending_));
+                goto reset_pending;
+            }
+        }
+    }
+
     blocks_.back().push_back(std::move(pending_));
 
     if (blocks_.size() <= 1) {
         has_content_ = true;
     }
 
+reset_pending:
     pending_ = Line{};
     has_pending_ = false;
     pending_has_dash_ = false;
@@ -218,7 +238,8 @@ void LineTreeBuilder::close_indent_level() {
     }
 
     // 判断父块最后一行是否为"开放键"（可吸收更多同类子行）
-    // 开放键 = 无行内值 + children 不混合 dash 和 key
+    // 开放键 = KEY_VAL/DASH_KEY_VAL（有冒号），无行内值，children 不混合
+    // 注意：BARE_KEY 无冒号，不能吸收子项
     auto is_open = [](const Line& l) -> bool {
         if (l.kind != Line::Kind::KEY_VAL
             && l.kind != Line::Kind::DASH_KEY_VAL
@@ -257,7 +278,15 @@ void LineTreeBuilder::close_indent_level() {
     // 规则 2：父块为 dash 上下文，child 包含 key →
     //         child 吸收为父块最后 dash 条目的兄弟键
     if (parent_has_dash && child_has_key) {
-        parent_last.children = std::move(child);
+        Line* last_dash = nullptr;
+        for (auto it = parent.rbegin(); it != parent.rend(); ++it) {
+            if (it->is_dash()) { last_dash = &(*it); break; }
+        }
+        if (last_dash) {
+            for (auto& line : child) {
+                last_dash->children.push_back(std::move(line));
+            }
+        }
         return;
     }
 

@@ -125,29 +125,14 @@ static void test_chain_ab_2() { run_full_roundtrip(2); }
 static void test_chain_ab_3() { run_full_roundtrip(3); }
 static void test_chain_ab_4() { run_full_roundtrip(4); }
 static void test_chain_ab_5() { run_full_roundtrip(5); }
-static void test_chain_ab_6() {
-    std::string stml_path = g_testdata_path + "/test6.stml";
-
-    // Check file exists
-    std::ifstream chk(stml_path);
-    if (!chk.is_open()) { std::cout << "  SKIP: " << stml_path << " not found\n"; return; }
-    chk.close();
-
-    // test6.stml contains unsupported structural conflicts → ParseError
-    std::string stml_text = read_file(stml_path);
-    try {
-        loads(stml_text);
-        throw std::runtime_error("Expected ParseError for test6 but none was thrown");
-    } catch (const ParseError&) {
-        // Expected
-    }
-}
+static void test_chain_ab_6() { run_full_roundtrip(6); }
 static void test_chain_ab_7() { run_full_roundtrip(7); }
 static void test_chain_ab_8() { run_full_roundtrip(8); }
 static void test_chain_ab_9() { run_full_roundtrip(9); }
 static void test_chain_ab_10() { run_full_roundtrip(10); }
 static void test_chain_ab_11() { run_full_roundtrip(11); }
 static void test_chain_ab_12() { run_full_roundtrip(12); }
+static void test_chain_ab_13() { run_full_roundtrip(13); }
 
 // =========================================================================
 // Main
@@ -183,6 +168,7 @@ int main(int argc, char* argv[]) {
     TEST(test_chain_ab_10);
     TEST(test_chain_ab_11);
     TEST(test_chain_ab_12);
+    TEST(test_chain_ab_13);
 
     std::cout << "\n" << tests_passed << "/" << tests_run << " passed\n";
     return tests_passed == tests_run ? 0 : 1;

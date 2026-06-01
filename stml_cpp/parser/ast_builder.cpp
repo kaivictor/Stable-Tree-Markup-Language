@@ -30,9 +30,16 @@ AstNode AstBuilder::build(const std::vector<Line>& lines) {
 
     if (all_dash) {
         return build_sequence(lines);
-    } else {
-        return AstNode(build_mapping(lines));
     }
+
+    // 混合块：如果首行是 dash → 路由到 complex sequence builder
+    // （不规则缩进下，非 dash 行可能混在 dash 行之间，应被吸收为兄弟键）
+    bool first_is_dash = !lines.empty() && lines[0].is_dash();
+    if (first_is_dash) {
+        return build_sequence(lines);
+    }
+
+    return AstNode(build_mapping(lines));
 }
 
 // ============================================================
@@ -115,16 +122,20 @@ AstMap AstBuilder::build_mapping(const std::vector<Line>& lines) {
 // build_sequence — 先预扫描再分发
 // ============================================================
 AstNode AstBuilder::build_sequence(const std::vector<Line>& lines) {
-    // 预扫描：是否有 DASH_KEY_VAL？
+    // 预扫描：是否有 DASH_KEY_VAL 或非 dash 行（混合块）？
     bool is_complex = false;
+    bool has_non_dash = false;
     for (const auto& line : lines) {
         if (line.kind == Line::Kind::DASH_KEY_VAL) {
             is_complex = true;
-            break;
+        }
+        if (!line.is_dash()) {
+            has_non_dash = true;
         }
     }
 
-    if (is_complex) {
+    // 混合块（dash + 非 dash）必须走 complex 路径
+    if (is_complex || has_non_dash) {
         return AstNode(build_complex_sequence(lines));
     } else {
         return AstNode(build_simple_sequence(lines));
@@ -200,6 +211,12 @@ AstList AstBuilder::build_complex_sequence(const std::vector<Line>& lines) {
 
     while (i < lines.size()) {
         if (!lines[i].is_dash()) {
+            // 检查是否还有后续 dash 行来收集这些非 dash 行作为兄弟键
+            bool any_dash_left = false;
+            for (size_t k = i + 1; k < lines.size(); ++k) {
+                if (lines[k].is_dash()) { any_dash_left = true; break; }
+            }
+            if (!any_dash_left) break; // 尾部非 dash 行，由循环后代码处理
             ++i;
             continue;
         }
@@ -261,10 +278,9 @@ AstList AstBuilder::build_complex_sequence(const std::vector<Line>& lines) {
                 if (!non_dash_kids.empty()) {
                     absorb_children_as_siblings(entry, non_dash_kids);
                 }
-                // 先推入当前条目
-                seq.push_back(AstNode(std::move(entry)));
-                // dash 子行作为附加序列条目
+                // dash 子行 → 推入当前条目及附加序列条目，跳过兄弟键收集
                 if (!dash_kids.empty()) {
+                    seq.push_back(AstNode(std::move(entry)));
                     AstNode extra = build_sequence(dash_kids);
                     if (extra.is_list()) {
                         for (auto& item : *extra.as_list_mut()) {
@@ -273,9 +289,10 @@ AstList AstBuilder::build_complex_sequence(const std::vector<Line>& lines) {
                     } else {
                         seq.push_back(std::move(extra));
                     }
+                    ++i;
+                    continue;
                 }
-                ++i;
-                continue; // 跳过兄弟键收集
+                // 无 dash 子行 → 落入下方兄弟键收集（i 不变，j=i+1 开始收集）
             }
         } else if (dash_line.kind == Line::Kind::DASH_EMPTY) {
             // 复杂模式: "-" 单独
@@ -325,6 +342,19 @@ AstList AstBuilder::build_complex_sequence(const std::vector<Line>& lines) {
 
         seq.push_back(AstNode(std::move(entry)));
         i = j;
+    }
+
+    // ── 处理尾部非 DASH 行（没有后续 dash 来触发兄弟键收集）──
+    if (i < lines.size()) {
+        std::vector<Line> trailing(lines.begin() + i, lines.end());
+        AstNode extra = build(trailing);
+        if (extra.is_map()) {
+            seq.push_back(std::move(extra));
+        } else if (extra.is_list()) {
+            for (auto& item : *extra.as_list_mut()) {
+                seq.push_back(std::move(item));
+            }
+        }
     }
 
     return seq;

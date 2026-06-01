@@ -95,6 +95,7 @@ static void test_regression_9() { run_regression(9); }
 static void test_regression_10() { run_regression(10); }
 static void test_regression_11() { run_regression(11); }
 static void test_regression_12() { run_regression(12); }
+static void test_regression_13() { run_regression(13); }
 
 // =========================================================================
 // Round-trip regression: for each test case, STML→AST→STML→AST must equal
@@ -133,6 +134,7 @@ static void test_roundtrip_9() { test_roundtrip_regression(9); }
 static void test_roundtrip_10() { test_roundtrip_regression(10); }
 static void test_roundtrip_11() { test_roundtrip_regression(11); }
 static void test_roundtrip_12() { test_roundtrip_regression(12); }
+static void test_roundtrip_13() { test_roundtrip_regression(13); }
 
 // =========================================================================
 // Main
@@ -171,6 +173,7 @@ int main(int argc, char* argv[]) {
     TEST(test_regression_10);
     TEST(test_regression_11);
     TEST(test_regression_12);
+    TEST(test_regression_13);
 
     std::cout << "\nRound-trip regression tests:\n";
     TEST(test_roundtrip_1);
@@ -181,6 +184,7 @@ int main(int argc, char* argv[]) {
     TEST(test_roundtrip_10);
     TEST(test_roundtrip_11);
     TEST(test_roundtrip_12);
+    TEST(test_roundtrip_13);
 
     std::cout << "\n" << tests_passed << "/" << tests_run << " passed\n";
     return tests_passed == tests_run ? 0 : 1;

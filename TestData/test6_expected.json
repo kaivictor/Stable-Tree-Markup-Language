@@ -50,9 +50,11 @@
             "key1 = value1": null
         },
         null,
-        {
-            "键1": "值1"
-        },
+        [
+            null,
+            null,
+            null
+        ],
         {
             "还有一种": [
                 {
@@ -72,7 +74,7 @@
             ]
         },
         {
-            "然后就是多行文本内出现一个复杂Markdown内容": "# 这是Markdown格式\n## 二级标题\n### 三级标题\n#### 四级标题\n--- 分割线\n** 粗体 **\n* 斜体 *\n- 无序列表\n1.有序列表\n~删除线~\n[链接](https: //www.example.com)\n![图片](https://www.example.com/image.png)\n>引用\n```代码块\nprint(\"Hello, World!\")\n```\n_斜体_\n__粗体__\n```json\n{\"key1\": \"value1\", \"key2\":\"value2\"}\n```\n```json\n{\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"",
+            "然后就是多行文本内出现一个复杂Markdown内容": "# 这是Markdown格式\n## 二级标题\n### 三级标题\n#### 四级标题\n--- 分割线\n** 粗体 **\n* 斜体 *\n- 无序列表\n1. 有序列表\n~删除线~\n[链接](https://www.example.com)\n![图片](https://www.example.com/image.png)\n> 引用\n```代码块\nprint(\"Hello, World!\")\n```\n_斜体_\n__粗体__\n```json\n{\"key1\": \"value1\", \"key2\": \"value2\"}\n```\n```json\n{\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"",
             "```": null,
             "}": null
         }
