@@ -22,9 +22,8 @@ def load_expected(n):
     return json.loads(content)
 
 
-# Test all 12 regressions.
-# Tests 2-5 involve irregular indentation — known parser issue.
-@pytest.mark.parametrize('n', [i for i in range(1, 13) if i != 6])
+# Regression tests for all test cases.
+@pytest.mark.parametrize('n', list(range(1, 14)))
 def test_regression(n):
     """Parse STML text and compare AST to expected JSON."""
     stml_path = os.path.join(TESTDATA, f'test{n}.stml')
@@ -32,16 +31,6 @@ def test_regression(n):
         pytest.skip(f'{stml_path} not found')
 
     text = read_file(stml_path)
-
-    # test12 has a structural conflict → ParseError expected
-    if n == 12:
-        with pytest.raises(RuntimeError, match='块类型冲突'):
-            stml.loads(text)
-        return
-
-    # test10 has no expected JSON
-    if n == 10:
-        pytest.skip('test10_expected.json is empty')
 
     ast, warnings = stml.loads(text)
 
@@ -54,7 +43,8 @@ def test_regression(n):
 
 
 # Test roundtrip: STML → AST → STML → AST must be idempotent
-@pytest.mark.parametrize('n', [i for i in range(1, 13) if i != 6])
+# Test 2-5 involve irregular indentation, test12 is mixed indent — all handled by new parser.
+@pytest.mark.parametrize('n', list(range(1, 14)))
 def test_roundtrip(n):
     """STML → AST → STML → AST should produce the same AST."""
     stml_path = os.path.join(TESTDATA, f'test{n}.stml')
@@ -62,12 +52,6 @@ def test_roundtrip(n):
         pytest.skip(f'{stml_path} not found')
 
     text = read_file(stml_path)
-
-    # test12 has a structural conflict → ParseError expected
-    if n == 12:
-        with pytest.raises(RuntimeError, match='块类型冲突'):
-            stml.loads(text)
-        return
 
     ast1, _ = stml.loads(text)
     stml_text = stml.dumps(ast1)
