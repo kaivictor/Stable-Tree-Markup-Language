@@ -11,145 +11,11 @@ from datetime import datetime
 BASE_TEST_FOLDER = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2\test_data1"
 # LOG_FILE_PATH = os.path.join(BASE_TEST_FOLDER, "generation_log.csv")
 
+SUB_PROJECT_ROOT = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2"
 # 读取STML规范
-stml_specification = """
-stml是一种类似yaml，但不完全相同的消息格式，同样采用缩进与换行区分内容，支持的类型只有字符串、一维列表、字典、null。
-1. 缩进必须为偶数个；
-2. 键与值全部使用半角双引号包裹，如果键/值内有特殊字符，需要转义，比如：引号和换行；
-3. 键与值之间使用半角冒号;
-4. 多行的值使用 "键": {\n内容\n}\n包裹；
-5. 支持行内列表，使用逗号分隔，值使用 ["内容1", "内容2", ...] 包裹
-6. 支持使用 - 行创建列表；
-7. 使用 `---` 分隔多文档；
-8. 使用 `null` 表示 null 值；
-9. 使用 `#` 开头表示注释，注释必须单独一行；
-10. 支持字典嵌套；
-11. 不支持类型混用
-这是一个标准的STML文档示例:
-```示例stml
-"这是一个标准的": "stml文档"
-"多行文本一定要注意": {
-左花括号跟着换行
-右花括号前面是换行，右边也是换行
-比如这一行的}就不会被识别为多行值的结束
-因为}的前后有其他内容，
-只要被包裹，里面的内容都会是多行文本值
-  }
-但是上一行的}也不会被识别为多行值的结束，因为}前面有2个空格，大于键“多行文本一定要注意”的缩进
-}
-"相当于": "左花括号跟着换行\n右花括号前面是换行，右边也是换行\n..."
-"所以说": "多行值的右花括号要≤键的缩进"
-"这是一个列表": ["这是行内列表", "使用,分割", "成对的引号内可以出现:、,或者是其他的\n都可以"]
-"然后这是一个多行列表":
-  - "如果不是键值对的形式"
-  - "这些都会被当作值"
-"就等于": ["如果不是键值对的形式", "这些都会被当作值"]
-"列表内是可以使用字典的":
-  - "这是一个字典": "字典的值"
-  - "这是一个字典"
-  - "有一个字典没有值": "它的值会被自动设置为null"
-"然后就是可以嵌套字典":
-  "缩进为2":
-    "缩进为3": "可以吗"
-"不支持类型混用":
-  "比如这是一个子字典": "不能出现列表"
-  "刚刚用注释了": "只要是 # 开头的，都会被当作注释"
-  # 不能将键值和列表混用
----
-"这就是第二个文档了": 
-  "再看一下多行文本": {
-文本都是定格开始的
-  如果文本前面有空格也会被保留  
-  这里面不管是什么都会被当作值
-多行值得结束要求右花括号缩进小于等于对应键的缩进
-}
-"等同于": "文本都是定格开始的\n  如果文本前面有空格也会被保留  "
-"理论上支持列表嵌套":
-  - ["像这样", "把列表当成值"]
-  - "这样会被解析"
-  - "但是实际上是不支持的"
-"会被识别为":
-  - "":
-    - "像这样"
-    - "把列表当成值"
-  - "这样会被解析": null
-  - "但是实际上是不支持的": null
-"建议不要使用嵌套列表": ~
-"出现了~": "这是为了兼容yaml"
-"就介绍到这吧": "应该够了?"
-```
-对应的JSON是:
-```对应JSON
-[
-  {
-    "这是一个标准的": "stml文档",
-    "多行文本一定要注意": "左花括号跟着换行\n右花括号前面是换行，右边也是换行\n比如这一行的}就不会被识别为多行值的结束\n因为}的前后有其他内容，\n只要被包裹，里面的内容都会是多行文本值\n  }\n但是上一行的}也不会被识别为多行值的结束，因为}前面有2个空格，大于键“多行文本一定要注意”的缩进,
-    "相当于": "左花括号跟着换行\n右花括号前面是换行，右边也是换行\n...",
-    "所以说": "多行值的右花括号要≤键的缩进",
-    "这是一个列表": [
-      "这是行内列表",
-      "使用,分割",
-      "成对的引号内可以出现:、,或者是其他的\n都可以"
-    ],
-    "然后这是一个多行列表": [
-      "如果不是键值对的形式",
-      "这些都会被当作值"
-    ],
-    "就等于": [
-      "如果不是键值对的形式",
-      "这些都会被当作值"
-    ],
-    "列表内是可以使用字典的": [
-      {"这是一个字典": "字典的值"},
-      {"这是一个字典": null},
-      {"有一个字典没有值": "它的值会被自动设置为null"}
-    ],
-    "然后就是可以嵌套字典": {
-      "缩进为2": {
-        "缩进为3": "可以吗"
-      }
-    },
-    "不支持类型混用": {
-      "比如这是一个子字典": "不能出现列表",
-      "刚刚用注释了": "只要是 # 开头的，都会被当作注释"
-    }
-  },
-  {
-    "这就是第二个文档了": {
-    "再看一下多行文本": "文本都是定格开始的\n  如果文本前面有空格也会被保留  "
-    },
-    "等同于": "文本都是定格开始的\n  如果文本前面有空格也会被保留  ",
-    "理论上支持列表嵌套": [
-      {"": ["像这样", "把列表当成值"]},
-      {"这样会被解析": null},
-      {"但是实际上是不支持的": null}
-    ]
-    "会被识别为": [
-      {"": ["像这样", "把列表当成值"]},
-      {"这样会被解析": null},
-      {"但是实际上是不支持的": null}
-    ],
-    "建议不要使用嵌套列表": null,
-    "出现了~": "这是为了兼容yaml",
-    "就介绍到这吧": "应该够了?"
-  }
-]
-```
-以上是标准的STML格式说明
----
-在STML中，禁止将列表和字典混合使用，以下是错误示例，不属于标准STML，请勿使用:
-```stml
-"这是不支持的":
-  - 将列表
-  "与字典混合使用": "这是不支持的"
-"请不要使用这种格式":
-  - "即便是缩进": "也是不可以的"
-    "这是yaml支持的": "不是stml支持的"
-  - "请不要使用列表加字典的错误形式"
-    "支持嵌套，不支持并列": "否则是错误的"
-```
----
-"""
+with open(os.path.join(SUB_PROJECT_ROOT, "stml_specification.md"), 'r', encoding='utf-8') as f:
+    stml_specification = f.read()
+
 
 
 
@@ -206,7 +72,7 @@ def generate_stml_and_json() -> Optional[Tuple[str, str]]:
         llm_responses = []
         for group_index in range(1, 31):
             print(f"{group_index}/30")
-            llm_response = llmChat.chat_dp(generation_prompt)
+            llm_response = llmChat.chat_ccmc(generation_prompt)
             llm_responses.append(llm_response)
         
         # for group_index, llm_response in enumerate(llm_responses):
@@ -268,7 +134,7 @@ def generate_yaml_and_json() -> Optional[Tuple[str, str]]:
         llm_responses = []
         for group_index in range(1, 31):
             print(f"{group_index}/30")
-            llm_response = llmChat.chat_dp(generation_prompt)
+            llm_response = llmChat.chat_ccmc(generation_prompt)
             llm_responses.append(llm_response)
 
         # for group_index, llm_response in enumerate(llm_responses):
@@ -328,7 +194,7 @@ def generate_stml_and_yaml() -> Optional[Tuple[str, str]]:
         llm_responses = []
         for group_index in range(1, 31):
             print(f"{group_index}/30")
-            llm_response = llmChat.chat_dp(generation_prompt)
+            llm_response = llmChat.chat_ccmc(generation_prompt)
             llm_responses.append(llm_response)
         
         # for group_index, llm_response in enumerate(llm_responses):

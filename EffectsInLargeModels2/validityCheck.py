@@ -101,18 +101,22 @@ def check_stml(files_folder, backup_folder):
 
 CHECK_FOLDER_1 = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2\test_data1"
 OUTPUT_FOLDER_1 = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2\test_data2"
+CHECK_FOLDER_2 = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2\test_data3"
+OUTPUT_FOLDER_2 = r"F:\Studio\Project\my_graduation_project2\Language\EffectsInLargeModels2\test_data4"
+
 
 if __name__ == "__main__":
+    print("=" * 60)
+    print("Phase 1: test_data1 -> test_data2")
+    print("=" * 60)
     check_json(CHECK_FOLDER_1, OUTPUT_FOLDER_1)
     check_stml(CHECK_FOLDER_1, OUTPUT_FOLDER_1)
     check_yaml(CHECK_FOLDER_1, OUTPUT_FOLDER_1)
-
-
-
-
-
-
-        
-
-
+    print()
+    print("=" * 60)
+    print("Phase 2: test_data3 -> test_data4")
+    print("=" * 60)
+    check_json(CHECK_FOLDER_2, OUTPUT_FOLDER_2)
+    check_stml(CHECK_FOLDER_2, OUTPUT_FOLDER_2)
+    check_yaml(CHECK_FOLDER_2, OUTPUT_FOLDER_2)
 

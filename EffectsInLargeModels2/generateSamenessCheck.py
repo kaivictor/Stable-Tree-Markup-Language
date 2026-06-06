@@ -14,24 +14,25 @@ import yaml
 import json
 import stml
 
-def merge_yaml_documents(yaml_docs):
-    """将多文档 YAML 字符串合并为一个字典"""
-    merged_dict = {}
-    
-    # 使用 safe_load_all 加载所有文档
-    for doc in yaml_docs:
+def merge_docs(docs):
+    """将多个文档（dict）合并为一个字典，非 dict 的文档跳过"""
+    merged = {}
+    for doc in docs:
         if isinstance(doc, dict):
-            # 递归合并字典
-            def deep_merge(base, update):
-                for key, value in update.items():
-                    if key in base and isinstance(base[key], dict) and isinstance(value, dict):
-                        deep_merge(base[key], value)
-                    else:
-                        base[key] = value
-            
-            deep_merge(merged_dict, doc)
-    
-    return merged_dict
+            for key, value in doc.items():
+                if key in merged and isinstance(merged[key], dict) and isinstance(value, dict):
+                    # 递归合并嵌套字典
+                    def deep_merge(base, update):
+                        for k, v in update.items():
+                            if k in base and isinstance(base[k], dict) and isinstance(v, dict):
+                                deep_merge(base[k], v)
+                            else:
+                                base[k] = v
+                    deep_merge(merged[key], value)
+                else:
+                    merged[key] = value
+    return merged
+
 
 def convert_to_strings(obj):
     """递归地将所有值转换为字符串"""
@@ -52,11 +53,10 @@ def check_json_and_yaml(json_file, yaml_file, test_model=False):
     if not os.path.exists(json_file) or not os.path.exists(yaml_file):
         return None
     with open(json_file, 'r', encoding='utf-8') as f:
-        json_content = json.load(f)
+        json_raw = json.load(f)
+        json_content = merge_docs(json_raw) if isinstance(json_raw, list) else json_raw
     with open(yaml_file, 'r', encoding='utf-8') as f:
-        yaml_content = list(yaml.safe_load_all(f))
-        # yaml_content = yaml.safe_load_all(f)
-        yaml_content = merge_yaml_documents(yaml_content)
+        yaml_content = merge_docs(list(yaml.safe_load_all(f)))
     # 将所有值转换为字符串
     json_str = convert_to_strings(json_content)
     yaml_str = convert_to_strings(yaml_content)
@@ -75,11 +75,9 @@ def check_stml_and_yaml(stml_file, yaml_file, test_model=False):
     with open(stml_file, 'r', encoding='utf-8') as f:
         stml_content, warn = stml.loads(f.read())
         if stml_content:
-            stml_content = stml_content["docs"]
-            stml_content = merge_yaml_documents(stml_content)
+            stml_content = merge_docs(stml_content["docs"])
     with open(yaml_file, 'r', encoding='utf-8') as f:
-        yaml_content = list(yaml.safe_load_all(f))
-        yaml_content = merge_yaml_documents(yaml_content)
+        yaml_content = merge_docs(list(yaml.safe_load_all(f)))
     # 将所有值转换为字符串
     stml_str = convert_to_strings(stml_content)
     yaml_str = convert_to_strings(yaml_content)
@@ -98,10 +96,10 @@ def check_stml_and_json(stml_file, json_file, test_model=False):
     with open(stml_file, 'r', encoding='utf-8') as f:
         stml_content, warn = stml.loads(f.read())
         if stml_content:
-            stml_content = stml_content["docs"]
-            # stml_content = merge_yaml_documents(stml_content)
+            stml_content = merge_docs(stml_content["docs"])
     with open(json_file, 'r', encoding='utf-8') as f:
-        json_content = json.load(f)
+        json_raw = json.load(f)
+        json_content = merge_docs(json_raw) if isinstance(json_raw, list) else json_raw
     # 将所有值转换为字符串
     json_str = convert_to_strings(json_content)
     stml_str = convert_to_strings(stml_content)
@@ -180,7 +178,7 @@ def group_json_stml(folder_path, group_number):
         json_file_path = os.path.join(folder_path, json_file_name)
         stml_file_path = os.path.join(folder_path, stml_file_name)
         
-        check_result = check_stml_and_json(stml_file_path, json_file_path, True)
+        check_result = check_stml_and_json(stml_file_path, json_file_path, False)
         
         if check_result==None:
             # print(f"文件不存在: \n{json_file_path}\n{stml_file_path}")
@@ -199,7 +197,12 @@ def group_json_stml(folder_path, group_number):
 
 
 if __name__ == "__main__":
+    print("JSON与YAML文件一致性检查，", end="")
     group_json_yaml(PROJECT_ROOT + "\\EffectsInLargeModels2\\test_data2", 2)
+
+    print("STML与YAML文件一致性检查，", end="")
     group_stml_yaml(PROJECT_ROOT + "\\EffectsInLargeModels2\\test_data2", 3)
+
+    print("JSON与STML文件一致性检查，", end="")
     group_json_stml(PROJECT_ROOT + "\\EffectsInLargeModels2\\test_data2", 1)
 
