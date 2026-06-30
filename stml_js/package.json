@@ -1,0 +1,26 @@
+{
+  "name": "stml",
+  "version": "1.6.0",
+  "description": "STML (Stable Tree Markup Language) — a human-friendly data format. Pure JavaScript implementation.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/"
+  ],
+  "keywords": [
+    "stml",
+    "yaml",
+    "parser",
+    "serializer",
+    "data-format",
+    "configuration"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "stml",
+  "version": "1.6.0",
+  "description": "STML (Stable Tree Markup Language) — a human-friendly data format. TypeScript implementation with full type definitions.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "stml",
+    "yaml",
+    "parser",
+    "serializer",
+    "data-format",
+    "configuration"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^5.0.0"
+  }
+}
