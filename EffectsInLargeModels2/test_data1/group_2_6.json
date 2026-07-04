@@ -1,0 +1,239 @@
+{
+  "person": {
+    "name": "John Michael Doe",
+    "age": 30,
+    "is_student": false,
+    "address": {
+      "street": "1234 Elm Street",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": 62701,
+      "country": "USA"
+    },
+    "alternate_addresses": [
+      {
+        "street": "5678 Oak Avenue",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": 60601,
+        "country": "USA"
+      },
+      {
+        "street": "9101 Pine Road",
+        "city": "New York",
+        "state": "NY",
+        "zip": 10001,
+        "country": "USA"
+      }
+    ],
+    "phone_numbers": [
+      {
+        "type": "home",
+        "number": "+1-555-1234",
+        "primary": true
+      },
+      {
+        "type": "work",
+        "number": "+1-555-5678",
+        "primary": false
+      },
+      {
+        "type": "mobile",
+        "number": "+1-555-9012",
+        "primary": false
+      }
+    ],
+    "email": "john.doe@example.com",
+    "skills": [
+      {
+        "name": "Python",
+        "level": "expert",
+        "years_experience": 8
+      },
+      {
+        "name": "JavaScript",
+        "level": "advanced",
+        "years_experience": 5
+      },
+      {
+        "name": "YAML",
+        "level": "intermediate",
+        "years_experience": 3
+      },
+      {
+        "name": "JSON",
+        "level": "intermediate",
+        "years_experience": 3
+      },
+      {
+        "name": "Docker",
+        "level": "advanced",
+        "years_experience": 4
+      },
+      {
+        "name": "Kubernetes",
+        "level": "beginner",
+        "years_experience": 1
+      }
+    ],
+    "projects": [
+      {
+        "name": "Project Alpha",
+        "status": "completed",
+        "start_date": "2020-01-15",
+        "end_date": "2020-12-20",
+        "budget": 150000.75,
+        "team": [
+          {
+            "name": "Alice",
+            "role": "Lead Developer"
+          },
+          {
+            "name": "Bob",
+            "role": "Backend Developer"
+          },
+          {
+            "name": "Charlie",
+            "role": "Frontend Developer"
+          }
+        ],
+        "technologies": ["Python", "Django", "PostgreSQL", "React"],
+        "description": "A web application for managing inventory.\nIt includes features like real-time tracking,\nreporting, and user management.\n"
+      },
+      {
+        "name": "Project Beta",
+        "status": "in_progress",
+        "start_date": "2021-06-01",
+        "end_date": null,
+        "budget": 75000,
+        "team": [
+          {
+            "name": "Diana",
+            "role": "Project Manager"
+          },
+          {
+            "name": "Eve",
+            "role": "Data Scientist"
+          }
+        ],
+        "technologies": ["Python", "TensorFlow", "AWS"],
+        "description": "Machine learning model for customer segmentation."
+      },
+      {
+        "name": "Project Gamma",
+        "status": "planning",
+        "start_date": null,
+        "end_date": null,
+        "budget": 0,
+        "team": [],
+        "technologies": [],
+        "description": "TBD"
+      }
+    ],
+    "education": [
+      {
+        "degree": "Bachelor of Science in Computer Science",
+        "university": "University of Illinois at Urbana-Champaign",
+        "graduation_year": 2015,
+        "gpa": 3.8,
+        "honors": true
+      },
+      {
+        "degree": "Master of Science in Data Science",
+        "university": "Stanford University",
+        "graduation_year": 2017,
+        "gpa": 3.9,
+        "honors": true
+      }
+    ],
+    "certifications": [
+      {
+        "name": "AWS Certified Solutions Architect",
+        "issuer": "Amazon Web Services",
+        "year": 2020
+      },
+      {
+        "name": "Certified Kubernetes Administrator",
+        "issuer": "CNCF",
+        "year": 2021
+      }
+    ],
+    "references": [
+      {
+        "name": "Dr. Jane Smith",
+        "title": "Professor of Computer Science",
+        "institution": "University of Illinois",
+        "email": "jane.smith@illinois.edu",
+        "phone": "+1-555-1111"
+      },
+      {
+        "name": "Dr. Jane Smith",
+        "title": "Professor of Computer Science",
+        "institution": "University of Illinois",
+        "email": "jane.smith@illinois.edu",
+        "phone": "+1-555-1111"
+      },
+      {
+        "name": "Mr. John Brown",
+        "title": "Senior Engineer",
+        "institution": "Tech Corp",
+        "email": "john.brown@techcorp.com",
+        "phone": "+1-555-2222"
+      },
+      {
+        "name": "Mr. John Brown",
+        "title": "Senior Engineer",
+        "institution": "Tech Corp",
+        "email": "john.brown@techcorp.com",
+        "phone": "+1-555-2222"
+      }
+    ],
+    "config": {
+      "debug": true,
+      "max_retries": 5,
+      "timeout": 60.0,
+      "allowed_hosts": [
+        "localhost",
+        "127.0.0.1",
+        "*.example.com"
+      ],
+      "database": {
+        "host": "db.example.com",
+        "port": 5432,
+        "credentials": {
+          "username": "admin",
+          "password": "supersecret"
+        },
+        "pool_size": 10
+      },
+      "logging": {
+        "level": "INFO",
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "handlers": [
+          {
+            "type": "console",
+            "level": "DEBUG"
+          },
+          {
+            "type": "file",
+            "filename": "/var/log/app.log",
+            "level": "ERROR"
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "created_at": "2023-10-01T12:00:00Z",
+      "updated_at": "2023-10-15T08:30:00+00:00",
+      "version": "1.2.3",
+      "tags": [
+        "example",
+        "test",
+        "yaml",
+        "json",
+        "complex"
+      ]
+    },
+    "notes": "This is a multi-line string.\nIt can contain multiple lines.\nAnd preserve newlines.\nAlso, it can have indentation:\n  - item1\n  - item2\nBut careful with YAML indentation.\n"
+  }
+}

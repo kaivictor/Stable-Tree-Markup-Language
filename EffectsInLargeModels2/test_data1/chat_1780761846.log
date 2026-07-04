@@ -1,0 +1,263 @@
+```stml
+"long_list":
+  - "item_000"
+  - "item_001"
+  - "item_002"
+  - "item_003"
+  - "item_004"
+  - "item_005"
+  - "item_006"
+  - "item_007"
+  - "item_008"
+  - "item_009"
+"global":
+  "app_name": "MyApp"
+  "version": "2.0.1"
+  "debug": "false"
+  "environment": "production"
+  "description": {
+This is a long description that spans multiple lines.
+It can contain many characters to make the YAML rich.
+We can add more lines here to increase length.
+
+  }
+  "large_list":
+    - "item_000"
+    - "item_001"
+    - "item_002"
+    - "item_003"
+    - "item_004"
+    - "item_005"
+    - "item_006"
+    - "item_007"
+    - "item_008"
+    - "item_009"
+"server":
+  "host": "0.0.0.0"
+  "port": "8080"
+  "workers": "4"
+  "ssl":
+    "enabled": "true"
+    "cert_file": "/etc/ssl/certs/server.crt"
+    "key_file": "/etc/ssl/private/server.key"
+  "allowed_hosts":
+    - "example.com"
+    - "*.example.com"
+    - "localhost"
+  "extra_list":
+    - "item_000"
+    - "item_001"
+    - "item_002"
+    - "item_003"
+    - "item_004"
+    - "item_005"
+    - "item_006"
+    - "item_007"
+    - "item_008"
+    - "item_009"
+"db_template":
+  "type": "postgresql"
+  "host": "localhost"
+  "port": "5432"
+  "username": "admin"
+  "password": "secret"
+  "pool_size": "10"
+  "options":
+    "sslmode": "require"
+    "connect_timeout": "30"
+"databases":
+  "primary":
+    "type": "postgresql"
+    "host": "localhost"
+    "port": "5432"
+    "username": "admin"
+    "password": "secret"
+    "pool_size": "10"
+    "options":
+      "sslmode": "require"
+      "connect_timeout": "30"
+    "database": "primary_db"
+  "replica":
+    "type": "postgresql"
+    "host": "replica.example.com"
+    "port": "5432"
+    "username": "admin"
+    "password": "secret"
+    "pool_size": "10"
+    "options":
+      "sslmode": "require"
+      "connect_timeout": "30"
+    "database": "replica_db"
+  "cache":
+    "type": "redis"
+    "host": "redis.example.com"
+    "port": "6379"
+    "username": "admin"
+    "password": "redis_secret"
+    "pool_size": "10"
+    "options":
+      "sslmode": "require"
+      "connect_timeout": "30"
+    "database": "0"
+"logging":
+  "level": "INFO"
+  "handlers":
+    - "type": "console"
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    - "type": "file"
+      "filename": "/var/log/myapp/app.log"
+      "max_bytes": "10485760"
+      "backup_count": "5"
+  "root_logger":
+    "level": "WARNING"
+"user_template":
+  "enabled": "true"
+  "roles": ["user"]
+  "permissions": ["read", "write"]
+  "metadata":
+    "created_at": "2023-01-01T00:00:00Z"
+    "last_login": "2023-06-15T12:30:00Z"
+    "notes": "Standard user account."
+"users":
+  - "username": "alice"
+    "enabled": "true"
+    "roles": ["admin", "user"]
+    "permissions": ["read", "write", "delete"]
+    "metadata":
+      "created_at": "2022-05-10T08:00:00Z"
+      "last_login": "2023-07-20T14:22:00Z"
+      "notes": "Administrator account with elevated privileges."
+    "email": "alice@example.com"
+  - "username": "bob"
+    "enabled": "true"
+    "roles": ["user"]
+    "permissions": ["read", "write"]
+    "metadata":
+      "created_at": "2023-02-14T10:00:00Z"
+      "last_login": "2023-07-19T09:15:00Z"
+      "notes": "Regular user."
+    "email": "bob@example.com"
+  - "username": "charlie"
+    "enabled": "false"
+    "roles": ["user"]
+    "permissions": ["read", "write"]
+    "metadata":
+      "created_at": "2023-03-01T00:00:00Z"
+      "last_login": null
+      "notes": "Disabled account."
+    "email": "charlie@example.com"
+  - "username": "diana"
+    "enabled": "true"
+    "roles": ["moderator", "user"]
+    "permissions": ["read", "write", "moderate"]
+    "metadata":
+      "created_at": "2023-04-20T16:30:00Z"
+      "last_login": "2023-07-21T08:45:00Z"
+      "notes": "Moderator with additional permissions."
+    "email": "diana@example.com"
+  - "username": "eve"
+    "enabled": "true"
+    "roles": ["user"]
+    "permissions": ["read", "write"]
+    "metadata":
+      "created_at": "2023-05-05T12:00:00Z"
+      "last_login": "2023-07-18T17:30:00Z"
+      "notes": "Another regular user."
+    "email": "eve@example.com"
+"security":
+  "jwt_secret": "my_super_secret_key_12345"
+  "token_expiry": "3600"
+  "allowed_origins":
+    - "https://app.example.com"
+    - "https://admin.example.com"
+  "rate_limiting":
+    "enabled": "true"
+    "requests_per_minute": "100"
+    "burst": "200"
+"cache":
+  "redis":
+    "host": "redis.example.com"
+    "port": "6379"
+    "db": "0"
+    "password": "redis_secret"
+    "timeout": "5"
+  "memcached":
+    "hosts":
+      - "memcached1.example.com:11211"
+      - "memcached2.example.com:11211"
+    "timeout": "2"
+"task_queue":
+  "celery":
+    "broker_url": "redis://redis.example.com:6379/1"
+    "result_backend": "redis://redis.example.com:6379/2"
+    "task_serializer": "json"
+    "result_serializer": "json"
+    "accept_content": ["json"]
+    "timezone": "UTC"
+    "enable_utc": "true"
+  "rabbitmq":
+    "host": "rabbitmq.example.com"
+    "port": "5672"
+    "vhost": "/"
+    "username": "guest"
+    "password": "guest"
+"third_party_apis":
+  "payment_gateway":
+    "url": "https://api.payment.com/v1"
+    "api_key": "pk_test_1234567890"
+    "secret_key": "sk_test_0987654321"
+  "email_service":
+    "url": "https://api.sendgrid.com/v3"
+    "api_key": "SG.xxxxx.yyyyy"
+  "sms_service":
+    "url": "https://api.twilio.com"
+    "account_sid": "ACxxxxxxxxxxxx"
+    "auth_token": "yyyyyyyyyyyy"
+"feature_flags":
+  "new_ui": "true"
+  "dark_mode": "false"
+  "beta_features": "true"
+  "experimental_module": "false"
+  "maintenance_mode": "false"
+"menu":
+  - "id": "1"
+    "label": "Dashboard"
+    "icon": "dashboard"
+    "link": "/dashboard"
+    "children": []
+  - "id": "2"
+    "label": "Users"
+    "icon": "users"
+    "link": "/users"
+    "children":
+      - "id": "21"
+        "label": "List Users"
+        "link": "/users/list"
+      - "id": "22"
+        "label": "Create User"
+        "link": "/users/create"
+      - "id": "23"
+        "label": "Roles"
+        "link": "/users/roles"
+        "children":
+          - "id": "231"
+            "label": "Admin Roles"
+            "link": "/users/roles/admin"
+          - "id": "232"
+            "label": "User Roles"
+            "link": "/users/roles/user"
+  - "id": "3"
+    "label": "Settings"
+    "icon": "settings"
+    "link": "/settings"
+    "children":
+      - "id": "31"
+        "label": "General"
+        "link": "/settings/general"
+      - "id": "32"
+        "label": "Security"
+        "link": "/settings/security"
+      - "id": "33"
+        "label": "Notifications"
+        "link": "/settings/notifications"
+```

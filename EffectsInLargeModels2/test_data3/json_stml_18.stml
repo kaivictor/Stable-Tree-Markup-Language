@@ -1,0 +1,163 @@
+"company":
+  "name": "TechCorp International"
+  "founded": "1998-05-15"
+  "employees_count": "12500"
+  "publicly_traded": "true"
+  "headquarters":
+    "address":
+      "street": "123 Innovation Drive"
+      "city": "San Francisco"
+      "state": "CA"
+      "zip": "94105"
+      "country": "USA"
+    "coordinates":
+      "lat": "37.7749"
+      "lng": "-122.4194"
+  "departments":
+    - "name": "Engineering"
+      "manager": "Alice Johnson"
+      "employees":
+        - "id": "101"
+          "name": "Bob Smith"
+          "age": "34"
+          "position": "Senior Software Engineer"
+          "skills": ["Python", "Go", "Kubernetes", "AWS"]
+          "contact":
+            "email": "bob.smith@techcorp.com"
+            "phone": "+1-555-0101"
+            "address":
+              "street": "456 Oak Ave"
+              "city": "San Francisco"
+              "state": "CA"
+              "zip": "94110"
+          "projects": ["Project Alpha", "Project Gamma"]
+        - "id": "102"
+          "name": "Carol Davis"
+          "age": "29"
+          "position": "Data Scientist"
+          "skills": ["Python", "R", "TensorFlow", "SQL"]
+          "contact":
+            "email": "carol.davis@techcorp.com"
+            "phone": "+1-555-0102"
+          "projects": ["Project Beta"]
+        - "id": "103"
+          "name": "David Lee"
+          "age": "45"
+          "position": "Engineering Manager"
+          "skills": ["Java", "C++", "System Design"]
+          "contact":
+            "email": "david.lee@techcorp.com"
+            "phone": "+1-555-0103"
+          "projects": ["Project Alpha", "Project Beta", "Project Gamma"]
+    - "name": "Marketing"
+      "manager": "Eve Williams"
+      "employees":
+        - "id": "201"
+          "name": "Frank Miller"
+          "age": "38"
+          "position": "Marketing Director"
+          "skills": ["Digital Marketing", "SEO", "Content Strategy"]
+          "contact":
+            "email": "frank.miller@techcorp.com"
+            "phone": "+1-555-0201"
+        - "id": "202"
+          "name": "Grace Wilson"
+          "age": "26"
+          "position": "Social Media Specialist"
+          "skills": ["Social Media", "Copywriting", "Analytics"]
+          "contact":
+            "email": "grace.wilson@techcorp.com"
+            "phone": "+1-555-0202"
+    - "name": "Sales"
+      "manager": "Henry Brown"
+      "employees":
+        - "id": "301"
+          "name": "Ivy Taylor"
+          "age": "42"
+          "position": "VP of Sales"
+          "skills": ["Sales Management", "CRM", "Negotiation"]
+          "contact":
+            "email": "ivy.taylor@techcorp.com"
+            "phone": "+1-555-0301"
+        - "id": "302"
+          "name": "Jack Anderson"
+          "age": "31"
+          "position": "Account Executive"
+          "skills": ["B2B Sales", "Cold Calling", "Presentation"]
+          "contact":
+            "email": "jack.anderson@techcorp.com"
+          "projects": ["Project Alpha"]
+  "projects":
+    - "name": "Project Alpha"
+      "budget": "2500000"
+      "start_date": "2023-01-15"
+      "end_date": "2024-06-30"
+      "status": "In Progress"
+      "description": {
+A large-scale cloud migration project involving moving legacy on-premise infrastructure to AWS.
+The project includes data migration, application refactoring, and security compliance.
+}
+      "team_members":
+        - "employee_id": "101"
+          "role": "Lead Developer"
+        - "employee_id": "103"
+          "role": "Project Manager"
+        - "employee_id": "302"
+          "role": "Sales Liaison"
+    - "name": "Project Beta"
+      "budget": "1500000"
+      "start_date": "2023-03-01"
+      "end_date": "2024-12-31"
+      "status": "Planning"
+      "description": {
+Development of a new AI-powered recommendation engine for the company's e-commerce platform.
+This project involves machine learning model training, API development, and integration.
+}
+      "team_members":
+        - "employee_id": "102"
+          "role": "Data Scientist"
+        - "employee_id": "103"
+          "role": "Engineering Manager"
+    - "name": "Project Gamma"
+      "budget": "800000"
+      "start_date": "2024-02-01"
+      "end_date": "2024-11-30"
+      "status": "Not Started"
+      "description": {
+Internal tool for automating employee onboarding processes.
+}
+      "team_members":
+        - "employee_id": "101"
+          "role": "Developer"
+  "config":
+    "database":
+      "host": "db.techcorp.internal"
+      "port": "5432"
+      "credentials":
+        "username": "app_user"
+        "password": null
+        "ssl": "true"
+    "logging":
+      "level": "DEBUG"
+      "format": "json"
+      "outputs":
+        - "type": "file"
+          "path": "/var/log/app.log"
+          "rotation": "daily"
+        - "type": "stdout"
+    "features":
+      - "name": "dark_mode"
+        "enabled": "true"
+        "rollout_percentage": "100"
+      - "name": "new_dashboard"
+        "enabled": "false"
+        "rollout_percentage": "25"
+    "notes": {
+This is a multi-line string that contains various special characters: 
+- Tabs are not allowed in YAML, but spaces are fine.
+- Quotes: "double" and 'single' can be used.
+- Backslashes: \n \t should be escaped in JSON but not in YAML.
+- Unicode: 你好世界
+- Emojis: 😀🚀
+The string ends here.
+}

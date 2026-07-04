@@ -1,0 +1,248 @@
+```json
+{
+  "company": {
+    "name": "Global Tech Corp",
+    "founded": "1998-05-15",
+    "headquarters": {
+      "city": "San Francisco",
+      "state": "California",
+      "country": "USA",
+      "address": "123 Innovation Drive",
+      "coordinates": {
+        "lat": 37.7749,
+        "lng": -122.4194
+      }
+    },
+    "employees": [
+      {
+        "id": 1,
+        "name": "Alice Johnson",
+        "role": "CEO",
+        "salary": 250000.5,
+        "active": true,
+        "birth_date": "1975-03-22",
+        "address": {
+          "street": "100 Main St",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94105"
+        },
+        "skills": ["Leadership", "Strategy", "Finance"],
+        "hobbies": ["Reading", "Hiking"],
+        "contact": {
+          "email": "alice@example.com",
+          "phone": "+1-555-0101"
+        },
+        "metadata": null
+      },
+      {
+        "id": 2,
+        "name": "Bob Smith",
+        "role": "CTO",
+        "salary": 220000.0,
+        "active": true,
+        "birth_date": "1980-07-14",
+        "address": {
+          "street": "200 Oak Ave",
+          "city": "Palo Alto",
+          "state": "CA",
+          "zip": "94301"
+        },
+        "skills": ["Software Architecture", "Cloud Computing", "AI"],
+        "hobbies": ["Chess", "Cycling"],
+        "contact": {
+          "email": "bob@example.com",
+          "phone": "+1-555-0102"
+        },
+        "metadata": {
+          "last_promotion": "2022-11-01",
+          "projects": ["Project X", "Project Y"]
+        }
+      },
+      {
+        "id": 3,
+        "name": "Charlie Brown",
+        "role": "Developer",
+        "salary": 120000.0,
+        "active": false,
+        "birth_date": "1990-12-01",
+        "address": {
+          "street": "300 Pine St",
+          "city": "Mountain View",
+          "state": "CA",
+          "zip": "94043"
+        },
+        "skills": ["Python", "JavaScript", "Docker"],
+        "hobbies": ["Gaming", "Photography"],
+        "contact": {
+          "email": "charlie@example.com",
+          "phone": null
+        },
+        "metadata": {}
+      },
+      {
+        "id": 4,
+        "name": "Diana Prince",
+        "role": "Designer",
+        "salary": 110000.0,
+        "active": true,
+        "birth_date": "1988-05-20",
+        "address": {
+          "street": "400 Elm St",
+          "city": "San Jose",
+          "state": "CA",
+          "zip": "95112"
+        },
+        "skills": ["UI/UX", "Figma", "Sketch"],
+        "hobbies": ["Painting", "Travel"],
+        "contact": {
+          "email": "diana@example.com",
+          "phone": "+1-555-0104"
+        },
+        "metadata": {
+          "department": "Design"
+        }
+      },
+      {
+        "id": 5,
+        "name": "Eve Adams",
+        "role": "Data Scientist",
+        "salary": 135000.0,
+        "active": true,
+        "birth_date": "1992-11-30",
+        "address": {
+          "street": "500 Maple Dr",
+          "city": "Cupertino",
+          "state": "CA",
+          "zip": "95014"
+        },
+        "skills": ["Python", "R", "Machine Learning", "Statistics"],
+        "hobbies": ["Running", "Cooking"],
+        "contact": {
+          "email": "eve@example.com",
+          "phone": "+1-555-0105"
+        },
+        "metadata": {
+          "certifications": ["AWS Certified", "Google Data Engineer"]
+        }
+      }
+    ],
+    "projects": [
+      {
+        "name": "Project Alpha",
+        "status": "in_progress",
+        "budget": 5000000.0,
+        "start_date": "2023-01-01",
+        "end_date": null,
+        "team": [1, 2],
+        "tags": ["AI", "Machine Learning"],
+        "milestones": [
+          {
+            "name": "Phase 1",
+            "due": "2023-06-30",
+            "completed": true
+          },
+          {
+            "name": "Phase 2",
+            "due": "2023-12-31",
+            "completed": false
+          }
+        ]
+      },
+      {
+        "name": "Project Beta",
+        "status": "completed",
+        "budget": 3000000.0,
+        "start_date": "2022-06-01",
+        "end_date": "2023-03-31",
+        "team": [2, 3],
+        "tags": ["Web", "Mobile"],
+        "milestones": [
+          {
+            "name": "Launch",
+            "due": "2023-03-31",
+            "completed": true
+          }
+        ]
+      },
+      {
+        "name": "Project Gamma",
+        "status": "planning",
+        "budget": 2000000.0,
+        "start_date": "2024-04-01",
+        "end_date": null,
+        "team": [4, 5],
+        "tags": ["Data", "Analytics"],
+        "milestones": []
+      }
+    ],
+    "financials": {
+      "revenue": 150000000.0,
+      "expenses": 120000000.0,
+      "profit": 30000000.0,
+      "tax": 7500000.0,
+      "currency": "USD",
+      "fiscal_year": 2023,
+      "quarterly": [
+        {
+          "quarter": "Q1",
+          "revenue": 35000000.0,
+          "expenses": 28000000.0,
+          "profit": 7000000.0
+        },
+        {
+          "quarter": "Q2",
+          "revenue": 38000000.0,
+          "expenses": 31000000.0,
+          "profit": 7000000.0
+        },
+        {
+          "quarter": "Q3",
+          "revenue": 40000000.0,
+          "expenses": 32000000.0,
+          "profit": 8000000.0
+        },
+        {
+          "quarter": "Q4",
+          "revenue": 37000000.0,
+          "expenses": 29000000.0,
+          "profit": 8000000.0
+        }
+      ]
+    },
+    "products": [
+      {
+        "name": "Product A",
+        "version": "2.1.0",
+        "release_date": "2023-08-15",
+        "features": ["Feature1", "Feature2", "Feature3"],
+        "is_cloud": true,
+        "price": 99.99,
+        "categories": ["Software", "SaaS"]
+      },
+      {
+        "name": "Product B",
+        "version": "1.0.0",
+        "release_date": "2024-01-20",
+        "features": ["FeatureA", "FeatureB"],
+        "is_cloud": false,
+        "price": 0.0,
+        "categories": ["Freeware"]
+      },
+      {
+        "name": "Product C",
+        "version": "3.0.0-beta",
+        "release_date": "2024-06-01",
+        "features": ["New UI", "Performance", "Security"],
+        "is_cloud": true,
+        "price": 149.99,
+        "categories": ["Software", "Enterprise"]
+      }
+    ],
+    "metadata": {
+      "last_updated": "2024-03-10T12:00:00Z",
+      "notes": "This is a sample YAML file with various data types including nested objects, arrays, strings, numbers, booleans, and null values."
+    }
+  }
+}
+```

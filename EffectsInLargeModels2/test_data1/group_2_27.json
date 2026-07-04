@@ -1,0 +1,383 @@
+{
+  "application": "MyApp",
+  "version": "2.0.0",
+  "description": "这是一个非常复杂的应用程序配置。\n它包含了数据库、服务器、日志、缓存、外部API、用户管理等多个模块。\n该配置文件用于演示YAML的丰富特性，包括多行字符串、锚点、别名、嵌套结构等。\n注意：此配置为示例，实际使用时请根据环境修改。\n",
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "secret123",
+    "database": "myapp_db",
+    "pool_size": 10,
+    "timeout": 30,
+    "ssl": true,
+    "options": {
+      "connect_timeout": 5,
+      "keepalives": 1,
+      "keepalives_idle": 60
+    }
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "ssl": {
+      "enabled": true,
+      "cert_file": "/etc/ssl/certs/myapp.crt",
+      "key_file": "/etc/ssl/private/myapp.key"
+    },
+    "cors": {
+      "allowed_origins": ["https://example.com", "https://app.example.com"],
+      "allowed_methods": ["GET", "POST", "PUT", "DELETE"],
+      "allowed_headers": ["Authorization", "Content-Type"]
+    },
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_second": 100,
+      "burst": 200
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "/var/log/myapp/app.log",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "handlers": [
+      {
+        "type": "file",
+        "level": "INFO",
+        "filename": "/var/log/myapp/app.log",
+        "max_bytes": 10485760,
+        "backup_count": 5
+      },
+      {
+        "type": "console",
+        "level": "DEBUG"
+      },
+      {
+        "type": "syslog",
+        "level": "ERROR",
+        "address": "/dev/log"
+      }
+    ]
+  },
+  "cache": {
+    "type": "redis",
+    "host": "localhost",
+    "port": 6379,
+    "password": null,
+    "db": 0,
+    "ttl": 3600,
+    "pool": {
+      "max_connections": 50,
+      "min_connections": 5,
+      "timeout": 10
+    }
+  },
+  "external_apis": [
+    {
+      "name": "PaymentGateway",
+      "url": "https://api.payment.com/v1",
+      "api_key": "pk_xxxxxxxxxxxx",
+      "timeout": 30,
+      "retry": {
+        "max_retries": 3,
+        "backoff_factor": 2
+      },
+      "endpoints": {
+        "charge": "/charge",
+        "refund": "/refund"
+      }
+    },
+    {
+      "name": "EmailService",
+      "url": "https://api.emailservice.com/v2",
+      "api_key": "ek_yyyyyyyyyyyy",
+      "timeout": 10,
+      "retry": {
+        "max_retries": 2,
+        "backoff_factor": 1.5
+      },
+      "endpoints": {
+        "send": "/send",
+        "status": "/status"
+      }
+    },
+    {
+      "name": "Geocoding",
+      "url": "https://maps.googleapis.com/maps/api/geocode/json",
+      "api_key": "gk_zzzzzzzzzzzz",
+      "timeout": 5,
+      "retry": {
+        "max_retries": 1,
+        "backoff_factor": 1
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "dark",
+        "language": "en",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "zip": "12345",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "light",
+        "language": "fr",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": false
+        }
+      },
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Rivertown",
+        "zip": "67890",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Charlie Brown",
+      "email": "charlie@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "dark",
+        "language": "de",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "789 Pine Rd",
+        "city": "Lakewood",
+        "zip": "11223",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Diana Prince",
+      "email": "diana@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "light",
+        "language": "es",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "321 Elm St",
+        "city": "Metropolis",
+        "zip": "44556",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 5,
+      "name": "Eve Adams",
+      "email": "eve@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "dark",
+        "language": "en",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": false
+        }
+      },
+      "address": {
+        "street": "654 Birch Ln",
+        "city": "Smallville",
+        "zip": "77889",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Frank Castle",
+      "email": "frank@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "light",
+        "language": "en",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "987 Cedar Dr",
+        "city": "Gotham",
+        "zip": "99001",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Grace Hopper",
+      "email": "grace@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "dark",
+        "language": "en",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": false
+        }
+      },
+      "address": {
+        "street": "111 Maple Ave",
+        "city": "Arlington",
+        "zip": "22233",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Henry Ford",
+      "email": "henry@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "light",
+        "language": "en",
+        "notifications": {
+          "email": false,
+          "sms": false,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "222 Walnut St",
+        "city": "Dearborn",
+        "zip": "44455",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Ivy League",
+      "email": "ivy@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "dark",
+        "language": "en",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "333 Oak St",
+        "city": "Cambridge",
+        "zip": "66677",
+        "country": "USA"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Jack Sparrow",
+      "email": "jack@example.com",
+      "roles": ["user", "viewer"],
+      "permissions": ["read:profile", "read:settings"],
+      "settings": {
+        "theme": "light",
+        "language": "en",
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        }
+      },
+      "address": {
+        "street": "444 Pirate Ln",
+        "city": "Tortuga",
+        "zip": "88899",
+        "country": "Caribbean"
+      }
+    }
+  ],
+  "permissions": {
+    "roles": {
+      "admin": ["*:*"],
+      "user": ["read:profile", "read:settings", "write:profile"],
+      "viewer": ["read:profile", "read:settings"]
+    },
+    "resources": ["profile", "settings", "orders", "payments"]
+  },
+  "features": [
+    {"name": "dark_mode", "enabled": true},
+    {"name": "multi_language", "enabled": true},
+    {"name": "beta_feature", "enabled": false},
+    {"name": "analytics", "enabled": true},
+    {"name": "export_data", "enabled": true}
+  ],
+  "advanced": {
+    "feature_flags": {
+      "new_ui": false,
+      "experimental_api": true
+    },
+    "thresholds": {
+      "max_login_attempts": 5,
+      "session_timeout": 1800,
+      "password_min_length": 8,
+      "password_require_special": true
+    },
+    "integrations": [
+      {
+        "name": "Slack",
+        "webhook_url": "https://hooks.slack.com/services/T00000000/B00000000/xxxxxxxxxxxxxxxxxxxxxxxx",
+        "enabled": true
+      },
+      {
+        "name": "Jira",
+        "url": "https://jira.example.com",
+        "api_token": "token_xxxx",
+        "enabled": false
+      },
+      {
+        "name": "GitHub",
+        "url": "https://api.github.com",
+        "token": "ghp_xxxxxxxxxxxxxxxxxxxx",
+        "enabled": true
+      }
+    ]
+  }
+}

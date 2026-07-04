@@ -1,0 +1,345 @@
+{
+  "company": {
+    "name": "TechNova Solutions",
+    "founded": 2005,
+    "employees_count": 1250,
+    "is_public": true,
+    "address": {
+      "street": "123 Innovation Drive",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94105",
+      "country": "USA"
+    },
+    "departments": [
+      {
+        "id": "DEPT-001",
+        "name": "Engineering",
+        "manager": "Alice Chen",
+        "headcount": 450,
+        "budget": 15000000.5,
+        "active": true,
+        "sub_teams": ["Frontend", "Backend", "DevOps", "QA"]
+      },
+      {
+        "id": "DEPT-002",
+        "name": "Marketing",
+        "manager": "Bob Martinez",
+        "headcount": 120,
+        "budget": 5000000.0,
+        "active": true,
+        "sub_teams": ["Digital", "Content", "Brand"]
+      },
+      {
+        "id": "DEPT-003",
+        "name": "Sales",
+        "manager": "Carol Johnson",
+        "headcount": 200,
+        "budget": 8000000.75,
+        "active": true,
+        "sub_teams": ["Enterprise", "SMB", "Channel"]
+      },
+      {
+        "id": "DEPT-004",
+        "name": "Human Resources",
+        "manager": "David Lee",
+        "headcount": 35,
+        "budget": 1200000.0,
+        "active": true,
+        "sub_teams": ["Recruitment", "Benefits", "Training"]
+      },
+      {
+        "id": "DEPT-005",
+        "name": "Finance",
+        "manager": "Eva Williams",
+        "headcount": 25,
+        "budget": 900000.0,
+        "active": true,
+        "sub_teams": ["Accounting", "Audit", "Payroll"]
+      }
+    ],
+    "employees": [
+      {
+        "id": "EMP-1001",
+        "name": "Alice Chen",
+        "age": 38,
+        "position": "VP of Engineering",
+        "salary": 220000.0,
+        "skills": ["Python", "Go", "Kubernetes", "System Design"],
+        "contact": {
+          "email": "alice.chen@technova.com",
+          "phone": "+1-415-555-0101",
+          "emergency_contact": {
+            "name": "Tom Chen",
+            "relation": "Spouse",
+            "phone": "+1-415-555-0199"
+          }
+        },
+        "address": {
+          "street": "456 Oak Ave",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94110"
+        },
+        "is_manager": true,
+        "projects": ["Project Alpha", "Project Gamma"]
+      },
+      {
+        "id": "EMP-1002",
+        "name": "Bob Martinez",
+        "age": 45,
+        "position": "CMO",
+        "salary": 210000.0,
+        "skills": ["Digital Strategy", "Brand Management", "Analytics"],
+        "contact": {
+          "email": "bob.martinez@technova.com",
+          "phone": "+1-415-555-0102",
+          "emergency_contact": null
+        },
+        "address": {
+          "street": "789 Pine St",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94102"
+        },
+        "is_manager": true,
+        "projects": ["Project Beta"]
+      },
+      {
+        "id": "EMP-1003",
+        "name": "Carol Johnson",
+        "age": 42,
+        "position": "VP of Sales",
+        "salary": 200000.0,
+        "skills": ["Negotiation", "CRM", "Team Leadership"],
+        "contact": {
+          "email": "carol.johnson@technova.com",
+          "phone": "+1-415-555-0103",
+          "emergency_contact": {
+            "name": "Mike Johnson",
+            "relation": "Spouse",
+            "phone": "+1-415-555-0198"
+          }
+        },
+        "address": {
+          "street": "321 Maple Dr",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94114"
+        },
+        "is_manager": true,
+        "projects": ["Project Alpha", "Project Delta"]
+      },
+      {
+        "id": "EMP-1004",
+        "name": "David Lee",
+        "age": 36,
+        "position": "HR Director",
+        "salary": 150000.0,
+        "skills": ["Recruitment", "Employee Relations", "Compensation"],
+        "contact": {
+          "email": "david.lee@technova.com",
+          "phone": "+1-415-555-0104",
+          "emergency_contact": {
+            "name": "Sarah Lee",
+            "relation": "Sister",
+            "phone": "+1-415-555-0197"
+          }
+        },
+        "address": {
+          "street": "654 Birch Ln",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94117"
+        },
+        "is_manager": true,
+        "projects": []
+      },
+      {
+        "id": "EMP-1005",
+        "name": "Eva Williams",
+        "age": 50,
+        "position": "CFO",
+        "salary": 250000.0,
+        "skills": ["Financial Planning", "Risk Management", "Audit"],
+        "contact": {
+          "email": "eva.williams@technova.com",
+          "phone": "+1-415-555-0105",
+          "emergency_contact": null
+        },
+        "address": {
+          "street": "987 Cedar Ct",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94122"
+        },
+        "is_manager": true,
+        "projects": ["Project Gamma"]
+      },
+      {
+        "id": "EMP-1006",
+        "name": "Frank Zhang",
+        "age": 29,
+        "position": "Senior Software Engineer",
+        "salary": 145000.0,
+        "skills": ["Java", "Spring Boot", "Microservices", "Docker"],
+        "contact": {
+          "email": "frank.zhang@technova.com",
+          "phone": "+1-415-555-0106",
+          "emergency_contact": {
+            "name": "Lily Zhang",
+            "relation": "Mother",
+            "phone": "+1-415-555-0196"
+          }
+        },
+        "address": {
+          "street": "111 Elm St",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94103"
+        },
+        "is_manager": false,
+        "projects": ["Project Alpha", "Project Beta"]
+      },
+      {
+        "id": "EMP-1007",
+        "name": "Grace Kim",
+        "age": 31,
+        "position": "Product Manager",
+        "salary": 135000.0,
+        "skills": ["Product Strategy", "Agile", "User Research"],
+        "contact": {
+          "email": "grace.kim@technova.com",
+          "phone": "+1-415-555-0107",
+          "emergency_contact": {
+            "name": "James Kim",
+            "relation": "Spouse",
+            "phone": "+1-415-555-0195"
+          }
+        },
+        "address": {
+          "street": "222 Walnut Ave",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94109"
+        },
+        "is_manager": false,
+        "projects": ["Project Alpha", "Project Delta"]
+      },
+      {
+        "id": "EMP-1008",
+        "name": "Henry Brown",
+        "age": 27,
+        "position": "Junior Developer",
+        "salary": 85000.0,
+        "skills": ["JavaScript", "React", "Node.js"],
+        "contact": {
+          "email": "henry.brown@technova.com",
+          "phone": "+1-415-555-0108",
+          "emergency_contact": null
+        },
+        "address": {
+          "street": "333 Spruce Dr",
+          "city": "San Francisco",
+          "state": "CA",
+          "zip": "94112"
+        },
+        "is_manager": false,
+        "projects": ["Project Beta"]
+      }
+    ],
+    "projects": [
+      {
+        "id": "PROJ-001",
+        "name": "Project Alpha",
+        "status": "In Progress",
+        "start_date": "2024-01-15",
+        "end_date": "2024-12-31",
+        "budget": 2500000.0,
+        "team_members": ["EMP-1001", "EMP-1003", "EMP-1006", "EMP-1007"],
+        "technologies": ["Python", "React", "PostgreSQL", "AWS"]
+      },
+      {
+        "id": "PROJ-002",
+        "name": "Project Beta",
+        "status": "Planning",
+        "start_date": "2024-06-01",
+        "end_date": "2025-05-31",
+        "budget": 1800000.0,
+        "team_members": ["EMP-1002", "EMP-1006", "EMP-1008"],
+        "technologies": ["Go", "Vue.js", "MongoDB", "GCP"]
+      },
+      {
+        "id": "PROJ-003",
+        "name": "Project Gamma",
+        "status": "Completed",
+        "start_date": "2023-03-01",
+        "end_date": "2024-02-28",
+        "budget": 3200000.0,
+        "team_members": ["EMP-1001", "EMP-1005"],
+        "technologies": ["Java", "Angular", "Oracle", "Azure"]
+      },
+      {
+        "id": "PROJ-004",
+        "name": "Project Delta",
+        "status": "On Hold",
+        "start_date": "2024-04-01",
+        "end_date": null,
+        "budget": 900000.0,
+        "team_members": ["EMP-1003", "EMP-1007"],
+        "technologies": ["Python", "Flask", "Redis", "Docker"]
+      }
+    ],
+    "config": {
+      "database": {
+        "host": "db.technova.internal",
+        "port": 5432,
+        "name": "technova_prod",
+        "user": "app_user",
+        "password": "encrypted_password_here",
+        "pool_size": 20,
+        "ssl": true
+      },
+      "cache": {
+        "type": "redis",
+        "host": "redis.technova.internal",
+        "port": 6379,
+        "db": 0,
+        "ttl": 3600,
+        "cluster_mode": false
+      },
+      "logging": {
+        "level": "INFO",
+        "format": "json",
+        "output": "stdout",
+        "file": "/var/log/technova/app.log",
+        "max_size_mb": 100,
+        "backup_count": 5
+      },
+      "email": {
+        "smtp_host": "smtp.technova.com",
+        "smtp_port": 587,
+        "use_tls": true,
+        "from_address": "noreply@technova.com",
+        "admin_email": "admin@technova.com"
+      },
+      "features": {
+        "enable_new_dashboard": true,
+        "enable_ai_assistant": false,
+        "maintenance_mode": false,
+        "max_file_upload_mb": 50,
+        "allowed_origins": [
+          "https://app.technova.com",
+          "https://admin.technova.com",
+          "https://dev.technova.local"
+        ]
+      }
+    },
+    "metadata": {
+      "generated_at": "2025-03-27T10:30:00Z",
+      "version": "2.1.0",
+      "schema": "company_v2",
+      "notes": null
+    }
+  }
+}

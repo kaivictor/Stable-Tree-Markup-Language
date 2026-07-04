@@ -1,0 +1,241 @@
+```json
+{
+  "company": {
+    "name": "TechNova Solutions Inc.",
+    "founded": "2005-03-15",
+    "headquarters": {
+      "address": {
+        "street": "123 Innovation Drive",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "coordinates": {
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      }
+    },
+    "employees": {
+      "total": 1250,
+      "departments": [
+        {
+          "name": "Engineering",
+          "head": "Dr. Alice Chen",
+          "sub_teams": [
+            {
+              "name": "Backend",
+              "lead": "Bob Wang",
+              "members": [
+                {
+                  "id": 1001,
+                  "name": "Charlie Liu",
+                  "role": "Senior Developer",
+                  "skills": ["Python", "Go", "Kubernetes"],
+                  "active": true,
+                  "salary": 145000.5,
+                  "start_date": "2018-06-01",
+                  "contact": {
+                    "email": "charlie.liu@technova.com",
+                    "phone": "+1-415-555-0101"
+                  }
+                },
+                {
+                  "id": 1002,
+                  "name": "Diana Zhang",
+                  "role": "Developer",
+                  "skills": ["Java", "Spring", "Docker"],
+                  "active": true,
+                  "salary": 120000.0,
+                  "start_date": "2020-09-15",
+                  "contact": {
+                    "email": "diana.zhang@technova.com",
+                    "phone": "+1-415-555-0102"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Frontend",
+              "lead": "Eva Martinez",
+              "members": [
+                {
+                  "id": 2001,
+                  "name": "Frank Lee",
+                  "role": "Senior Frontend",
+                  "skills": ["React", "TypeScript", "CSS"],
+                  "active": true,
+                  "salary": 140000.0,
+                  "start_date": "2019-03-01",
+                  "contact": {
+                    "email": "frank.lee@technova.com",
+                    "phone": "+1-415-555-0201"
+                  }
+                },
+                {
+                  "id": 2002,
+                  "name": "Grace Kim",
+                  "role": "Junior Frontend",
+                  "skills": ["Vue.js", "JavaScript"],
+                  "active": false,
+                  "salary": 85000.0,
+                  "start_date": "2022-01-10",
+                  "end_date": "2023-12-31",
+                  "contact": {
+                    "email": "grace.kim@technova.com",
+                    "phone": "+1-415-555-0202"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Data Science",
+          "head": "Dr. John Smith",
+          "sub_teams": [
+            {
+              "name": "Machine Learning",
+              "lead": "Maria Garcia",
+              "members": [
+                {
+                  "id": 3001,
+                  "name": "Hiro Tanaka",
+                  "role": "ML Engineer",
+                  "skills": ["TensorFlow", "PyTorch", "Python"],
+                  "active": true,
+                  "salary": 155000.0,
+                  "start_date": "2017-11-20",
+                  "contact": {
+                    "email": "hiro.tanaka@technova.com",
+                    "phone": "+1-415-555-0301"
+                  }
+                },
+                {
+                  "id": 3002,
+                  "name": "Sofia Rossi",
+                  "role": "Data Scientist",
+                  "skills": ["R", "SQL", "Statistics"],
+                  "active": true,
+                  "salary": 130000.0,
+                  "start_date": "2021-04-05",
+                  "contact": {
+                    "email": "sofia.rossi@technova.com",
+                    "phone": "+1-415-555-0302"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Data Engineering",
+              "lead": "Alex Johnson",
+              "members": [
+                {
+                  "id": 4001,
+                  "name": "Liam Brown",
+                  "role": "Data Engineer",
+                  "skills": ["Spark", "Airflow", "Kafka"],
+                  "active": true,
+                  "salary": 135000.0,
+                  "start_date": "2020-07-01",
+                  "contact": {
+                    "email": "liam.brown@technova.com",
+                    "phone": "+1-415-555-0401"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "projects": [
+      {
+        "name": "Project Alpha",
+        "status": "active",
+        "budget": 2500000.0,
+        "start": "2023-01-01",
+        "deadline": "2024-06-30",
+        "team": [
+          { "ref": 1001 },
+          { "ref": 2001 },
+          { "ref": 3001 }
+        ],
+        "milestones": [
+          { "name": "Phase 1", "due": "2023-06-30", "completed": true },
+          { "name": "Phase 2", "due": "2023-12-31", "completed": false },
+          { "name": "Phase 3", "due": "2024-06-30", "completed": false }
+        ]
+      },
+      {
+        "name": "Project Beta",
+        "status": "planning",
+        "budget": 1800000.0,
+        "start": "2024-03-01",
+        "deadline": "2025-02-28",
+        "team": [
+          { "ref": 1002 },
+          { "ref": 2002 },
+          { "ref": 3002 },
+          { "ref": 4001 }
+        ],
+        "milestones": [
+          { "name": "Research", "due": "2024-05-31", "completed": false },
+          { "name": "Development", "due": "2024-11-30", "completed": false },
+          { "name": "Testing", "due": "2025-01-31", "completed": false },
+          { "name": "Launch", "due": "2025-02-28", "completed": false }
+        ]
+      }
+    ],
+    "financials": {
+      "revenue": [
+        { "year": 2023, "amount": 45000000.0, "currency": "USD" },
+        { "year": 2024, "amount": 52000000.0, "currency": "USD" }
+      ],
+      "expenses": [
+        { "category": "Salaries", "amount": 28000000.0 },
+        { "category": "Infrastructure", "amount": 8000000.0 },
+        { "category": "Marketing", "amount": 5000000.0 },
+        { "category": "R&D", "amount": 7000000.0 }
+      ],
+      "profit_margin": 0.15
+    },
+    "metadata": {
+      "last_updated": "2024-12-20T14:30:00Z",
+      "version": "2.1.0",
+      "notes": "This configuration file contains comprehensive data about the company.\nIt is used for internal reporting and analysis.\nAll dates are in ISO 8601 format.\nBoolean values are represented as true/false.\nNull values are represented as null.\n",
+      "tags": ["technology", "software", "AI", "data"],
+      "is_active": true,
+      "null_example": null,
+      "multiline_string": "This is a multiline string.\nIt can contain multiple lines.\nEach line is preserved.\nIndentation is relative to the block.\n",
+      "special_characters": "Line1\nLine2\tTabbed\nUnicode: é ñ ü",
+      "nested_null": {
+        "level1": {
+          "level2": null,
+          "level2b": "not null"
+        }
+      },
+      "mixed_array": [
+        1,
+        "two",
+        true,
+        null,
+        ["nested", "array"],
+        { "key": "value" }
+      ],
+      "very_long_string": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "scientific_notation": 1.23e-4,
+      "large_number": 12345678901234567890,
+      "negative_number": -42,
+      "boolean_false": false,
+      "boolean_true": true,
+      "date_only": "2024-12-25",
+      "datetime_with_tz": "2024-12-25T10:30:00+08:00",
+      "time_only": "14:30:00",
+      "yaml_anchor": { "name": "Shared", "value": 100 },
+      "anchor_usage": { "name": "Shared", "value": 100 },
+      "another_anchor_usage": { "name": "Shared", "value": 100 }
+    }
+  }
+}
+```

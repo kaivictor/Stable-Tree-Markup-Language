@@ -1,0 +1,338 @@
+```stml
+"metadata":
+  "title": "宇宙百科全书"
+  "version": "2.0.1"
+  "author": "星际档案馆"
+  "date": "2025-03-15"
+  "description": {
+本百科全书收录了银河系内已知的文明、星球、科技等数据。
+数据来源包括星际探险队、远程探测器和历史文献。
+注意：部分数据可能存在误差，请以最新版本为准。
+本版本新增了仙女座星系和三角座星系的详细资料。
+同时修正了之前版本中关于瓦肯人科技水平的错误。
+未来计划增加更多河外星系的数据。
+  }
+  "tags": ["宇宙", "百科全书", "科幻", "数据"]
+"database":
+  "host": "db.example.com"
+  "port": "5432"
+  "username": "admin"
+  "password": "secret123"
+  "database": "universe_db"
+  "pool":
+    "min_size": "5"
+    "max_size": "20"
+    "timeout": "30"
+  "options":
+    - "ssl": "true"
+    - "charset": "utf8mb4"
+"logging":
+  "level": "INFO"
+  "file": "/var/log/app.log"
+  "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  "handlers":
+    - "type": "file"
+      "max_bytes": "10485760"
+      "backup_count": "5"
+    - "type": "console"
+      "level": "DEBUG"
+"server":
+  "host": "0.0.0.0"
+  "port": "8080"
+  "workers": "4"
+  "timeout": "60"
+  "cors":
+    "enabled": "true"
+    "origins": ["*"]
+    "methods": ["GET", "POST", "PUT", "DELETE"]
+  "rate_limit":
+    "enabled": "true"
+    "requests_per_minute": "100"
+"users":
+  - "id": "1"
+    "username": "alice"
+    "email": "alice@example.com"
+    "profile":
+      "first_name": "Alice"
+      "last_name": "Johnson"
+      "age": "28"
+      "address":
+        "street": "123 Main St"
+        "city": "Springfield"
+        "state": "IL"
+        "zip": "62701"
+    "hobbies": ["reading", "hiking", "coding"]
+    "bio": {
+Alice is a software engineer with a passion for open source.
+She enjoys contributing to various projects in her free time.
+She also loves exploring nature and reading science fiction.
+    }
+  - "id": "2"
+    "username": "bob"
+    "email": "bob@example.com"
+    "profile":
+      "first_name": "Bob"
+      "last_name": "Smith"
+      "age": "35"
+      "address":
+        "street": "456 Oak Ave"
+        "city": "Metropolis"
+        "state": "NY"
+        "zip": "10001"
+    "hobbies": ["gaming", "cooking", "photography"]
+    "bio": {
+Bob is a professional chef who also works as a food blogger.
+He has traveled to over 30 countries to explore cuisines.
+In his spare time, he enjoys playing video games and photography.
+    }
+  - "id": "3"
+    "username": "charlie"
+    "email": "charlie@example.com"
+    "profile":
+      "first_name": "Charlie"
+      "last_name": "Brown"
+      "age": "22"
+      "address":
+        "street": "789 Pine Rd"
+        "city": "Smallville"
+        "state": "KS"
+        "zip": "67501"
+    "hobbies": ["music", "sports", "travel"]
+    "bio": {
+Charlie is a college student majoring in music production.
+He plays guitar and piano, and produces electronic music.
+He is also an avid soccer player and loves to travel.
+    }
+  - "id": "4"
+    "username": "diana"
+    "email": "diana@example.com"
+    "profile":
+      "first_name": "Diana"
+      "last_name": "Prince"
+      "age": "30"
+      "address":
+        "street": "321 Elm St"
+        "city": "Gotham"
+        "state": "NJ"
+        "zip": "07001"
+    "hobbies": ["martial arts", "history", "philanthropy"]
+    "bio": {
+Diana is a museum curator with a deep interest in ancient history.
+She practices martial arts and is a volunteer at local shelters.
+She believes in using knowledge to make the world a better place.
+    }
+  - "id": "5"
+    "username": "eve"
+    "email": "eve@example.com"
+    "profile":
+      "first_name": "Eve"
+      "last_name": "Adams"
+      "age": "27"
+      "address":
+        "street": "654 Maple Dr"
+        "city": "Rivertown"
+        "state": "CA"
+        "zip": "90210"
+    "hobbies": ["painting", "yoga", "writing"]
+    "bio": {
+Eve is a freelance artist and writer. She specializes in watercolor
+landscapes and has published a collection of short stories.
+She practices yoga daily and finds inspiration in nature.
+    }
+"products":
+  - "id": "101"
+    "name": "星际导航仪"
+    "price": "299.99"
+    "category": "电子产品"
+    "description": {
+这款星际导航仪采用最新的量子计算技术，能够实时计算
+星际航线的曲速路径。内置银河系全息地图，支持语音控制。
+适用于各类星际飞船。
+    }
+    "tags": ["导航", "量子", "星际"]
+    "specifications":
+      "weight": "1.2 kg"
+      "dimensions": "20x15x5 cm"
+      "battery": "锂离子 5000mAh"
+      "connectivity": ["Wi-Fi", "Bluetooth", "量子纠缠"]
+  - "id": "102"
+    "name": "等离子护盾"
+    "price": "1499.99"
+    "category": "防御装备"
+    "description": {
+等离子护盾能够生成高能等离子场，有效抵御能量武器和
+物理撞击。可调节护盾强度，适用于小型飞船和基地防御。
+    }
+    "tags": ["护盾", "等离子", "防御"]
+    "specifications":
+      "power_consumption": "500W"
+      "coverage": "10m radius"
+      "material": "钛合金外壳"
+      "color": "银灰色"
+  - "id": "103"
+    "name": "翻译器（通用型）"
+    "price": "89.99"
+    "category": "通讯设备"
+    "description": {
+通用型翻译器支持银河系已知的5000种语言，包括非人形
+种族的声波和电磁波交流。实时翻译，延迟低于0.1秒。
+小巧便携，可佩戴在手腕上。
+    }
+    "tags": ["翻译", "通讯", "便携"]
+    "specifications":
+      "languages": "5000"
+      "battery_life": "72 hours"
+      "weight": "50g"
+      "dimensions": "5x3x1 cm"
+  - "id": "104"
+    "name": "反重力靴"
+    "price": "499.99"
+    "category": "个人装备"
+    "description": {
+反重力靴允许用户在低重力环境下自由行走和跳跃。
+最大悬浮高度5米，速度可达20km/h。内置稳定系统，
+防止翻转。适合太空站和月球基地使用。
+    }
+    "tags": ["反重力", "靴子", "移动"]
+    "specifications":
+      "max_height": "5m"
+      "max_speed": "20 km/h"
+      "weight": "2.5 kg"
+      "material": "碳纤维"
+  - "id": "105"
+    "name": "全息通讯器"
+    "price": "199.99"
+    "category": "通讯设备"
+    "description": {
+全息通讯器能够投射出3D全息影像，实现面对面的远程
+交流。支持多人会议，影像分辨率达到4K。内置AI助手，
+可实时翻译和记录会议内容。
+    }
+    "tags": ["全息", "通讯", "AI"]
+    "specifications":
+      "resolution": "4K"
+      "field_of_view": "120 degrees"
+      "connectivity": ["5G", "量子网络"]
+      "battery": "锂聚合物 3000mAh"
+  - "id": "106"
+    "name": "医疗扫描仪"
+    "price": "799.99"
+    "category": "医疗设备"
+    "description": {
+便携式医疗扫描仪能够快速诊断常见疾病和创伤，支持
+多种扫描模式（X光、超声波、MRI）。内置药品库和
+治疗建议。适用于野外和星际旅行。
+    }
+    "tags": ["医疗", "扫描", "便携"]
+    "specifications":
+      "scan_modes": ["X-ray", "Ultrasound", "MRI"]
+      "weight": "1.8 kg"
+      "display": "7 inch touchscreen"
+      "data_storage": "256GB"
+  - "id": "107"
+    "name": "能量饮料（星际版）"
+    "price": "4.99"
+    "category": "食品饮料"
+    "description": {
+专为星际旅行者设计的能量饮料，含有多种维生素和
+电解质，能够快速补充体力。零糖配方，口味清爽。
+每罐250ml，适合长时间太空作业。
+    }
+    "tags": ["饮料", "能量", "健康"]
+    "specifications":
+      "volume": "250ml"
+      "calories": "15"
+      "caffeine": "50mg"
+      "flavors": ["柠檬", "蓝莓", "西柚"]
+  - "id": "108"
+    "name": "记忆增强芯片"
+    "price": "999.99"
+    "category": "生物科技"
+    "description": {
+记忆增强芯片植入大脑海马体，能够提升记忆容量和
+回忆速度。支持无线数据传输，可备份和恢复记忆。
+需专业医生植入，术后恢复期一周。
+    }
+    "tags": ["芯片", "记忆", "增强"]
+    "specifications":
+      "storage": "10TB"
+      "transfer_speed": "1Gbps"
+      "compatibility": "人类大脑标准接口"
+      "warranty": "5 years"
+  - "id": "109"
+    "name": "便携式黑洞探测器"
+    "price": "2499.99"
+    "category": "科学仪器"
+    "description": {
+便携式黑洞探测器能够探测到半径100光年内的黑洞，
+并分析其质量、自旋和事件视界。数据实时传输至
+星际数据库。适用于科研飞船和天文台。
+    }
+    "tags": ["黑洞", "探测", "科学"]
+    "specifications":
+      "range": "100 light-years"
+      "sensitivity": "0.01 solar masses"
+      "weight": "12 kg"
+      "power": "核电池"
+  - "id": "110"
+    "name": "星际旅行指南"
+    "price": "29.99"
+    "category": "书籍"
+    "description": {
+一本全面的星际旅行指南，涵盖银河系主要旅游景点、
+文明习俗、交通方式和签证要求。附赠全息地图和
+短语手册。适合初次进行星际旅行的游客。
+    }
+    "tags": ["旅行", "指南", "书籍"]
+    "specifications":
+      "pages": "500"
+      "format": "电子书/纸质"
+      "languages": ["汉语", "英语", "银河通用语"]
+      "publisher": "星际出版社"
+"orders":
+  - "order_id": "ORD-2025-001"
+    "user_id": "1"
+    "date": "2025-03-10"
+    "items":
+      - "product_id": "101"
+        "quantity": "2"
+        "unit_price": "299.99"
+      - "product_id": "103"
+        "quantity": "1"
+        "unit_price": "89.99"
+      - "product_id": "107"
+        "quantity": "10"
+        "unit_price": "4.99"
+    "total": "739.87"
+    "status": "shipped"
+  - "order_id": "ORD-2025-002"
+    "user_id": "2"
+    "date": "2025-03-12"
+    "items":
+      - "product_id": "102"
+        "quantity": "1"
+        "unit_price": "1499.99"
+      - "product_id": "104"
+        "quantity": "2"
+        "unit_price": "499.99"
+    "total": "2499.97"
+    "status": "processing"
+  - "order_id": "ORD-2025-003"
+    "user_id": "3"
+    "date": "2025-03-14"
+    "items":
+      - "product_id": "105"
+        "quantity": "3"
+        "unit_price": "199.99"
+      - "product_id": "106"
+        "quantity": "1"
+        "unit_price": "799.99"
+      - "product_id": "108"
+        "quantity": "1"
+        "unit_price": "999.99"
+      - "product_id": "110"
+        "quantity": "2"
+        "unit_price": "29.99"
+    "total": "2459.94"
+    "status": "pending"
+```

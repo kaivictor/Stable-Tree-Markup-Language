@@ -1,0 +1,153 @@
+```stml
+# 系统配置
+"system":
+  "name": "MyApp"
+  "version": "2.5.1"
+  "debug": "false"
+  "environment": "production"
+  "features": ["authentication", "authorization", "logging", "monitoring"]
+  "max_users": "1000"
+  "maintenance_mode": null
+
+"database":
+  "host": "localhost"
+  "port": "5432"
+  "credentials":
+    "username": "admin"
+    "password": "s3cr3t!@#"
+    "ssl": "true"
+  "pool":
+    "min": "5"
+    "max": "20"
+    "timeout": "30.5"
+  "tables":
+    - "name": "users"
+      "columns":
+        - "id": "integer"
+        - "name": "varchar(255)"
+        - "email": "varchar(255)"
+        - "created_at": "timestamp"
+    - "name": "orders"
+      "columns":
+        - "id": "integer"
+        - "user_id": "integer"
+        - "total": "decimal(10,2)"
+        - "status": "varchar(50)"
+
+"users":
+  - "id": "1"
+    "name": "Alice"
+    "roles": ["admin", "user"]
+    "metadata":
+      "last_login": "2023-10-01T12:00:00Z"
+      "preferences":
+        "theme": "dark"
+        "notifications": "true"
+  - "id": "2"
+    "name": "Bob"
+    "roles": ["user"]
+    "metadata":
+      "last_login": null
+      "preferences":
+        "theme": "light"
+        "notifications": "false"
+  - "id": "3"
+    "name": "Charlie"
+    "roles": ["moderator", "user"]
+    "metadata":
+      "last_login": "2024-01-15T08:30:00+00:00"
+      "preferences":
+        "theme": "auto"
+        "notifications": "true"
+        "language": "en"
+
+"logging":
+  "level": "INFO"
+  "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  "handlers":
+    - "type": "console"
+      "level": "DEBUG"
+    - "type": "file"
+      "filename": "/var/log/app.log"
+      "max_bytes": "10485760"
+      "backup_count": "5"
+    - "type": "syslog"
+      "address": "/dev/log"
+      "facility": "local0"
+  "filters":
+    - "name": "exclude_health"
+      "pattern": ".*health.*"
+    - "name": "include_errors"
+      "pattern": ".*ERROR.*"
+
+"multiline_string": {
+This is a multiline string.
+It can contain multiple lines.
+And preserves newlines.
+"Quotes" and special characters like \n are handled.
+Line 5: another line.
+Line 6: yet another.
+}
+
+"nested":
+  "level1":
+    "level2":
+      "level3":
+        "value": "deep"
+        "list":
+          - "item1"
+          - "item2"
+          - "item3"
+        "dict":
+          "key1": "value1"
+          "key2": "value2"
+          "key3":
+            "subkey1": "subvalue1"
+            "subkey2": "subvalue2"
+
+# 包含特殊字符的键
+"special key with spaces": "value"
+"key with colon:": "another value"
+"key with #hash": "yet another"
+"key with \"double quotes\"": "escaped"
+
+# 布尔值、数字、空值
+"boolean_true": "true"
+"boolean_false": "false"
+"integer": "42"
+"float": "3.14159"
+"null_value": null
+"negative": "-100"
+"scientific": "1.23e-4"
+"large_number": "12345678901234567890"
+
+# 数组嵌套
+"matrix": ["[1,2,3]", "[4,5,6]", "[7,8,9]"]
+
+# 混合数组
+"mixed_array": ["string", "123", "true", null, "{key: value}", "[list, inside]", "another_string"]
+
+# 日期时间（ISO8601）
+"date": "2023-12-25"
+"datetime": "2023-12-25T10:30:00Z"
+"datetime_with_tz": "2023-12-25T10:30:00+05:30"
+"datetime_no_tz": "2024-02-29T23:59:59"
+
+# 折叠块（折叠为单行）
+"folded_text": "This is a folded block. It will be folded into a single line. But newlines are replaced with spaces. \"Quotes\" are preserved. Extra spaces   are collapsed."
+
+# 长字符串（普通双引号）
+"long_string": "This is a very long string that contains many characters. It includes punctuation, numbers 123, and special symbols like @#$%^&*. It is used to test the parsing capabilities of both YAML and JSON. The string should be exactly represented in both formats, with proper escaping of double quotes (\\\") and backslashes (\\\\)"
+
+# 空对象和空数组
+"empty_object": null
+"empty_array": []
+
+# 嵌套空值
+"nested_nulls":
+  "a": null
+  "b":
+    "c": null
+    "d": "1"
+  "e": ["null", "null", "3"]
+```

@@ -1,0 +1,55 @@
+"project": "STML Generator"
+"version": "1.0.0"
+"description": {
+  这是一个用于生成STML文档的示例项目。
+  它展示了STML的各种特性，包括多行文本、列表、嵌套字典等。
+  注意：多行文本的右花括号必须缩进小于等于键的缩进。
+}
+"author":
+  "name": "Alice"
+  "email": "alice@example.com"
+  "role": "developer"
+"tags": ["stml", "yaml", "generator"]
+"dependencies":
+  "python": "3.9"
+  "pyyaml": "6.0"
+  "json": "built-in"
+"features":
+  - "多行文本支持"
+  - "行内列表"
+  - "多文档"
+  - "注释"
+"notes": null
+---
+"users":
+  -
+    "name": "Bob"
+    "age": "30"
+    "address":
+      "city": "New York"
+      "street": "123 Main St"
+    "hobbies":
+      "reading": null
+      "swimming": null
+      "coding": "喜欢编程"
+  -
+    "name": "Carol"
+    "age": "25"
+    "address":
+      "city": "Los Angeles"
+      "street": "456 Oak Ave"
+    "hobbies":
+      "painting": null
+      "dancing": null
+---
+"comment": "这是一个注释示例"
+"empty": null
+"multiline": {
+  第一行
+  第二行
+  第三行
+}
+"inline_list": ["a", "b", "c"]
+"nested":
+  "level1":
+    "level2": "deep"

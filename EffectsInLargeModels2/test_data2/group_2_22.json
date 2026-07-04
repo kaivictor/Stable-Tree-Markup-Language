@@ -1,0 +1,286 @@
+{
+  "ship": {
+    "name": "星际探索者号",
+    "registry": "NCC-1701-E",
+    "class": "探索级",
+    "launch_date": "2024-12-25T10:30:00Z",
+    "status": "active",
+    "crew_capacity": 1200,
+    "current_crew": 987,
+    "max_warp": 9.975,
+    "dimensions": {
+      "length": 642.5,
+      "width": 245.3,
+      "height": 88.7,
+      "mass": 4500000
+    },
+    "propulsion": {
+      "main_engine": "曲速核心 Mark VII",
+      "impulse_engine": "脉冲引擎 RCS-3000",
+      "fuel_type": "氘-氦3等离子体",
+      "fuel_capacity": 50000,
+      "efficiency": 0.87
+    },
+    "weapons": [
+      {
+        "type": "相位炮阵列",
+        "count": 12,
+        "power": 5.1,
+        "range": 300000
+      },
+      {
+        "type": "光子鱼雷发射管",
+        "count": 4,
+        "payload": "光子鱼雷",
+        "magazine": 250
+      },
+      {
+        "type": "牵引光束",
+        "count": 2,
+        "max_range": 10000,
+        "strength": 500
+      }
+    ],
+    "shields": {
+      "type": "偏导护盾",
+      "max_power": 8500,
+      "recharge_rate": 120,
+      "frequency": "多频段自适应"
+    },
+    "crew": {
+      "captain": {
+        "name": "詹姆斯·T·柯克",
+        "rank": "上校",
+        "species": "人类",
+        "age": 35,
+        "awards": ["星际舰队荣誉勋章", "英勇十字勋章", "探索之星"]
+      },
+      "first_officer": {
+        "name": "斯波克",
+        "rank": "中校",
+        "species": "瓦肯人",
+        "age": 42,
+        "iq": 210
+      },
+      "chief_engineer": {
+        "name": "蒙哥马利·斯科特",
+        "rank": "少校",
+        "species": "人类",
+        "age": 48,
+        "catchphrase": "我做不到，先生！"
+      },
+      "medical_officer": {
+        "name": "伦纳德·麦考伊",
+        "rank": "中校",
+        "species": "人类",
+        "age": 52,
+        "specialty": "全科医学",
+        "notes": "脾气暴躁但心地善良。\n经常与斯波克争论逻辑与情感。\n口头禅：\"我是医生，不是XXX！\"\n"
+      }
+    },
+    "departments": [
+      {
+        "name": "指挥组",
+        "head": "詹姆斯·T·柯克",
+        "personnel": 45,
+        "responsibilities": ["舰桥指挥", "战略决策", "外交事务"]
+      },
+      {
+        "name": "科学部",
+        "head": "斯波克",
+        "personnel": 120,
+        "sub_departments": [
+          {
+            "name": "天体物理学",
+            "head": "斯波克（兼任）",
+            "personnel": 30
+          },
+          {
+            "name": "生物学",
+            "head": "伊丽莎白·卡特勒博士",
+            "personnel": 40
+          },
+          {
+            "name": "地质学",
+            "head": "赫斯特·奥尼尔",
+            "personnel": 25
+          },
+          {
+            "name": "计算机科学",
+            "head": "数据中尉",
+            "personnel": 25
+          }
+        ]
+      },
+      {
+        "name": "工程部",
+        "head": "蒙哥马利·斯科特",
+        "personnel": 200,
+        "shifts": [
+          {
+            "shift": "阿尔法",
+            "leader": "斯科特",
+            "personnel": 80
+          },
+          {
+            "shift": "贝塔",
+            "leader": "托马斯·哈里斯",
+            "personnel": 70
+          },
+          {
+            "shift": "伽马",
+            "leader": "苏珊·林",
+            "personnel": 50
+          }
+        ]
+      },
+      {
+        "name": "医疗部",
+        "head": "伦纳德·麦考伊",
+        "personnel": 80,
+        "facilities": ["主医务室", "急诊室", "外科手术室", "生物实验室", "心理辅导室"]
+      },
+      {
+        "name": "安全部",
+        "head": "加斯·奥利弗",
+        "personnel": 150,
+        "security_levels": [
+          {
+            "level": 1,
+            "description": "公开区域",
+            "access": "所有人员"
+          },
+          {
+            "level": 2,
+            "description": "限制区域",
+            "access": "授权人员"
+          },
+          {
+            "level": 3,
+            "description": "机密区域",
+            "access": "高级军官"
+          },
+          {
+            "level": 4,
+            "description": "最高机密",
+            "access": "舰长及指定人员"
+          }
+        ]
+      }
+    ],
+    "current_mission": {
+      "id": "M-2025-04",
+      "name": "探索未知星域",
+      "objective": "调查银河系悬臂边缘的异常引力波动",
+      "start_date": "2025-03-15",
+      "estimated_duration": 180,
+      "status": "进行中",
+      "waypoints": [
+        {
+          "name": "阿尔法象限",
+          "coordinates": [125.4, -78.3, 900.1],
+          "arrival": "2025-04-10",
+          "departure": "2025-04-12"
+        },
+        {
+          "name": "贝塔星云",
+          "coordinates": [230.7, 15.2, 1020.5],
+          "arrival": "2025-05-01",
+          "departure": "2025-05-05"
+        },
+        {
+          "name": "伽马黑洞视界",
+          "coordinates": [450.0, -200.0, 1500.0],
+          "arrival": "2025-06-15",
+          "departure": null
+        }
+      ],
+      "anomalies": [
+        {
+          "type": "时空涟漪",
+          "severity": 3,
+          "description": "在阿尔法象限附近检测到微弱的时空扭曲，\n可能是由未知的引力源引起。\n需要进一步调查。\n"
+        },
+        {
+          "type": "不明信号",
+          "severity": 5,
+          "description": "从贝塔星云深处接收到重复的调制信号，频率为 1420 MHz，疑似智能生命发出。已列为最高优先级调查目标。\n"
+        }
+      ]
+    },
+    "logs": [
+      {
+        "date": "2025-04-01",
+        "entry": "今天完成了曲速引擎的例行维护。斯科特报告说\n等离子注入器需要更换，但备件库存不足。\n已向星联总部申请补给。\n"
+      },
+      {
+        "date": "2025-04-02",
+        "entry": "斯波克在科学部发现了一种新的亚原子粒子，\n暂时命名为“斯波克粒子”。该粒子在曲速场中\n表现出异常行为，可能对超光速旅行有重要意义。\n"
+      },
+      {
+        "date": "2025-04-03",
+        "entry": "麦考伊医生抱怨食堂的复制机又坏了，无法制作他喜欢的南方炸鸡。"
+      }
+    ],
+    "inventory": {
+      "food_supplies": {
+        "total_meals": 150000,
+        "days_remaining": 152,
+        "special_items": {
+          "咖啡豆（蓝山）": 500,
+          "茶叶（伯爵）": 200,
+          "合成牛排": 3000,
+          "瓦肯素食套餐": 800
+        }
+      },
+      "spare_parts": [
+        {
+          "name": "曲速线圈",
+          "quantity": 3,
+          "location": "仓库A-12"
+        },
+        {
+          "name": "相位炮电容",
+          "quantity": 10,
+          "location": "仓库B-07"
+        },
+        {
+          "name": "护盾发生器模块",
+          "quantity": 2,
+          "location": "仓库C-03"
+        }
+      ],
+      "medical_supplies": {
+        "hyposprays": 200,
+        "dermal_regenerators": 15,
+        "anti-radiation_drugs": 500,
+        "blood_plasma_units": 1000
+      }
+    },
+    "communication": {
+      "subspace_frequency": "157.3 MHz",
+      "encryption": "量子加密协议 v4.2",
+      "relay_stations": [
+        {
+          "name": "星联中继站-7",
+          "status": "online",
+          "last_contact": "2025-04-03T18:30:00Z"
+        },
+        {
+          "name": "深空网络-12",
+          "status": "offline",
+          "last_contact": "2025-03-28T09:15:00Z",
+          "reason": "维护中"
+        }
+      ]
+    },
+    "notes": "本配置文件遵循星际舰队标准格式 v3.2。\n所有时间均为星际标准时间（UTC）。\n坐标系统基于银河系中心原点。\n如有疑问，请联系星联舰队司令部。\n",
+    "_metadata": {
+      "created_by": "星联舰队司令部",
+      "created_at": "2025-04-01T00:00:00Z",
+      "last_modified": "2025-04-03T22:45:00Z",
+      "version": "3.2.1",
+      "checksum": "a1b2c3d4e5f6g7h8i9j0"
+    }
+  }
+}

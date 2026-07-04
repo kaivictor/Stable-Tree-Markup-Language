@@ -1,0 +1,202 @@
+```stml
+"company":
+  "name": "Global Tech Solutions"
+  "founded": "1998"
+  "ceo":
+    "name": "Alice Johnson"
+    "age": "55"
+    "email": "alice@example.com"
+  "address":
+    "street": "123 Innovation Drive"
+    "city": "San Francisco"
+    "state": "CA"
+    "zip": "94105"
+    "country": "USA"
+  "contact":
+    "phone": "+1-555-123-4567"
+    "email": "info@globaltech.com"
+    "website": "https://www.globaltech.com"
+  "employees":
+    - "id": "1"
+      "name": "Bob Smith"
+      "department": "Engineering"
+      "position": "Senior Developer"
+      "salary": "120000"
+      "skills": ["Python", "Java", "Kubernetes"]
+      "projects": ["Project Alpha", "Project Beta"]
+      "start_date": "2015-03-01"
+      "active": "true"
+      "address":
+        "street": "456 Oak Ave"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94110"
+      "emergency_contact":
+        "name": "Jane Smith"
+        "relation": "Spouse"
+        "phone": "+1-555-987-6543"
+      "notes": {
+Bob is a key member of the engineering team.
+He leads the backend infrastructure.
+He has received multiple awards including Employee of the Year.
+      }
+    - "id": "2"
+      "name": "Carol Davis"
+      "department": "Marketing"
+      "position": "Marketing Manager"
+      "salary": "95000"
+      "skills": ["SEO", "Content Strategy", "Analytics"]
+      "projects": ["Campaign X"]
+      "start_date": "2018-07-15"
+      "active": "true"
+      "address":
+        "street": "789 Pine St"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94102"
+      "emergency_contact":
+        "name": "Mark Davis"
+        "relation": "Brother"
+        "phone": "+1-555-111-2222"
+      "notes": {
+Carol is responsible for all marketing campaigns.
+She has a strong background in digital marketing.
+She recently launched a successful social media campaign.
+      }
+    - "id": "3"
+      "name": "David Lee"
+      "department": "Engineering"
+      "position": "DevOps Engineer"
+      "salary": "110000"
+      "skills": ["Docker", "Kubernetes", "Terraform"]
+      "projects": ["Project Alpha"]
+      "start_date": "2019-11-01"
+      "active": "true"
+      "address":
+        "street": "321 Elm St"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94103"
+      "emergency_contact":
+        "name": "Susan Lee"
+        "relation": "Wife"
+        "phone": "+1-555-333-4444"
+      "notes": {
+David is an expert in cloud infrastructure.
+He manages the CI/CD pipelines.
+He is also a certified AWS Solutions Architect.
+      }
+    - "id": "4"
+      "name": "Emily White"
+      "department": "Human Resources"
+      "position": "HR Director"
+      "salary": "130000"
+      "skills": ["Recruiting", "Employee Relations", "Benefits Administration"]
+      "projects": []
+      "start_date": "2016-04-20"
+      "active": "true"
+      "address":
+        "street": "654 Maple Dr"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94104"
+      "emergency_contact":
+        "name": "Tom White"
+        "relation": "Husband"
+        "phone": "+1-555-555-6666"
+      "notes": {
+Emily oversees all HR operations.
+She has implemented new performance review systems.
+She is passionate about employee well-being.
+      }
+    - "id": "5"
+      "name": "Frank Green"
+      "department": "Finance"
+      "position": "CFO"
+      "salary": "200000"
+      "skills": ["Financial Planning", "Risk Management", "Auditing"]
+      "projects": ["Budget 2024"]
+      "start_date": "2014-01-10"
+      "active": "true"
+      "address":
+        "street": "987 Birch Ln"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94105"
+      "emergency_contact":
+        "name": "Laura Green"
+        "relation": "Spouse"
+        "phone": "+1-555-777-8888"
+      "notes": {
+Frank is responsible for the company's financial health.
+He has over 20 years of experience in finance.
+He leads the annual budgeting process.
+      }
+  "projects":
+    - "name": "Project Alpha"
+      "description": {
+Project Alpha is a large-scale cloud migration initiative.
+It involves moving all on-premise infrastructure to AWS.
+The project is expected to complete by Q4 2024.
+Key milestones include:
+- Phase 1: Assessment and planning (completed)
+- Phase 2: Migration of non-critical systems (in progress)
+- Phase 3: Migration of critical systems (scheduled)
+      }
+      "budget": "5000000"
+      "team_size": "25"
+      "status": "In Progress"
+      "start_date": "2023-01-15"
+      "end_date": "2024-12-31"
+    - "name": "Project Beta"
+      "description": {
+A machine learning platform for predictive analytics.
+Uses TensorFlow and PyTorch.
+Deployed on Kubernetes.
+The platform provides real-time predictions for customer churn.
+      }
+      "budget": "3000000"
+      "team_size": "15"
+      "status": "Completed"
+      "start_date": "2022-06-01"
+      "end_date": "2023-09-30"
+    - "name": "Campaign X"
+      "description": {
+A marketing campaign to promote the new product line.
+Includes social media ads, email marketing, and influencer partnerships.
+Target audience: tech-savvy millennials.
+      }
+      "budget": "500000"
+      "team_size": "5"
+      "status": "In Progress"
+      "start_date": "2023-08-01"
+      "end_date": "2024-02-28"
+  "financials":
+    "revenue": "250000000"
+    "expenses": "180000000"
+    "profit": "70000000"
+    "currency": "USD"
+    "fiscal_year": "2023"
+    "quarterly_breakdown":
+      "Q1":
+        "revenue": "60000000"
+        "expenses": "45000000"
+        "profit": "15000000"
+      "Q2":
+        "revenue": "65000000"
+        "expenses": "48000000"
+        "profit": "17000000"
+      "Q3":
+        "revenue": "70000000"
+        "expenses": "50000000"
+        "profit": "20000000"
+      "Q4":
+        "revenue": "55000000"
+        "expenses": "37000000"
+        "profit": "18000000"
+  "metadata":
+    "generated_by": "YAML Generator"
+    "version": "1.0"
+    "timestamp": "2023-10-05T14:30:00Z"
+    "notes": "This YAML file contains company information for demonstration purposes."
+```

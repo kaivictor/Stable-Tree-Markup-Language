@@ -1,0 +1,221 @@
+# 系统配置
+"app":
+  "name": "MyApp"
+  "version": "2.1.0"
+  "description": {
+    这是一个多行字符串。
+    它包含换行符和特殊字符如引号"和斜杠\。
+    还有Unicode: 你好世界。
+  }
+  "license": "MIT"
+  "author": "John Doe"
+
+# 数据库配置
+"database":
+  "host": "localhost"
+  "port": "5432"
+  "credentials":
+    "username": "admin"
+    "password": "secret123"
+  "pool_size": "10"
+  "timeout": "30.5"
+  "options":
+    "ssl": "true"
+    "max_connections": "100"
+    "application_name": "MyApp"
+
+# 缓存配置
+"cache":
+  "type": "redis"
+  "servers":
+    - "host": "redis1.example.com"
+      "port": "6379"
+    - "host": "redis2.example.com"
+      "port": "6379"
+  "default_ttl": "3600"
+
+# 日志配置
+"logging":
+  "level": "INFO"
+  "handlers":
+    - "type": "console"
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    - "type": "file"
+      "filename": "/var/log/myapp.log"
+      "max_bytes": "10485760"
+      "backup_count": "5"
+  "root_logger":
+    "level": "DEBUG"
+    "handlers": ["console", "file"]
+
+# 安全配置
+"security":
+  "jwt_secret": "my-secret-key"
+  "allowed_origins":
+    - "http://localhost:3000"
+    - "https://example.com"
+  "rate_limit":
+    "enabled": "true"
+    "requests_per_minute": "100"
+
+# 功能开关
+"features":
+  - "name": "dark_mode"
+    "enabled": "true"
+  - "name": "notifications"
+    "enabled": "false"
+  - "name": "export"
+    "enabled": "true"
+    "options":
+      "formats": ["csv", "json", "xlsx"]
+
+# 用户列表
+"users":
+  - "id": "1"
+    "name": "Alice"
+    "email": "alice@example.com"
+    "roles": ["admin", "user"]
+    "address":
+      "street": "123 Main St"
+      "city": "Springfield"
+      "zip": "12345"
+    "phone": "+1-555-1234"
+    "metadata":
+      "created_at": "2023-01-15T10:30:00Z"
+      "last_login": "2023-06-20T08:45:00Z"
+      "preferences":
+        "theme": "dark"
+        "language": "en"
+  - "id": "2"
+    "name": "Bob"
+    "email": "bob@example.com"
+    "roles": ["admin", "user"]
+    "address":
+      "street": "456 Oak Ave"
+      "city": "Metropolis"
+      "zip": "67890"
+    "phone": "+1-555-5678"
+    "metadata":
+      "created_at": "2023-02-20T14:00:00Z"
+      "last_login": "2023-06-19T12:30:00Z"
+      "preferences":
+        "theme": "light"
+        "language": "fr"
+  - "id": "3"
+    "name": "Charlie"
+    "email": "charlie@example.com"
+    "roles": ["admin", "user"]
+    "address":
+      "street": "789 Pine Rd"
+      "city": "Gotham"
+      "zip": "13579"
+    "phone": "+1-555-9012"
+    "metadata":
+      "created_at": "2023-03-10T09:15:00Z"
+      "last_login": null
+      "preferences":
+        "theme": "dark"
+        "language": "de"
+
+# 项目列表
+"projects":
+  - "id": "P001"
+    "name": "Project Alpha"
+    "description": {
+      这是一个示例项目。
+      包含多个里程碑和任务。
+    }
+    "start_date": "2023-01-01"
+    "end_date": "2023-12-31"
+    "status": "active"
+    "team":
+      - "id": "1"
+        "name": "Alice"
+        "email": "alice@example.com"
+        "roles": ["admin", "user"]
+        "address":
+          "street": "123 Main St"
+          "city": "Springfield"
+          "zip": "12345"
+        "phone": "+1-555-1234"
+        "metadata":
+          "created_at": "2023-01-15T10:30:00Z"
+          "last_login": "2023-06-20T08:45:00Z"
+          "preferences":
+            "theme": "dark"
+            "language": "en"
+      - "id": "2"
+        "name": "Bob"
+        "email": "bob@example.com"
+        "roles": ["admin", "user"]
+        "address":
+          "street": "456 Oak Ave"
+          "city": "Metropolis"
+          "zip": "67890"
+        "phone": "+1-555-5678"
+        "metadata":
+          "created_at": "2023-02-20T14:00:00Z"
+          "last_login": "2023-06-19T12:30:00Z"
+          "preferences":
+            "theme": "light"
+            "language": "fr"
+    "milestones":
+      - "name": "Milestone 1"
+        "due_date": "2023-03-31"
+        "status": "completed"
+      - "name": "Milestone 2"
+        "due_date": "2023-06-30"
+        "status": "in_progress"
+      - "name": "Milestone 3"
+        "due_date": "2023-09-30"
+        "status": "pending"
+  - "id": "P002"
+    "name": "Project Beta"
+    "description": "另一个项目，没有多行描述。"
+    "start_date": "2023-04-01"
+    "end_date": null
+    "status": "planning"
+    "team":
+      - "id": "3"
+        "name": "Charlie"
+        "email": "charlie@example.com"
+        "roles": ["admin", "user"]
+        "address":
+          "street": "789 Pine Rd"
+          "city": "Gotham"
+          "zip": "13579"
+        "phone": "+1-555-9012"
+        "metadata":
+          "created_at": "2023-03-10T09:15:00Z"
+          "last_login": null
+          "preferences":
+            "theme": "dark"
+            "language": "de"
+    "milestones":
+      - "name": "Initial Planning"
+        "due_date": "2023-04-15"
+        "status": "completed"
+      - "name": "Development"
+        "due_date": "2023-07-15"
+        "status": "pending"
+
+# 一些额外的设置
+"settings":
+  # 10 MB in bytes
+  "max_upload_size": "10485760"
+  "allowed_file_types":
+    - ".jpg"
+    - ".png"
+    - ".pdf"
+    - ".docx"
+  "email":
+    "smtp_host": "smtp.example.com"
+    "smtp_port": "587"
+    "use_tls": "true"
+    "from_address": "no-reply@example.com"
+  "notifications":
+    "enabled": "true"
+    "channels":
+      - "email"
+      - "sms"
+      - "push"

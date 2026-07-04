@@ -1,0 +1,73 @@
+# This is a sample STML document with multiple documents
+"personal_info":
+  "name": "Alice Johnson"
+  "age": "30"
+  "email": "alice@example.com"
+  "address": {
+123 Main Street
+Springfield, IL 62701
+USA
+}
+  "hobbies": ["reading", "coding", "hiking", "photography", "traveling"]
+  "education":
+    "high_school": "Springfield High School"
+    "university":
+      "name": "State University"
+      "degree": "B.S. Computer Science"
+      "graduation_year": "2015"
+      "courses": ["Data Structures", "Algorithms", "Operating Systems"]
+  "skills": ["Python", "Java", "JavaScript", "SQL", "Git"]
+  "projects":
+    - "name": "Project Alpha"
+      "role": "Lead Developer"
+      "description": {
+Led a team of 5 developers to build a scalable microservices architecture.
+Used Python, Django, and PostgreSQL.
+}
+      "technologies": ["Python", "Django", "PostgreSQL", "Docker", "AWS"]
+    - "name": "Project Beta"
+      "role": "Contributor"
+      "description": "Contributed to frontend development using React and Redux."
+      "technologies": ["React", "Redux", "JavaScript", "CSS"]
+  "notes": null
+---
+# Second document: Work experience
+"work_experience":
+  - "company": "Tech Corp"
+    "position": "Software Engineer"
+    "start_date": "2016-01"
+    "end_date": "2019-12"
+    "description": {
+Developed and maintained web applications.
+Collaborated with cross-functional teams.
+}
+    "skills_used": ["Python", "Django", "React", "PostgreSQL"]
+  - "company": "Innovate Inc."
+    "position": "Senior Developer"
+    "start_date": "2020-01"
+    "end_date": "2023-06"
+    "description": {
+Led a team of 10 developers.
+Designed and implemented new features.
+}
+    "skills_used": ["Java", "Spring Boot", "Microservices", "Kubernetes"]
+---
+# Third document: Miscellaneous
+"misc":
+  "comment": "This is a sample STML document with rich content."
+  "inline_list": ["item1", "item2", "item3 with , and : colon"]
+  "multiline": {
+This is a multiline string.
+It can contain multiple lines.
+Each line is preserved.
+}
+  "nested_dict":
+    "level1":
+      "level2":
+        "level3": "deep value"
+        "level3_list": ["a", "b", "c"]
+  "null_value": null
+  "another_list":
+    - "first"
+    - "second"
+    - "third"

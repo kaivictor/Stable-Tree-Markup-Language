@@ -1,0 +1,352 @@
+{
+  "global": {
+    "app_name": "SuperApp",
+    "version": 3.2,
+    "debug": false,
+    "features": ["authentication", "payment", "notifications", "analytics", "reporting"],
+    "max_users": 10000,
+    "maintenance_mode": null
+  },
+  "database": {
+    "host": "db.example.com",
+    "port": 5432,
+    "credentials": {
+      "username": "admin",
+      "password": "s3cr3t!",
+      "ssl": true
+    },
+    "pool": {
+      "min": 5,
+      "max": 20,
+      "timeout": 30.5
+    },
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {"id": "integer"},
+          {"name": "varchar(100)"},
+          {"email": "varchar(255)"},
+          {"created_at": "timestamp"}
+        ]
+      },
+      {
+        "name": "orders",
+        "columns": [
+          {"id": "integer"},
+          {"user_id": "integer"},
+          {"total": "decimal(10,2)"},
+          {"status": "varchar(20)"}
+        ]
+      }
+    ]
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "age": 28,
+      "is_active": true,
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "IL",
+        "zip": "62701",
+        "coordinates": {
+          "lat": 39.7817,
+          "lng": -89.6501
+        }
+      },
+      "tags": ["premium", "vip", "early_adopter"],
+      "metadata": {
+        "last_login": "2023-10-15T14:30:00Z",
+        "login_count": 42,
+        "preferences": {
+          "theme": "dark",
+          "language": "en-US",
+          "notifications": {
+            "email": true,
+            "sms": false,
+            "push": true
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "age": 35,
+      "is_active": false,
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Portland",
+        "state": "OR",
+        "zip": "97201",
+        "coordinates": {
+          "lat": 45.5152,
+          "lng": -122.6784
+        }
+      },
+      "tags": ["standard"],
+      "metadata": {
+        "last_login": null,
+        "login_count": 0,
+        "preferences": {
+          "theme": "light",
+          "language": "fr-FR",
+          "notifications": {
+            "email": true,
+            "sms": true,
+            "push": false
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Charlie Brown",
+      "email": "charlie@example.com",
+      "age": 22,
+      "is_active": true,
+      "address": {
+        "street": "789 Pine Rd",
+        "city": "Denver",
+        "state": "CO",
+        "zip": "80202",
+        "coordinates": {
+          "lat": 39.7392,
+          "lng": -104.9903
+        }
+      },
+      "tags": ["new", "trial"],
+      "metadata": {
+        "last_login": "2023-11-01T09:15:00Z",
+        "login_count": 3,
+        "preferences": {
+          "theme": "system",
+          "language": "de-DE",
+          "notifications": {
+            "email": false,
+            "sms": false,
+            "push": false
+          }
+        }
+      }
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "ORD-001",
+      "user_id": 1,
+      "items": [
+        {
+          "product_id": "PROD-1001",
+          "name": "Wireless Mouse",
+          "quantity": 2,
+          "unit_price": 29.99,
+          "total": 59.98
+        },
+        {
+          "product_id": "PROD-1002",
+          "name": "USB-C Hub",
+          "quantity": 1,
+          "unit_price": 49.99,
+          "total": 49.99
+        }
+      ],
+      "subtotal": 109.97,
+      "tax": 8.8,
+      "shipping": 5.99,
+      "total": 124.76,
+      "status": "shipped",
+      "created_at": "2023-10-20T10:30:00Z",
+      "shipped_at": "2023-10-21T14:00:00Z",
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-002",
+      "user_id": 2,
+      "items": [
+        {
+          "product_id": "PROD-2001",
+          "name": "Mechanical Keyboard",
+          "quantity": 1,
+          "unit_price": 149.99,
+          "total": 149.99
+        },
+        {
+          "product_id": "PROD-2002",
+          "name": "Mouse Pad",
+          "quantity": 3,
+          "unit_price": 12.99,
+          "total": 38.97
+        }
+      ],
+      "subtotal": 188.96,
+      "tax": 15.12,
+      "shipping": 0.0,
+      "total": 204.08,
+      "status": "pending",
+      "created_at": "2023-11-02T08:45:00Z",
+      "shipped_at": null,
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-003",
+      "user_id": 3,
+      "items": [
+        {
+          "product_id": "PROD-3001",
+          "name": "Monitor 27 inch",
+          "quantity": 1,
+          "unit_price": 299.99,
+          "total": 299.99
+        },
+        {
+          "product_id": "PROD-3002",
+          "name": "HDMI Cable",
+          "quantity": 2,
+          "unit_price": 9.99,
+          "total": 19.98
+        }
+      ],
+      "subtotal": 319.97,
+      "tax": 25.6,
+      "shipping": 12.99,
+      "total": 358.56,
+      "status": "delivered",
+      "created_at": "2023-10-25T16:20:00Z",
+      "shipped_at": "2023-10-26T10:00:00Z",
+      "delivered_at": "2023-10-28T11:30:00Z"
+    }
+  ],
+  "inventory": [
+    {
+      "product_id": "PROD-1001",
+      "name": "Wireless Mouse",
+      "category": "electronics",
+      "price": 29.99,
+      "stock": 150,
+      "attributes": {
+        "color": "black",
+        "connectivity": "bluetooth",
+        "battery_life": "12 months"
+      }
+    },
+    {
+      "product_id": "PROD-1002",
+      "name": "USB-C Hub",
+      "category": "electronics",
+      "price": 49.99,
+      "stock": 80,
+      "attributes": {
+        "ports": 7,
+        "usb_version": "3.1",
+        "power_delivery": true
+      }
+    },
+    {
+      "product_id": "PROD-2001",
+      "name": "Mechanical Keyboard",
+      "category": "electronics",
+      "price": 149.99,
+      "stock": 45,
+      "attributes": {
+        "layout": "full",
+        "switches": "Cherry MX Blue",
+        "backlight": "RGB"
+      }
+    },
+    {
+      "product_id": "PROD-2002",
+      "name": "Mouse Pad",
+      "category": "accessories",
+      "price": 12.99,
+      "stock": 200,
+      "attributes": {
+        "size": "large",
+        "material": "cloth",
+        "thickness": "3mm"
+      }
+    },
+    {
+      "product_id": "PROD-3001",
+      "name": "Monitor 27 inch",
+      "category": "electronics",
+      "price": 299.99,
+      "stock": 30,
+      "attributes": {
+        "resolution": "2560x1440",
+        "refresh_rate": "144Hz",
+        "panel_type": "IPS"
+      }
+    },
+    {
+      "product_id": "PROD-3002",
+      "name": "HDMI Cable",
+      "category": "accessories",
+      "price": 9.99,
+      "stock": 500,
+      "attributes": {
+        "length": "6ft",
+        "version": "2.1",
+        "hdr": true
+      }
+    }
+  ],
+  "description": "这是一个非常丰富的YAML示例，包含了多种数据类型：\n- 字符串、数字、布尔值、null\n- 数组、嵌套对象\n- 多行字符串（使用|保留换行）\n- 时间戳（ISO 8601格式）\n该YAML可以直接被PyYAML解析，对应的JSON也可被python json模块解析。\n",
+  "special_chars": "Hello \"World\"\nNew line\tTab",
+  "scientific": 0.000123,
+  "flags": {
+    "yes": true,
+    "no": false,
+    "on": true,
+    "off": false
+  },
+  "empty_value": null,
+  "deep": {
+    "level1": {
+      "level2": {
+        "level3": {
+          "level4": {
+            "level5": "deep value"
+          }
+        }
+      }
+    }
+  },
+  "long_array": [
+    "item 1", "item 2", "item 3", "item 4", "item 5",
+    "item 6", "item 7", "item 8", "item 9", "item 10",
+    "item 11", "item 12", "item 13", "item 14", "item 15",
+    "item 16", "item 17", "item 18", "item 19", "item 20"
+  ],
+  "mixed_array": ["string", 42, true, null, ["nested", "array"], {"key": "value"}],
+  "key with spaces": "value",
+  "key.with.dots": "value",
+  "key:with:colons": "value",
+  "123": "number key",
+  "456.78": "float key",
+  "timestamp": "2023-11-05T12:00:00Z",
+  "date": "2023-11-05",
+  "folded": "This is a folded string. It will be converted to a single line with spaces instead of newlines.\n",
+  "summary": {
+    "string": "text",
+    "integer": 100,
+    "float": 3.14,
+    "boolean": true,
+    "null": null,
+    "array": [1, 2, 3],
+    "object": {"a": 1, "b": 2},
+    "nested": [
+      "level1",
+      {
+        "level2": {
+          "sub": "value"
+        }
+      }
+    ]
+  }
+}

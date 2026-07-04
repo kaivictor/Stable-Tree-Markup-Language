@@ -1,0 +1,158 @@
+{
+  "config": {
+    "version": 3.0,
+    "description": "这是一个多行字符串，用于描述系统配置。\n它可以包含多行内容，并且保留换行符。\n例如，这里有一些详细说明。",
+    "database": {
+      "host": "db.example.com",
+      "port": 5432,
+      "name": "myapp_production",
+      "username": "admin",
+      "password": "secret123",
+      "pool": {
+        "min": 5,
+        "max": 20,
+        "timeout": 30
+      },
+      "options": [
+        { "ssl": true },
+        { "charset": "utf8mb4" }
+      ]
+    },
+    "server": {
+      "host": "0.0.0.0",
+      "port": 8080,
+      "ssl": {
+        "enabled": true,
+        "cert_path": "/etc/ssl/certs/server.crt",
+        "key_path": "/etc/ssl/private/server.key"
+      },
+      "cors": {
+        "allowed_origins": [
+          "https://example.com",
+          "https://app.example.com"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE"],
+        "headers": ["Authorization", "Content-Type"]
+      }
+    },
+    "logging": {
+      "level": "debug",
+      "format": "json",
+      "outputs": [
+        {
+          "type": "file",
+          "path": "/var/log/app.log",
+          "rotation": {
+            "max_size": "100MB",
+            "max_files": 10
+          }
+        },
+        {
+          "type": "console",
+          "colorize": true
+        }
+      ]
+    },
+    "features": {
+      "enable_new_ui": true,
+      "enable_dark_mode": false,
+      "max_upload_size": 10485760,
+      "allowed_file_types": [
+        "image/png",
+        "image/jpeg",
+        "application/pdf"
+      ],
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 100,
+        "burst": 20
+      }
+    },
+    "users": [
+      {
+        "id": 1,
+        "name": "Alice Johnson",
+        "age": 30,
+        "email": "alice@example.com",
+        "active": true,
+        "address": {
+          "street": "123 Main St",
+          "city": "Springfield",
+          "state": "IL",
+          "zip": "62701"
+        },
+        "roles": ["admin", "editor"],
+        "metadata": {
+          "last_login": "2023-10-01T12:00:00Z",
+          "login_count": 42
+        }
+      },
+      {
+        "id": 2,
+        "name": "Bob Smith",
+        "age": 25,
+        "email": "bob@example.com",
+        "active": false,
+        "address": {
+          "street": "456 Oak Ave",
+          "city": "Riverside",
+          "state": "CA",
+          "zip": "92501"
+        },
+        "roles": ["viewer"],
+        "metadata": {
+          "last_login": null,
+          "login_count": 0
+        }
+      },
+      {
+        "id": 3,
+        "name": "Charlie Brown",
+        "age": 35,
+        "email": "charlie@example.com",
+        "active": true,
+        "address": {
+          "street": "789 Pine Rd",
+          "city": "Lakewood",
+          "state": "CO",
+          "zip": "80215"
+        },
+        "roles": ["editor", "contributor"],
+        "metadata": {
+          "last_login": "2023-09-15T08:30:00Z",
+          "login_count": 15
+        }
+      }
+    ],
+    "notifications": {
+      "email": {
+        "smtp_host": "smtp.example.com",
+        "smtp_port": 587,
+        "use_tls": true,
+        "from_address": "noreply@example.com"
+      },
+      "sms": {
+        "provider": "twilio",
+        "account_sid": "ACxxxxxxxxxxxx",
+        "auth_token": "xxxxxxxxxxxx",
+        "from_number": "+1234567890"
+      }
+    },
+    "cache": {
+      "type": "redis",
+      "host": "redis.example.com",
+      "port": 6379,
+      "password": null,
+      "db": 0,
+      "ttl": 3600
+    },
+    "empty_object": {},
+    "empty_array": [],
+    "special_chars": "Hello \"World\" & < > '",
+    "big_number": 12345678901234567890,
+    "scientific": 1.23e+10,
+    "boolean_true": true,
+    "boolean_false": false,
+    "null_value": null
+  }
+}

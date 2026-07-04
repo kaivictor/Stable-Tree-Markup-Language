@@ -1,0 +1,54 @@
+// 文档1: Library System Configuration
+{
+    "library_name": "Central Library",
+    "address": "456 Oak Avenue",
+    "established": "1920",
+    "is_open": "true",
+    "opening_hours": "Monday: 9:00 AM - 5:00 PM\nTuesday: 9:00 AM - 5:00 PM\nWednesday: 9:00 AM - 5:00 PM\nThursday: 9:00 AM - 5:00 PM\nFriday: 9:00 AM - 5:00 PM\nSaturday: 10:00 AM - 4:00 PM\nSunday: Closed",
+    "books": [
+        "The Great Gatsby",
+        "1984",
+        "To Kill a Mockingbird",
+        "Pride and Prejudice",
+        "The Catcher in the Rye",
+        "Animal Farm",
+        "Brave New World",
+        "Fahrenheit 451",
+        "The Hobbit",
+        "Harry Potter and the Sorcerer's Stone",
+        "The Lord of the Rings",
+        "The Chronicles of Narnia",
+        "Jane Eyre",
+        "Wuthering Heights",
+        "Moby Dick",
+        "War and Peace",
+        "Crime and Punishment",
+        "The Odyssey",
+        "The Divine Comedy",
+        "Don Quixote"
+    ],
+    "staff": {
+        "librarian": "Alice Johnson",
+        "assistant": "Bob Smith",
+        "volunteers": ["Charlie Brown", "Diana Prince", "Eve Adams", "Frank Castle", "Grace Hopper", "Henry Ford"]
+    },
+    "departments": {
+        "fiction": {
+            "section": "A",
+            "floor": "1",
+            "genres": ["Classic", "Modern", "Science Fiction", "Fantasy", "Mystery", "Romance"]
+        },
+        "non-fiction": {
+            "section": "B",
+            "floor": "2",
+            "genres": ["History", "Science", "Philosophy", "Biography", "Technology", "Art"]
+        },
+        "children": {
+            "section": "C",
+            "floor": "1",
+            "genres": ["Picture Books", "Chapter Books", "Young Adult", "Graphic Novels"]
+        }
+    },
+    "special_collections": null,
+    "notes": "This library has a rich collection of classic and modern literature. It also hosts various events and workshops. The library is open to all residents."
+}

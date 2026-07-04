@@ -1,0 +1,361 @@
+```json
+{
+  "starship": {
+    "name": "星际探索者号",
+    "registry": "NCC-1701-D",
+    "class": "探索者级",
+    "status": "active",
+    "launch_date": "2087-03-15T10:30:00Z",
+    "crew_capacity": 1200,
+    "current_crew": 1050,
+    "dimensions": {
+      "length": 642.5,
+      "width": 240.3,
+      "height": 87.2,
+      "mass": 4500000
+    },
+    "propulsion": {
+      "main_engine": {
+        "type": "曲速引擎",
+        "model": "Warp-7",
+        "manufacturer": "星际动力公司",
+        "power_output": 1.5e12,
+        "fuel_type": "二锂晶体",
+        "fuel_capacity": 5000,
+        "current_fuel": 3200,
+        "efficiency": 0.87,
+        "status": "在线"
+      },
+      "secondary_engine": {
+        "type": "离子推进器",
+        "count": 4,
+        "thrust": 25000,
+        "specific_impulse": 4500,
+        "status": "备用"
+      },
+      "emergency_thrusters": {
+        "type": "化学火箭",
+        "count": 12,
+        "thrust": 5000,
+        "status": "待检"
+      }
+    },
+    "power_systems": {
+      "main_reactor": {
+        "type": "反物质反应堆",
+        "output": 2.0e15,
+        "coolant": "液态氦-3",
+        "temperature": 4.2,
+        "status": "运行中"
+      },
+      "backup_reactor": {
+        "type": "聚变反应堆",
+        "output": 5.0e14,
+        "fuel": "氘-氚",
+        "status": "待机"
+      },
+      "solar_panels": {
+        "area": 5000,
+        "efficiency": 0.35,
+        "output": 1.2e9,
+        "deployed": true
+      }
+    },
+    "weapons": [
+      {
+        "type": "相位炮",
+        "count": 12,
+        "power": 5.0e12,
+        "range": 300000,
+        "fire_rate": 0.5,
+        "status": "在线"
+      },
+      {
+        "type": "光子鱼雷",
+        "count": 250,
+        "warhead": "反物质",
+        "yield": 50,
+        "guidance": "惯性导航+目标锁定",
+        "status": "已装载"
+      },
+      {
+        "type": "牵引光束",
+        "count": 2,
+        "max_range": 10000,
+        "capacity": 50000,
+        "status": "在线"
+      }
+    ],
+    "defense": {
+      "shields": {
+        "type": "偏导护盾",
+        "layers": 3,
+        "max_absorption": 1.0e15,
+        "regeneration_rate": 5000,
+        "status": "激活"
+      },
+      "armor": {
+        "material": "三钛合金",
+        "thickness": 0.5,
+        "integrity": 0.98
+      },
+      "countermeasures": [
+        "诱饵弹",
+        "电子干扰",
+        "热诱饵"
+      ]
+    },
+    "crew": {
+      "captain": {
+        "name": "詹姆斯·柯克",
+        "rank": "上校",
+        "species": "人类",
+        "age": 45,
+        "experience": 20
+      },
+      "first_officer": {
+        "name": "斯波克",
+        "rank": "中校",
+        "species": "瓦肯人",
+        "age": 62,
+        "experience": 30
+      },
+      "chief_engineer": {
+        "name": "蒙哥马利·斯科特",
+        "rank": "少校",
+        "species": "人类",
+        "age": 52,
+        "experience": 28
+      },
+      "medical_officer": {
+        "name": "伦纳德·麦考伊",
+        "rank": "中校",
+        "species": "人类",
+        "age": 48,
+        "experience": 22
+      },
+      "science_officer": {
+        "name": "数据",
+        "rank": "少校",
+        "species": "仿生人",
+        "age": 36,
+        "experience": 15
+      },
+      "crew_manifest": [
+        {
+          "department": "指挥",
+          "count": 50,
+          "species_breakdown": {
+            "human": 40,
+            "vulcan": 5,
+            "andorian": 3,
+            "other": 2
+          }
+        },
+        {
+          "department": "工程",
+          "count": 200,
+          "species_breakdown": {
+            "human": 150,
+            "vulcan": 20,
+            "tellarite": 15,
+            "other": 15
+          }
+        },
+        {
+          "department": "科学",
+          "count": 150,
+          "species_breakdown": {
+            "human": 100,
+            "vulcan": 30,
+            "betazoid": 10,
+            "other": 10
+          }
+        },
+        {
+          "department": "医疗",
+          "count": 80,
+          "species_breakdown": {
+            "human": 60,
+            "vulcan": 10,
+            "other": 10
+          }
+        },
+        {
+          "department": "安全",
+          "count": 120,
+          "species_breakdown": {
+            "human": 100,
+            "klingon": 10,
+            "other": 10
+          }
+        },
+        {
+          "department": "其他",
+          "count": 450,
+          "species_breakdown": {
+            "human": 350,
+            "other": 100
+          }
+        }
+      ]
+    },
+    "mission_log": [
+      {
+        "mission_id": "M-2024-001",
+        "type": "探索",
+        "destination": "半人马座阿尔法星",
+        "start_date": "2087-04-01",
+        "end_date": "2087-06-15",
+        "status": "已完成",
+        "summary": "成功探索了半人马座阿尔法星系，发现了三颗类地行星。",
+        "discoveries": [
+          "行星A：有液态水，大气含氧",
+          "行星B：有生命迹象（微生物）",
+          "行星C：富含稀有矿物"
+        ]
+      },
+      {
+        "mission_id": "M-2024-002",
+        "type": "外交",
+        "destination": "瓦肯星",
+        "start_date": "2087-07-20",
+        "end_date": "2087-08-10",
+        "status": "已完成",
+        "summary": "与瓦肯最高委员会进行贸易协定谈判，签署了《星际合作条约》。",
+        "participants": [
+          "詹姆斯·柯克",
+          "斯波克",
+          "瓦肯大使萨拉克"
+        ]
+      },
+      {
+        "mission_id": "M-2024-003",
+        "type": "战斗",
+        "destination": "中立区",
+        "start_date": "2087-09-01",
+        "end_date": null,
+        "status": "进行中",
+        "summary": "遭遇罗慕兰战鸟，正在进行战术对峙。",
+        "threat_level": "高",
+        "current_action": "保持警戒，等待增援"
+      }
+    ],
+    "sensors": {
+      "long_range": {
+        "type": "子空间扫描仪",
+        "range": 10,
+        "resolution": 0.001,
+        "status": "在线"
+      },
+      "short_range": {
+        "type": "多光谱传感器",
+        "range": 500000,
+        "bands": [
+          "可见光",
+          "红外",
+          "紫外",
+          "X射线",
+          "伽马射线"
+        ],
+        "status": "在线"
+      },
+      "navigational": {
+        "type": "星图数据库",
+        "accuracy": 0.0001,
+        "last_update": "2087-10-05T12:00:00Z",
+        "stars_mapped": 15000000
+      }
+    },
+    "communication": {
+      "subspace_radio": {
+        "range": 1000,
+        "bandwidth": 10,
+        "encryption": "量子加密",
+        "status": "在线"
+      },
+      "laser_com": {
+        "range": 10,
+        "bandwidth": 1000,
+        "status": "备用"
+      },
+      "emergency_beacon": {
+        "type": "全向广播",
+        "frequency": "星际紧急频率",
+        "power": 50000,
+        "status": "待命"
+      }
+    },
+    "life_support": {
+      "oxygen_generators": {
+        "type": "电解水",
+        "capacity": 5000,
+        "status": "运行"
+      },
+      "water_recyclers": {
+        "efficiency": 0.99,
+        "capacity": 10000,
+        "status": "运行"
+      },
+      "food_supply": {
+        "type": "合成食品+水培",
+        "days_remaining": 180,
+        "status": "充足"
+      },
+      "waste_management": {
+        "type": "生物降解+回收",
+        "status": "正常"
+      }
+    },
+    "navigation": {
+      "astrometrics": {
+        "last_calibration": "2087-10-06T08:00:00Z",
+        "current_position": {
+          "sector": "001",
+          "quadrant": "阿尔法",
+          "coordinates": {
+            "x": 12345.67,
+            "y": 9876.54,
+            "z": 5432.1
+          }
+        },
+        "destination": "中立区边缘",
+        "estimated_arrival": "2087-10-08T14:30:00Z"
+      },
+      "autopilot": {
+        "version": "7.2.1",
+        "status": "启用",
+        "mode": "巡航"
+      }
+    },
+    "maintenance": {
+      "last_drydock": "2087-03-01",
+      "next_scheduled": "2088-03-01",
+      "current_issues": [
+        {
+          "system": "曲速引擎冷却系统",
+          "severity": "轻微",
+          "description": "冷却液循环泵有轻微噪音，建议下次维护检查。",
+          "reported_by": "斯科特",
+          "date": "2087-10-04"
+        },
+        {
+          "system": "护盾发生器",
+          "severity": "中等",
+          "description": "第三层护盾能量输出不稳定，波动范围±5%。",
+          "reported_by": "数据",
+          "date": "2087-10-05"
+        },
+        {
+          "system": "传感器阵列",
+          "severity": "轻微",
+          "description": "短程传感器第4波段校准偏移0.02%。",
+          "reported_by": "斯波克",
+          "date": "2087-10-06"
+        }
+      ]
+    },
+    "notes": "本舰为星际舰队旗舰，承担探索、外交、防御等多重任务。\n当前任务：前往中立区调查罗慕兰活动。\n所有系统运行正常，除上述维护问题外无重大故障。\n船员士气：良好。\n舰长日志：星历 2087.10.07，我们即将进入中立区，全体船员已进入二级战备状态。\n愿星际联邦的和平与探索精神永存。"
+  }
+}
+```

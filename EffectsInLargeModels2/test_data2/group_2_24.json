@@ -1,0 +1,179 @@
+{
+  "app": {
+    "name": "SuperApp",
+    "version": "2.1.0",
+    "description": "这是一个功能丰富的应用程序，\n支持多用户、多数据库和高级缓存。\n它使用 YAML 和 JSON 进行配置。\n",
+    "debug": false,
+    "features": {
+      "enable_ssl": true,
+      "enable_logging": true,
+      "max_connections": 100,
+      "rate_limit": 0.5
+    }
+  },
+  "database": {
+    "primary": {
+      "type": "postgresql",
+      "host": "db.example.com",
+      "port": 5432,
+      "username": "admin",
+      "password": "P@ssw0rd!\"'\\",
+      "database": "app_db",
+      "pool": {
+        "min_size": 5,
+        "max_size": 20,
+        "timeout": 30.5,
+        "options": [
+          "sslmode=require",
+          "connect_timeout=10"
+        ]
+      },
+      "extra": null
+    },
+    "secondary": {
+      "type": "mysql",
+      "host": "192.168.1.100",
+      "port": 3306,
+      "username": "readonly",
+      "password": "readonly123",
+      "database": "analytics",
+      "pool": {
+        "min_size": 2,
+        "max_size": 10,
+        "timeout": 15
+      }
+    }
+  },
+  "server": {
+    "listen": "0.0.0.0",
+    "port": 8080,
+    "ssl": {
+      "enabled": true,
+      "cert_path": "/etc/ssl/certs/server.crt",
+      "key_path": "/etc/ssl/private/server.key"
+    },
+    "log": {
+      "level": "info",
+      "file": "/var/log/app.log",
+      "format": "json"
+    },
+    "cors": {
+      "allowed_origins": [
+        "https://example.com",
+        "https://*.example.org"
+      ],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "headers": [
+        "Authorization",
+        "Content-Type"
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "alice",
+      "role": "admin",
+      "email": "alice@example.com",
+      "enabled": true,
+      "permissions": [
+        "read",
+        "write",
+        "delete"
+      ],
+      "metadata": {
+        "department": "Engineering",
+        "last_login": "2023-10-01T12:00:00Z"
+      }
+    },
+    {
+      "username": "bob",
+      "role": "user",
+      "email": "bob@example.com",
+      "enabled": false,
+      "permissions": [
+        "read"
+      ],
+      "metadata": {
+        "department": "Sales",
+        "last_login": null
+      }
+    },
+    {
+      "username": "charlie",
+      "role": "moderator",
+      "email": "charlie@example.com",
+      "enabled": true,
+      "permissions": [
+        "read",
+        "write"
+      ],
+      "metadata": {
+        "department": "Support",
+        "last_login": "2023-11-15T08:30:00Z"
+      }
+    }
+  ],
+  "cache": {
+    "type": "redis",
+    "ttl": 3600,
+    "servers": [
+      {
+        "host": "redis-1.example.com",
+        "port": 6379
+      },
+      {
+        "host": "redis-2.example.com",
+        "port": 6379
+      }
+    ],
+    "cluster": false,
+    "password": null
+  },
+  "welcome_message": "欢迎使用 SuperApp！\n请遵守以下规则：\n1. 不要共享密码。\n2. 定期更新。\n3. 报告问题。\n",
+  "numbers": {
+    "integer": 42,
+    "float": 3.14159,
+    "scientific": 0.000123,
+    "negative": -100,
+    "zero": 0,
+    "large": 12345678901234567890
+  },
+  "booleans": {
+    "true_value": true,
+    "false_value": false,
+    "yes": true,
+    "no": false,
+    "on": true,
+    "off": false
+  },
+  "null_values": {
+    "explicit_null": null,
+    "empty": null,
+    "not_set": null
+  },
+  "matrix": [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+  ],
+  "mixed_array": [
+    "string",
+    123,
+    true,
+    null,
+    ["nested", "array"],
+    {"key": "value"}
+  ],
+  "special_chars": {
+    "quote": "He said \"Hello\"",
+    "backslash": "C:\\Program Files\\App",
+    "unicode": "你好世界 🌍",
+    "newline": "第一行\n第二行",
+    "tab": "列1\t列2"
+  }
+}

@@ -1,0 +1,136 @@
+```yaml
+# Library System Configuration
+"library_name": "Central Library"
+"address": "456 Oak Avenue"
+"established": "1920"
+"is_open": "true"
+"opening_hours": |
+  Monday: 9:00 AM - 5:00 PM
+  Tuesday: 9:00 AM - 5:00 PM
+  Wednesday: 9:00 AM - 5:00 PM
+  Thursday: 9:00 AM - 5:00 PM
+  Friday: 9:00 AM - 5:00 PM
+  Saturday: 10:00 AM - 4:00 PM
+  Sunday: Closed
+"books":
+  - "The Great Gatsby"
+  - "1984"
+  - "To Kill a Mockingbird"
+  - "Pride and Prejudice"
+  - "The Catcher in the Rye"
+  - "Animal Farm"
+  - "Brave New World"
+  - "Fahrenheit 451"
+  - "The Hobbit"
+  - "Harry Potter and the Sorcerer's Stone"
+  - "The Lord of the Rings"
+  - "The Chronicles of Narnia"
+  - "Jane Eyre"
+  - "Wuthering Heights"
+  - "Moby Dick"
+  - "War and Peace"
+  - "Crime and Punishment"
+  - "The Odyssey"
+  - "The Divine Comedy"
+  - "Don Quixote"
+"staff":
+  "librarian": "Alice Johnson"
+  "assistant": "Bob Smith"
+  "volunteers":
+    - "Charlie Brown"
+    - "Diana Prince"
+    - "Eve Adams"
+    - "Frank Castle"
+    - "Grace Hopper"
+    - "Henry Ford"
+"departments":
+  "fiction":
+    "section": "A"
+    "floor": "1"
+    "genres":
+      - "Classic"
+      - "Modern"
+      - "Science Fiction"
+      - "Fantasy"
+      - "Mystery"
+      - "Romance"
+  "non-fiction":
+    "section": "B"
+    "floor": "2"
+    "genres":
+      - "History"
+      - "Science"
+      - "Philosophy"
+      - "Biography"
+      - "Technology"
+      - "Art"
+  "children":
+    "section": "C"
+    "floor": "1"
+    "genres":
+      - "Picture Books"
+      - "Chapter Books"
+      - "Young Adult"
+      - "Graphic Novels"
+"special_collections": null
+"notes": "This library has a rich collection of classic and modern literature. It also hosts various events and workshops. The library is open to all residents."
+---
+# Borrowing Records
+"borrowing_records":
+  - "book": "The Great Gatsby"
+    "borrower": "John Doe"
+    "date": "2023-01-15"
+    "returned": null
+  - "book": "1984"
+    "borrower": "Jane Smith"
+    "date": "2023-02-20"
+    "returned": "2023-03-10"
+  - "book": "To Kill a Mockingbird"
+    "borrower": "Emily Davis"
+    "date": "2023-03-05"
+    "returned": null
+  - "book": "Pride and Prejudice"
+    "borrower": "Michael Brown"
+    "date": "2023-04-12"
+    "returned": "2023-05-01"
+  - "book": "The Catcher in the Rye"
+    "borrower": "Sarah Wilson"
+    "date": "2023-05-18"
+    "returned": null
+  - "book": "Animal Farm"
+    "borrower": "David Lee"
+    "date": "2023-06-22"
+    "returned": "2023-07-10"
+  - "book": "Brave New World"
+    "borrower": "Laura Martinez"
+    "date": "2023-07-30"
+    "returned": null
+"borrowing_rules": |
+  Borrowers must present a valid library card.
+  Books can be borrowed for up to 14 days.
+  Renewals are allowed if no holds are placed.
+  Late fees are $0.25 per day.
+  Lost books must be paid for at replacement cost.
+"fines": null
+---
+# System Settings
+"system_name": "Library Management System"
+"version": "2.1.0"
+"database":
+  "host": "localhost"
+  "port": "5432"
+  "name": "library_db"
+  "credentials":
+    "username": "admin"
+    "password": "secret"
+"features":
+  "self_checkout": "true"
+  "online_catalog": "true"
+  "interlibrary_loan": "false"
+"maintenance_schedule": |
+  Weekly backups on Sunday at 2:00 AM.
+  Monthly system updates on the first Saturday.
+  Quarterly hardware inspections.
+  Annual software upgrades.
+"notes": "This system is designed to handle up to 100,000 patrons."
+```

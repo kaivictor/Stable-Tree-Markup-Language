@@ -1,0 +1,254 @@
+# 定义长列表锚点
+long_list: &long_list
+  - "item_000"
+  - "item_001"
+  - "item_002"
+  - "item_003"
+  - "item_004"
+  - "item_005"
+  - "item_006"
+  - "item_007"
+  - "item_008"
+  - "item_009"
+
+# 全局配置
+global:
+  app_name: "MyApp"
+  version: "2.0.1"
+  debug: false
+  environment: production
+  description: |
+    This is a long description that spans multiple lines.
+    It can contain many characters to make the YAML rich.
+    We can add more lines here to increase length.
+  large_list: *long_list
+
+# 服务器配置
+server:
+  host: "0.0.0.0"
+  port: 8080
+  workers: 4
+  ssl:
+    enabled: true
+    cert_file: "/etc/ssl/certs/server.crt"
+    key_file: "/etc/ssl/private/server.key"
+  allowed_hosts:
+    - "example.com"
+    - "*.example.com"
+    - "localhost"
+  extra_list: *long_list
+
+# 数据库配置 - 使用锚点定义模板
+db_template: &db_template
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  username: "admin"
+  password: "secret"
+  pool_size: 10
+  options:
+    sslmode: "require"
+    connect_timeout: 30
+
+databases:
+  primary:
+    <<: *db_template
+    database: "primary_db"
+  replica:
+    <<: *db_template
+    host: "replica.example.com"
+    port: 5432
+    database: "replica_db"
+  cache:
+    <<: *db_template
+    type: "redis"
+    host: "redis.example.com"
+    port: 6379
+    database: 0
+    password: "redis_secret"
+
+# 日志配置
+logging:
+  level: "INFO"
+  handlers:
+    - type: "console"
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    - type: "file"
+      filename: "/var/log/myapp/app.log"
+      max_bytes: 10485760
+      backup_count: 5
+  root_logger:
+    level: "WARNING"
+
+# 用户列表 - 使用锚点定义用户模板
+user_template: &user_template
+  enabled: true
+  roles:
+    - "user"
+  permissions:
+    - "read"
+    - "write"
+  metadata:
+    created_at: "2023-01-01T00:00:00Z"
+    last_login: "2023-06-15T12:30:00Z"
+    notes: "Standard user account."
+
+users:
+  - username: "alice"
+    <<: *user_template
+    email: "alice@example.com"
+    roles:
+      - "admin"
+      - "user"
+    permissions:
+      - "read"
+      - "write"
+      - "delete"
+    metadata:
+      created_at: "2022-05-10T08:00:00Z"
+      last_login: "2023-07-20T14:22:00Z"
+      notes: "Administrator account with elevated privileges."
+  - username: "bob"
+    <<: *user_template
+    email: "bob@example.com"
+    metadata:
+      created_at: "2023-02-14T10:00:00Z"
+      last_login: "2023-07-19T09:15:00Z"
+      notes: "Regular user."
+  - username: "charlie"
+    <<: *user_template
+    email: "charlie@example.com"
+    enabled: false
+    metadata:
+      created_at: "2023-03-01T00:00:00Z"
+      last_login: null
+      notes: "Disabled account."
+  - username: "diana"
+    <<: *user_template
+    email: "diana@example.com"
+    roles:
+      - "moderator"
+      - "user"
+    permissions:
+      - "read"
+      - "write"
+      - "moderate"
+    metadata:
+      created_at: "2023-04-20T16:30:00Z"
+      last_login: "2023-07-21T08:45:00Z"
+      notes: "Moderator with additional permissions."
+  - username: "eve"
+    <<: *user_template
+    email: "eve@example.com"
+    metadata:
+      created_at: "2023-05-05T12:00:00Z"
+      last_login: "2023-07-18T17:30:00Z"
+      notes: "Another regular user."
+
+# 安全配置
+security:
+  jwt_secret: "my_super_secret_key_12345"
+  token_expiry: 3600
+  allowed_origins:
+    - "https://app.example.com"
+    - "https://admin.example.com"
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+    burst: 200
+
+# 缓存配置
+cache:
+  redis:
+    host: "redis.example.com"
+    port: 6379
+    db: 0
+    password: "redis_secret"
+    timeout: 5
+  memcached:
+    hosts:
+      - "memcached1.example.com:11211"
+      - "memcached2.example.com:11211"
+    timeout: 2
+
+# 任务队列
+task_queue:
+  celery:
+    broker_url: "redis://redis.example.com:6379/1"
+    result_backend: "redis://redis.example.com:6379/2"
+    task_serializer: "json"
+    result_serializer: "json"
+    accept_content: ["json"]
+    timezone: "UTC"
+    enable_utc: true
+  rabbitmq:
+    host: "rabbitmq.example.com"
+    port: 5672
+    vhost: "/"
+    username: "guest"
+    password: "guest"
+
+# 第三方API
+third_party_apis:
+  payment_gateway:
+    url: "https://api.payment.com/v1"
+    api_key: "pk_test_1234567890"
+    secret_key: "sk_test_0987654321"
+  email_service:
+    url: "https://api.sendgrid.com/v3"
+    api_key: "SG.xxxxx.yyyyy"
+  sms_service:
+    url: "https://api.twilio.com"
+    account_sid: "ACxxxxxxxxxxxx"
+    auth_token: "yyyyyyyyyyyy"
+
+# 特性开关
+feature_flags:
+  new_ui: true
+  dark_mode: false
+  beta_features: true
+  experimental_module: false
+  maintenance_mode: false
+
+# 嵌套结构示例：菜单树
+menu:
+  - id: 1
+    label: "Dashboard"
+    icon: "dashboard"
+    link: "/dashboard"
+    children: []
+  - id: 2
+    label: "Users"
+    icon: "users"
+    link: "/users"
+    children:
+      - id: 21
+        label: "List Users"
+        link: "/users/list"
+      - id: 22
+        label: "Create User"
+        link: "/users/create"
+      - id: 23
+        label: "Roles"
+        link: "/users/roles"
+        children:
+          - id: 231
+            label: "Admin Roles"
+            link: "/users/roles/admin"
+          - id: 232
+            label: "User Roles"
+            link: "/users/roles/user"
+  - id: 3
+    label: "Settings"
+    icon: "settings"
+    link: "/settings"
+    children:
+      - id: 31
+        label: "General"
+        link: "/settings/general"
+      - id: 32
+        label: "Security"
+        link: "/settings/security"
+      - id: 33
+        label: "Notifications"
+        link: "/settings/notifications"

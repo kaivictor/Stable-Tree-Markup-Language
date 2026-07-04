@@ -1,0 +1,154 @@
+```stml
+"company":
+  "name": "TechNova Solutions Inc."
+  "founded": "2005"
+  "is_public": "false"
+  "headquarters":
+    "address":
+      "street": "123 Innovation Drive"
+      "city": "San Francisco"
+      "state": "CA"
+      "zip": "94105"
+      "country": "USA"
+    "coordinates":
+      "latitude": "37.7749"
+      "longitude": "-122.4194"
+  "departments":
+    - "name": "Engineering"
+      "head": "Dr. Alice Wang"
+      "employees_count": "250"
+      "sub_teams": ["Frontend", "Backend", "DevOps", "QA"]
+      "projects":
+        - "name": "Project Phoenix"
+          "status": "active"
+          "budget": "5000000"
+          "start_date": "2023-01-15"
+          "end_date": null
+          "technologies": ["React", "Node.js", "AWS", "Docker"]
+          "team_leads": ["Bob Smith", "Carol Lee"]
+        - "name": "Project Atlas"
+          "status": "completed"
+          "budget": "3200000"
+          "start_date": "2021-06-01"
+          "end_date": "2023-03-20"
+          "technologies": ["Python", "TensorFlow", "Kubernetes"]
+          "team_leads": ["David Kim"]
+    - "name": "Marketing"
+      "head": "Emily Johnson"
+      "employees_count": "80"
+      "sub_teams": ["Digital", "Content", "Brand"]
+      "campaigns":
+        - "name": "Summer Launch 2024"
+          "budget": "1200000"
+          "channels": ["Social Media", "Email", "TV"]
+          "target_audience":
+            "age_group": "18-35"
+            "regions": ["North America", "Europe"]
+          "metrics":
+            "impressions": "45000000"
+            "clicks": "1200000"
+            "conversion_rate": "0.035"
+        - "name": "Holiday Special"
+          "budget": "800000"
+          "channels": ["Online Ads", "Influencers"]
+          "target_audience":
+            "age_group": "25-50"
+            "regions": ["Global"]
+          "metrics":
+            "impressions": "22000000"
+            "clicks": "680000"
+            "conversion_rate": "0.042"
+    - "name": "Human Resources"
+      "head": "Michael Brown"
+      "employees_count": "30"
+      "policies":
+        "vacation_days": "20"
+        "sick_days": "10"
+        "remote_work": "true"
+        "benefits": ["Health Insurance", "401k Matching", "Stock Options", "Gym Membership"]
+      "current_openings":
+        - "title": "Senior Software Engineer"
+          "department": "Engineering"
+          "location": "San Francisco"
+          "salary_range":
+            "min": "150000"
+            "max": "200000"
+          "requirements": ["5+ years experience", "Proficiency in Python and JavaScript", "Experience with cloud services"]
+        - "title": "Marketing Manager"
+          "department": "Marketing"
+          "location": "New York"
+          "salary_range":
+            "min": "110000"
+            "max": "140000"
+          "requirements": ["3+ years in digital marketing", "Strong analytical skills", "Experience with CRM tools"]
+  "employees":
+    - "id": "1001"
+      "name": "Alice Wang"
+      "role": "CTO"
+      "email": "alice.wang@technova.com"
+      "phone": "+1-415-555-0101"
+      "hire_date": "2006-03-12"
+      "salary": "250000"
+      "full_time": "true"
+      "skills": ["Leadership", "System Architecture", "AI/ML"]
+      "projects": ["Project Phoenix", "Project Atlas"]
+      "emergency_contact":
+        "name": "Bob Wang"
+        "relationship": "Spouse"
+        "phone": "+1-415-555-0199"
+    - "id": "1002"
+      "name": "Bob Smith"
+      "role": "Senior Engineer"
+      "email": "bob.smith@technova.com"
+      "phone": "+1-415-555-0102"
+      "hire_date": "2018-07-22"
+      "salary": "180000"
+      "full_time": "true"
+      "skills": ["React", "Node.js", "AWS"]
+      "projects": ["Project Phoenix"]
+      "emergency_contact":
+        "name": "Jane Smith"
+        "relationship": "Sister"
+        "phone": "+1-415-555-0198"
+    - "id": "1003"
+      "name": "Carol Lee"
+      "role": "DevOps Lead"
+      "email": "carol.lee@technova.com"
+      "phone": "+1-415-555-0103"
+      "hire_date": "2019-11-05"
+      "salary": "175000"
+      "full_time": "true"
+      "skills": ["Docker", "Kubernetes", "CI/CD"]
+      "projects": ["Project Phoenix"]
+      "emergency_contact": null
+    - "id": "1004"
+      "name": "David Kim"
+      "role": "Data Scientist"
+      "email": "david.kim@technova.com"
+      "phone": "+1-415-555-0104"
+      "hire_date": "2020-02-14"
+      "salary": "160000"
+      "full_time": "true"
+      "skills": ["Python", "TensorFlow", "Statistics"]
+      "projects": ["Project Atlas"]
+      "emergency_contact":
+        "name": "Sarah Kim"
+        "relationship": "Wife"
+        "phone": "+1-415-555-0197"
+  "financials":
+    "revenue":
+      "2023": "450000000"
+      "2022": "380000000"
+      "2021": "310000000"
+    "expenses":
+      "2023": "380000000"
+      "2022": "320000000"
+      "2021": "270000000"
+    "profit_margin": "0.156"
+    "stock_price": "87.45"
+    "currency": "USD"
+  "metadata":
+    "last_updated": "2024-08-27T14:30:00Z"
+    "version": "2.1"
+    "notes": "This YAML represents a comprehensive snapshot of TechNova Solutions Inc. for internal analysis."
+```

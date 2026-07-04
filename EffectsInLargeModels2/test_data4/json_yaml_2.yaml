@@ -1,0 +1,178 @@
+meta:
+  version: 1.0
+  generated_at: '2025-03-28T12:00:00Z'
+  description: "这是一个包含用户、订单、商品等丰富信息的YAML示例，用于演示复杂数据结构。"
+user:
+  id: 1001
+  name: 张三
+  email: zhangsan@example.com
+  phone: '+86-13800138000'
+  member_level: gold
+  registration_date: '2024-01-15'
+  preferences:
+    language: zh-CN
+    currency: CNY
+    notifications:
+      email: true
+      sms: false
+      push: true
+  tags:
+  - VIP
+  - 高消费
+  - 电子产品爱好者
+addresses:
+- type: home
+  street: 北京市海淀区中关村大街1号
+  city: 北京
+  province: 北京
+  zip: '100080'
+  country: 中国
+  is_default: true
+- type: work
+  street: 上海市浦东新区张江高科技园区博云路2号
+  city: 上海
+  province: 上海
+  zip: '201203'
+  country: 中国
+  is_default: false
+orders:
+- order_id: ORD20250328001
+  created_at: '2025-03-28T10:30:00Z'
+  status: paid
+  total_amount: 12999.0
+  discount: 200.0
+  final_amount: 12799.0
+  payment:
+    method: alipay
+    transaction_id: '2025032822001400501234567890'
+    paid_at: '2025-03-28T10:35:00Z'
+  shipping:
+    address_index: 0
+    carrier: 顺丰速运
+    tracking_number: SF1234567890
+    estimated_delivery: '2025-03-31'
+  items:
+  - sku: IPHONE15PRO-256-BLACK
+    name: iPhone 15 Pro 256GB 黑色
+    description: |-
+      全新A17 Pro芯片，6.1英寸超视网膜XDR显示屏，Pro级摄像头系统。
+      支持5G网络，面容ID，超瓷晶面板，亚光质感玻璃背板，不锈钢边框。
+      电池续航最长可达23小时视频播放。
+    price: 8999.0
+    quantity: 1
+    attributes:
+      color: 黑色
+      storage: 256GB
+      model: A3104
+    images:
+    - https://example.com/images/iphone15pro_black_1.jpg
+    - https://example.com/images/iphone15pro_black_2.jpg
+  - sku: AIRPODS-PRO-2-WHITE
+    name: AirPods Pro 第二代 白色
+    description: 自适应音频，主动降噪，通透模式，个性化空间音频。充电盒支持MagSafe和无线充电，续航长达6小时。
+    price: 1899.0
+    quantity: 1
+    attributes:
+      color: 白色
+      model: A2931
+    images:
+    - https://example.com/images/airpodspro2_white_1.jpg
+  - sku: MAGSAFE-CHARGER
+    name: MagSafe 充电器
+    description: Apple官方MagSafe充电器，支持15W无线快充，兼容iPhone 12及以上机型。
+    price: 329.0
+    quantity: 2
+    attributes:
+      type: 无线充电器
+      power: 15W
+    images: []
+- order_id: ORD20250328002
+  created_at: '2025-03-28T11:00:00Z'
+  status: pending
+  total_amount: 4598.0
+  discount: 0.0
+  final_amount: 4598.0
+  payment: null
+  shipping:
+    address_index: 1
+    carrier: null
+    tracking_number: null
+    estimated_delivery: null
+  items:
+  - sku: MACBOOK-AIR-M3-13-SILVER
+    name: MacBook Air M3 13英寸 银色
+    description: |-
+      Apple M3芯片，8核中央处理器，10核图形处理器。
+      13.6英寸Liquid Retina显示屏，8GB统一内存，256GB固态硬盘。
+      长达18小时电池续航，无风扇设计。
+    price: 8999.0
+    quantity: 0
+    attributes:
+      color: 银色
+      chip: M3
+      memory: 8GB
+      storage: 256GB
+    images:
+    - https://example.com/images/macbookair_m3_silver_1.jpg
+  - sku: IPAD-AIR-5-64GB-BLUE
+    name: iPad Air 5 64GB 蓝色
+    description: Apple M1芯片，10.9英寸Liquid Retina显示屏，支持Apple Pencil和妙控键盘。
+    price: 4598.0
+    quantity: 1
+    attributes:
+      color: 蓝色
+      storage: 64GB
+      model: MM9E3CH/A
+    images:
+    - https://example.com/images/ipadair5_blue_1.jpg
+    - https://example.com/images/ipadair5_blue_2.jpg
+    - https://example.com/images/ipadair5_blue_3.jpg
+config:
+  site_name: 极速电商
+  api_version: v2
+  features:
+    enable_coupon: true
+    enable_gift_card: false
+    max_order_items: 50
+    supported_currencies:
+    - CNY
+    - USD
+    - EUR
+  rate_limits:
+    requests_per_minute: 100
+    burst: 200
+  maintenance_mode: false
+  null_value_example: null
+  boolean_examples:
+  - true
+  - false
+  - true
+  - false
+  number_examples:
+    integer: 42
+    float: 3.1415926535
+    scientific: 12300.0
+    negative: -273
+  array_of_objects:
+  - name: 对象1
+    value: 100
+  - name: 对象2
+    value: 200
+  - name: 对象3
+    value: 300
+  nested:
+    level1:
+      level2:
+        level3:
+          message: 深层嵌套
+          numbers:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          mixed:
+          - null
+          - true
+          - string
+          - 999

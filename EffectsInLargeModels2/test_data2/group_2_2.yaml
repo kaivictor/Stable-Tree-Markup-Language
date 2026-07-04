@@ -1,0 +1,166 @@
+# 这是一个非常丰富的YAML示例，包含多种数据类型和嵌套结构
+company:
+  name: "TechNova Solutions Inc."
+  founded: 2005-03-15
+  ceo: 
+    name: "Dr. Alice Wang"
+    age: 52
+    email: "alice.wang@technova.com"
+    phone: "+1-555-123-4567"
+    address:
+      street: "123 Innovation Drive"
+      city: "San Francisco"
+      state: "CA"
+      zip: "94105"
+      country: "USA"
+  employees:
+    total: 1250
+    departments:
+      - name: "Engineering"
+        head: "Bob Chen"
+        subteams:
+          - name: "Frontend"
+            members: 45
+            lead: "Carol Li"
+          - name: "Backend"
+            members: 60
+            lead: "David Kim"
+          - name: "DevOps"
+            members: 20
+            lead: "Eva Martinez"
+        projects:
+          - id: "PROJ-001"
+            name: "Nova Platform"
+            status: "active"
+            budget: 2500000.75
+            start_date: 2023-01-10
+            end_date: 2024-06-30
+            technologies: ["React", "Node.js", "PostgreSQL", "Docker"]
+            milestones:
+              - name: "Alpha Release"
+                date: 2023-06-01
+                completed: true
+              - name: "Beta Release"
+                date: 2023-12-15
+                completed: false
+              - name: "GA Release"
+                date: 2024-06-30
+                completed: null
+          - id: "PROJ-002"
+            name: "AI Assistant"
+            status: "planning"
+            budget: 500000.00
+            start_date: 2024-02-01
+            end_date: 2025-01-31
+            technologies: ["Python", "TensorFlow", "Kubernetes"]
+            milestones: []
+      - name: "Marketing"
+        head: "Frank Zhang"
+        members: 80
+        campaigns:
+          - name: "Summer Launch"
+            budget: 120000.50
+            channels: ["Social Media", "Email", "TV"]
+            target_audience: 
+              age_range: [18, 45]
+              regions: ["North America", "Europe"]
+            metrics:
+              impressions: 2500000
+              clicks: 45000
+              conversion_rate: 0.032
+      - name: "Human Resources"
+        head: "Grace Patel"
+        members: 25
+        policies:
+          vacation_days: 20
+          sick_days: 10
+          remote_work: true
+          benefits:
+            - "Health Insurance"
+            - "401k Matching"
+            - "Stock Options"
+            - "Free Lunch"
+  products:
+    - name: "Nova Cloud"
+      version: "3.2.1"
+      release_date: 2024-01-20
+      features:
+        - "Auto-scaling"
+        - "Load balancing"
+        - "Monitoring dashboard"
+      pricing:
+        basic: 29.99
+        pro: 99.99
+        enterprise: 299.99
+      supported_languages: ["en", "es", "fr", "de", "zh"]
+    - name: "Nova AI"
+      version: "1.0.0-beta"
+      release_date: 2024-03-01
+      features:
+        - "Natural language processing"
+        - "Image recognition"
+        - "Predictive analytics"
+      pricing:
+        per_request: 0.001
+        monthly_subscription: 49.99
+  financials:
+    revenue:
+      - year: 2023
+        amount: 45000000.00
+        growth: 0.15
+      - year: 2024
+        amount: 52000000.00
+        growth: 0.1556
+    expenses:
+      - category: "Salaries"
+        amount: 28000000.00
+      - category: "Infrastructure"
+        amount: 8000000.00
+      - category: "Marketing"
+        amount: 5000000.00
+      - category: "R&D"
+        amount: 7000000.00
+    profit_margin: 0.1923
+  locations:
+    headquarters:
+      address: "123 Innovation Drive, San Francisco, CA 94105"
+      coordinates:
+        lat: 37.7749
+        lng: -122.4194
+    offices:
+      - city: "New York"
+        address: "456 Broadway, Suite 200, New York, NY 10013"
+        employees: 200
+      - city: "London"
+        address: "10 Downing Street, London, SW1A 2AA"
+        employees: 150
+      - city: "Tokyo"
+        address: "1-1-2 Oshiage, Sumida, Tokyo 131-8634"
+        employees: 100
+  metadata:
+    generated_at: 2024-12-01T10:30:00Z
+    version: 2.0
+    notes: |
+      This YAML file contains a comprehensive representation of TechNova Solutions Inc.
+      It includes nested structures, arrays, multiple data types, and comments.
+      The corresponding JSON should be equivalent but without comments.
+    tags: ["technology", "cloud", "AI", "enterprise"]
+    null_value_example: null
+    boolean_example: true
+    integer_example: 42
+    float_example: 3.141592653589793
+    multiline_string: |
+      This is a multiline string.
+      It can contain multiple lines.
+      Line breaks are preserved.
+      Indentation is also preserved.
+    single_line_string: "This is a single line string with \"escaped quotes\" and special characters: \n\t\\"
+    empty_array: []
+    empty_object: {}
+    mixed_array:
+      - 1
+      - "two"
+      - true
+      - null
+      - { key: "value" }
+      - [1, 2, 3]

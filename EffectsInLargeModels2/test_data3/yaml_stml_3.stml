@@ -1,0 +1,145 @@
+# 公司信息
+"company":
+  "name": "TechCorp"
+  "founded": "2010"
+  "employees": "1500"
+  "public": "true"
+  "ceo":
+    "name": "Alice Johnson"
+    "age": "45"
+    "email": "alice@techcorp.com"
+    "executive": "true"
+  "departments":
+    - "name": "Engineering"
+      "manager": "Bob Smith"
+      "location": "Building A"
+      "teams":
+        - "name": "Frontend"
+          "lead": "Charlie Brown"
+          "members":
+            - "name": "David"
+              "role": "Developer"
+              "skills": ["JavaScript", "React", "CSS"]
+              "email": "david@techcorp.com"
+              "start_date": "2020-05-01"
+            - "name": "Eve"
+              "role": "Senior Developer"
+              "skills": ["TypeScript", "Angular", "Sass"]
+              "email": "eve@techcorp.com"
+              "start_date": "2018-03-15"
+        - "name": "Backend"
+          "lead": "Frank"
+          "members":
+            - "name": "Grace"
+              "role": "Developer"
+              "skills": ["Python", "Django", "PostgreSQL"]
+              "email": "grace@techcorp.com"
+              "start_date": "2021-07-20"
+            - "name": "Heidi"
+              "role": "DevOps"
+              "skills": ["Docker", "Kubernetes", "AWS"]
+              "email": "heidi@techcorp.com"
+              "start_date": "2019-11-01"
+    - "name": "Sales"
+      "manager": "Ivan"
+      "location": "Building B"
+      "teams":
+        - "name": "Domestic"
+          "lead": "Judy"
+          "members":
+            - "name": "Kevin"
+              "role": "Sales Rep"
+              "quota": "500000"
+              "email": "kevin@techcorp.com"
+              "start_date": "2022-01-10"
+            - "name": "Linda"
+              "role": "Sales Rep"
+              "quota": "600000"
+              "email": "linda@techcorp.com"
+              "start_date": "2021-06-15"
+        - "name": "International"
+          "lead": "Mike"
+          "members":
+            - "name": "Nancy"
+              "role": "Sales Rep"
+              "quota": "700000"
+              "email": "nancy@techcorp.com"
+              "start_date": "2020-09-01"
+            - "name": "Oscar"
+              "role": "Sales Rep"
+              "quota": "800000"
+              "email": "oscar@techcorp.com"
+              "start_date": "2019-04-20"
+    - "name": "HR"
+      "manager": "Pam"
+      "location": "Building C"
+      "teams":
+        - "name": "Recruitment"
+          "lead": "Quinn"
+          "members":
+            - "name": "Rachel"
+              "role": "Recruiter"
+              "email": "rachel@techcorp.com"
+              "start_date": "2023-02-01"
+            - "name": "Sam"
+              "role": "Recruiter"
+              "email": "sam@techcorp.com"
+              "start_date": "2022-08-15"
+        - "name": "Payroll"
+          "lead": "Tina"
+          "members":
+            - "name": "Uma"
+              "role": "Payroll Specialist"
+              "email": "uma@techcorp.com"
+              "start_date": "2021-12-01"
+            - "name": "Victor"
+              "role": "Payroll Specialist"
+              "email": "victor@techcorp.com"
+              "start_date": "2020-07-10"
+  "projects":
+    - "name": "Project Alpha"
+      "budget": "1000000.50"
+      "status": "active"
+      "start_date": "2023-01-15"
+      "end_date": null
+      "team_members": ["David", "Eve", "Frank"]
+      "milestones":
+        - "name": "Phase 1"
+          "due": "2023-03-01"
+          "completed": "true"
+        - "name": "Phase 2"
+          "due": "2023-06-01"
+          "completed": "false"
+    - "name": "Project Beta"
+      "budget": "2500000"
+      "status": "planning"
+      "start_date": "2024-02-01"
+      "end_date": "2024-12-31"
+      "team_members": ["Grace", "Heidi", "Ivan"]
+      "milestones":
+        - "name": "Kickoff"
+          "due": "2024-02-15"
+          "completed": "false"
+        - "name": "Development"
+          "due": "2024-08-01"
+          "completed": "false"
+        - "name": "Launch"
+          "due": "2024-12-31"
+          "completed": "false"
+  "config":
+    "database":
+      "host": "db.techcorp.com"
+      "port": "5432"
+      "username": "admin"
+      "password": "secret"
+      "pool_size": "10"
+      "ssl": "true"
+    "logging":
+      "level": "INFO"
+      "file": "/var/log/app.log"
+      "format": "json"
+    "features":
+      "enable_new_ui": "false"
+      "max_retries": "3"
+      "timeout": "30.5"
+      "debug_mode": null

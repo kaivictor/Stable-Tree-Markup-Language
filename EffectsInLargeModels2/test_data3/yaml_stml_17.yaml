@@ -1,0 +1,126 @@
+person:
+  name: "Alexandra Johnson"
+  age: 32
+  gender: "female"
+  contact:
+    email: "alex.johnson@example.com"
+    phone: "+1-555-123-4567"
+    address:
+      street: "123 Maple Street"
+      city: "Springfield"
+      state: "Illinois"
+      zip: "62701"
+      country: "USA"
+  education:
+    - degree: "Bachelor of Science in Computer Science"
+      institution: "University of Illinois at Urbana-Champaign"
+      year: 2014
+      gpa: 3.8
+    - degree: "Master of Science in Artificial Intelligence"
+      institution: "Stanford University"
+      year: 2016
+      gpa: 3.9
+  work_experience:
+    - company: "TechCorp Inc."
+      position: "Senior Software Engineer"
+      start_date: "2018-03-01"
+      end_date: "2023-08-15"
+      responsibilities:
+        - "Led a team of 5 engineers in developing a cloud-based analytics platform"
+        - "Designed and implemented microservices architecture using Kubernetes and Docker"
+        - "Reduced system latency by 40% through optimization of database queries"
+      technologies:
+        - "Python"
+        - "Go"
+        - "PostgreSQL"
+        - "AWS"
+        - "Terraform"
+    - company: "StartupXYZ"
+      position: "Full Stack Developer"
+      start_date: "2016-07-01"
+      end_date: "2018-02-28"
+      responsibilities:
+        - "Built and maintained RESTful APIs using Node.js and Express"
+        - "Developed responsive front-end interfaces with React and Redux"
+        - "Implemented CI/CD pipelines with Jenkins and GitLab"
+      technologies:
+        - "JavaScript"
+        - "TypeScript"
+        - "MongoDB"
+        - "Redis"
+        - "Docker"
+  skills:
+    programming_languages:
+      - "Python"
+      - "Go"
+      - "JavaScript"
+      - "TypeScript"
+      - "Java"
+    frameworks:
+      - "React"
+      - "Node.js"
+      - "Django"
+      - "Spring Boot"
+    tools:
+      - "Docker"
+      - "Kubernetes"
+      - "Terraform"
+      - "Ansible"
+      - "Git"
+    databases:
+      - "PostgreSQL"
+      - "MongoDB"
+      - "Redis"
+      - "Elasticsearch"
+  certifications:
+    - name: "AWS Certified Solutions Architect – Professional"
+      issuer: "Amazon Web Services"
+      date: "2021-11-15"
+      expiration: "2024-11-15"
+    - name: "Certified Kubernetes Administrator (CKA)"
+      issuer: "CNCF"
+      date: "2022-03-20"
+      expiration: "2025-03-20"
+  projects:
+    - title: "Real-time Chat Application"
+      description: "A scalable chat application supporting 100k concurrent users using WebSockets and Redis pub/sub."
+      url: "https://github.com/alexj/chat-app"
+      stars: 245
+      language: "Go"
+    - title: "Machine Learning Pipeline"
+      description: "Automated ML pipeline for model training and deployment using Kubeflow and MLflow."
+      url: "https://github.com/alexj/ml-pipeline"
+      stars: 189
+      language: "Python"
+    - title: "Personal Portfolio Website"
+      description: "Responsive portfolio site built with Next.js and Tailwind CSS, deployed on Vercel."
+      url: "https://alexj.dev"
+      stars: 12
+      language: "TypeScript"
+  languages:
+    - language: "English"
+      proficiency: "Native"
+    - language: "Spanish"
+      proficiency: "Fluent"
+    - language: "French"
+      proficiency: "Intermediate"
+  interests:
+    - "Open source contribution"
+    - "Hiking and outdoor activities"
+    - "Reading science fiction"
+    - "Playing chess"
+  social_links:
+    github: "https://github.com/alexj"
+    linkedin: "https://linkedin.com/in/alexj"
+    twitter: "https://twitter.com/alexj_dev"
+    blog: "https://blog.alexj.dev"
+  additional_info:
+    willing_to_relocate: true
+    available_for_contract: false
+    preferred_work_mode: "Remote"
+    notice_period_days: 30
+    salary_expectation:
+      min: 150000
+      max: 200000
+      currency: "USD"
+      period: "annual"

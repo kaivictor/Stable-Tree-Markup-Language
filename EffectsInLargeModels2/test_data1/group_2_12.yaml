@@ -1,0 +1,173 @@
+# 公司信息管理系统 - 示例数据
+# 包含员工、项目、财务、配置等复杂结构
+
+company:
+  name: "Acme Corp & Sons, Ltd."
+  founded: 1998-05-15
+  ceo: "John \"The Boss\" Doe"
+  address:
+    street: "123 Main St.\nSuite 400"  # 换行符
+    city: "Metropolis"
+    state: "NY"
+    zip: 10001
+    coordinates:
+      lat: 40.7128
+      lng: -74.0060
+  contact:
+    email: "info@acme-corp.com"
+    phone: "+1-555-123-4567"
+    website: "https://acme-corp.com"
+
+employees:
+  - &emp1
+    id: 1
+    name: "Alice Johnson"
+    role: "Developer"
+    skills: [Python, JavaScript, Docker]
+    salary: 95000.50
+    active: true
+    start_date: 2020-01-15
+    metadata:
+      last_login: 2023-12-01T10:30:00Z
+      notes: |
+        Alice is a senior developer.
+        She leads the frontend team.
+        She also contributes to open source.
+  - &emp2
+    id: 2
+    name: "Bob \"The Builder\" Smith"
+    role: "DevOps Engineer"
+    skills:
+      - AWS
+      - Kubernetes
+      - Terraform
+    salary: 105000
+    active: true
+    start_date: 2019-06-01
+    metadata:
+      last_login: 2023-12-02T08:15:00Z
+      notes: >
+        Bob is responsible for CI/CD pipelines.
+        He automates everything.
+  - &emp3
+    id: 3
+    name: "Charlie Brown"
+    role: "Designer"
+    skills: [Figma, Sketch, Photoshop]
+    salary: 85000
+    active: false
+    start_date: 2021-03-20
+    end_date: 2023-11-30
+    metadata:
+      last_login: null
+      notes: "Charlie left the company."
+
+projects:
+  - name: "Project Alpha"
+    lead: *emp1
+    members:
+      - *emp1
+      - *emp2
+    budget: 500000
+    status: "in_progress"
+    milestones:
+      - name: "MVP"
+        deadline: 2024-03-01
+        completed: false
+      - name: "Beta"
+        deadline: 2024-06-01
+        completed: false
+  - name: "Project Beta"
+    lead: *emp2
+    members:
+      - *emp2
+      - *emp3
+    budget: 300000
+    status: "completed"
+    milestones:
+      - name: "Release 1.0"
+        deadline: 2023-10-01
+        completed: true
+      - name: "Release 2.0"
+        deadline: 2023-12-01
+        completed: true
+
+financials:
+  revenue: 12000000.75
+  expenses:
+    salaries: 7500000
+    infrastructure: 1500000
+    marketing: 2000000
+    r&d: 1000000
+  profit: 0  # 计算后为0？实际应为12000000.75 - (7500000+1500000+2000000+1000000) = 0? 故意留空
+  tax_rate: 0.21
+  currency: "USD"
+
+config:
+  debug: false
+  max_retries: 3
+  timeout: 30.5
+  allowed_origins:
+    - "http://localhost:3000"
+    - "https://app.acme-corp.com"
+  feature_flags:
+    new_dashboard: true
+    dark_mode: false
+    beta_api: true
+  database:
+    host: "db.acme-corp.internal"
+    port: 5432
+    name: "acme_prod"
+    pool_size: 20
+    ssl: true
+  logging:
+    level: "INFO"
+    format: "json"
+    outputs:
+      - type: "file"
+        path: "/var/log/app.log"
+        rotation: "daily"
+      - type: "stdout"
+        color: true
+
+# 空值示例
+null_field: ~
+empty_list: []
+empty_dict: {}
+
+# 特殊字符
+special_chars: "Tab\there\nNewline here\nUnicode: \u00e9 \u2603 \u1F600"
+regex_pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+
+# 长字符串
+long_text: |
+  This is a very long text that spans multiple lines.
+  It can contain any characters, including quotes: " and '.
+  Also backslashes: \\ and forward slashes: /.
+  The YAML parser will preserve the newlines.
+  This is useful for configuration files, documentation, etc.
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+  Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.
+  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui.
+  Officia deserunt mollit anim id est laborum.
+
+# 科学计数法
+scientific: 1.23e+4
+negative_scientific: -5.67e-3
+
+# 布尔值
+bool_true: yes
+bool_false: no
+bool_on: on
+bool_off: off
+
+# 混合列表
+mixed_list:
+  - 42
+  - "answer"
+  - true
+  - null
+  - [nested, list]
+  - {key: value}

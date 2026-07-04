@@ -1,0 +1,295 @@
+# 这是一个非常丰富的YAML示例，包含多种数据类型和嵌套结构
+# 模拟一个大型系统的完整配置
+
+system:
+  name: "Galactic Nexus"
+  version: 3.14.159
+  release_date: 2025-04-01  # 日期类型，JSON中会转为字符串
+  active: true
+  debug: false
+  null_value: null
+  description: |
+    这是一个多行字符串。
+    它包含换行符和缩进。
+    最后一行没有换行符。
+  tags: [production, stable, v3]
+  components:
+    - name: "Core Engine"
+      type: service
+      port: 8080
+      endpoints:
+        - /api/v1/status
+        - /api/v1/health
+        - /api/v1/metrics
+      config:
+        max_connections: 1000
+        timeout: 30.5
+        retry_policy:
+          max_retries: 3
+          backoff: exponential
+          jitter: true
+    - name: "Data Pipeline"
+      type: batch
+      schedule: "0 0 * * *"
+      input:
+        source: "s3://bucket/input/"
+        format: parquet
+        options:
+          compression: snappy
+          infer_schema: true
+      output:
+        destination: "hdfs://namenode:9000/output/"
+        format: orc
+        partition_by: [date, hour]
+      transforms:
+        - type: filter
+          condition: "age > 18"
+        - type: map
+          expression: "upper(name)"
+        - type: aggregate
+          group_by: [country]
+          metrics:
+            - sum(salary)
+            - avg(age)
+  users:
+    - id: 1001
+      name: "Alice Johnson"
+      roles: [admin, developer]
+      permissions:
+        read: true
+        write: true
+        delete: false
+      metadata:
+        created_at: 2024-01-15T10:30:00Z
+        last_login: 2025-03-20T08:45:12Z
+        preferences:
+          theme: dark
+          language: en-US
+          notifications:
+            email: true
+            sms: false
+            push: true
+    - id: 1002
+      name: "Bob Smith"
+      roles: [viewer]
+      permissions:
+        read: true
+        write: false
+        delete: false
+      metadata:
+        created_at: 2024-06-22T14:00:00Z
+        last_login: 2025-04-01T12:00:00Z
+        preferences:
+          theme: light
+          language: fr-FR
+          notifications:
+            email: false
+            sms: false
+            push: false
+    - id: 1003
+      name: "Charlie Brown"
+      roles: [editor, moderator]
+      permissions:
+        read: true
+        write: true
+        delete: true
+      metadata:
+        created_at: 2024-11-01T09:15:00Z
+        last_login: null
+        preferences:
+          theme: system
+          language: de-DE
+          notifications:
+            email: true
+            sms: true
+            push: false
+  database:
+    type: postgresql
+    host: db.internal
+    port: 5432
+    database: galaxy_nexus
+    pool:
+      min_size: 5
+      max_size: 20
+      idle_timeout: 300
+    ssl:
+      enabled: true
+      ca_cert: "/etc/ssl/certs/ca.pem"
+      client_cert: "/etc/ssl/certs/client.pem"
+      client_key: "/etc/ssl/private/client.key"
+  logging:
+    level: INFO
+    format: json
+    outputs:
+      - type: file
+        path: "/var/log/system.log"
+        rotation:
+          max_size: 100MB
+          max_files: 10
+      - type: syslog
+        host: logs.example.com
+        port: 514
+        protocol: udp
+      - type: elasticsearch
+        hosts:
+          - "https://es1.example.com:9200"
+          - "https://es2.example.com:9200"
+        index: "system-logs-{now/d}"
+        batch_size: 500
+  monitoring:
+    metrics:
+      enabled: true
+      port: 9090
+      path: /metrics
+    alerts:
+      - name: "High CPU"
+        condition: "cpu_usage > 90"
+        severity: critical
+        actions:
+          - type: email
+            to: ["ops@example.com", "admin@example.com"]
+          - type: webhook
+            url: "https://hooks.example.com/alerts"
+      - name: "Low Disk Space"
+        condition: "disk_free < 10GB"
+        severity: warning
+        actions:
+          - type: email
+            to: ["ops@example.com"]
+  features:
+    - name: "AI Assistant"
+      enabled: true
+      model: "gpt-4"
+      parameters:
+        temperature: 0.7
+        max_tokens: 2048
+        top_p: 0.9
+    - name: "Real-time Sync"
+      enabled: false
+      reason: "Under maintenance"
+  nested_example:
+    level1:
+      level2:
+        level3:
+          level4:
+            value: "deeply nested"
+            numbers: [1, 2, 3, 4, 5]
+            mixed:
+              - null
+              - true
+              - 3.14
+              - "string"
+              - {key: "value", another: 42}
+  # 浮点数科学计数法
+  scientific: 1.23e-4
+  # 十六进制整数
+  hex_int: 0xFF
+  # 八进制整数 (YAML支持，但JSON不支持，所以这里用十进制表示？但为了丰富，保留，JSON中会转为十进制)
+  octal_int: 0o77
+  # 二进制整数
+  binary_int: 0b1010
+  # 布尔值多种写法
+  bool_true: yes
+  bool_false: no
+  bool_on: on
+  bool_off: off
+  # 字符串中的特殊字符
+  special_string: "Line1\nLine2\tTabbed"
+  # 单引号字符串
+  single_quoted: 'It''s a test'
+  # 显式类型转换 (YAML标签，但JSON不支持，所以最好不用，这里为了丰富，但注意JSON中会丢失标签)
+  # 实际上PyYAML解析标签后会转为对应Python类型，但JSON序列化时可能出错，所以避免使用标签。
+  # 我们使用普通类型即可。
+  # 空列表和空字典
+  empty_list: []
+  empty_dict: {}
+  # 长数字
+  big_number: 12345678901234567890
+  # 浮点数
+  pi: 3.141592653589793
+  # 无穷大和NaN (YAML支持，但JSON不支持，所以避免)
+  # 我们不用。
+  # 锚点和别名 (JSON不支持，所以不用)
+  # 为了丰富，可以包含一个重复的节点，但不用锚点，直接复制。
+  duplicate_node:
+    name: "Duplicate"
+    value: 100
+  another_duplicate:
+    name: "Duplicate"
+    value: 100
+  # 包含注释的键？注释在JSON中不存在。
+  # 多行字符串块标量
+  block_literal: |
+    第一行
+    第二行
+    第三行
+  block_folded: >
+    这是一个折叠块标量，
+    换行符会被空格替代，
+    但最后会有一个换行符。
+  # 混合缩进
+  mixed_indent:
+    - item1
+    - item2
+    - sublist:
+        - subitem1
+        - subitem2
+  # 复杂嵌套
+  complex:
+    - id: 1
+      data:
+        x: 10
+        y: 20
+        z: 30
+    - id: 2
+      data:
+        x: 40
+        y: 50
+        z: 60
+    - id: 3
+      data:
+        x: 70
+        y: 80
+        z: 90
+  # 时间间隔 (YAML支持，但JSON不支持，所以用字符串表示)
+  duration: "P1Y2M3DT4H5M6S"
+  # 时间点 (YAML支持，但JSON不支持，所以用字符串)
+  timestamp: 2025-04-01T12:00:00Z
+  # 有序映射 (YAML支持!!omap，但JSON不支持，所以不用)
+  # 集合 (YAML支持!!set，但JSON不支持，所以不用)
+  # 二进制数据 (YAML支持!!binary，但JSON不支持，所以不用)
+  # 为了确保内容丰富，再添加一些随机数据
+  random_data:
+    - [1, 2, 3]
+    - [4, 5, 6]
+    - [7, 8, 9]
+  matrix:
+    - [1.1, 2.2, 3.3]
+    - [4.4, 5.5, 6.6]
+    - [7.7, 8.8, 9.9]
+  # 字符串数字
+  string_number: "123"
+  # 字符串布尔
+  string_bool: "true"
+  # 字符串null
+  string_null: "null"
+  # 混合类型列表
+  mixed_list:
+    - 1
+    - "two"
+    - 3.0
+    - false
+    - null
+    - {key: value}
+    - [a, b, c]
+  # 深度嵌套字典
+  deep:
+    a:
+      b:
+        c:
+          d:
+            e:
+              f: "found it!"
+  # 多个相同键？YAML不允许重复键，但PyYAML会覆盖，所以不要重复。
+  # 最后，一个大的字符串
+  long_string: "这是一个非常长的字符串，用于测试YAML和JSON的解析能力。它包含很多字符，比如：abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':\",./<>?`~ 以及各种Unicode字符：你好，世界！🌍🚀🎉"

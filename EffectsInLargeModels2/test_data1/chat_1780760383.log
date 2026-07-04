@@ -1,0 +1,127 @@
+```stml
+"company":
+  "name": "TechNova Solutions"
+  "founded": "2005-03-15"
+  "public": "false"
+  "employees":
+    - "id": "1001"
+      "name": "Alice Johnson"
+      "role": "Senior Developer"
+      "skills": ["Python", "JavaScript", "Docker", "Kubernetes"]
+      "salary": "120000.5"
+      "active": "true"
+      "address":
+        "street": "123 Main St"
+        "city": "San Francisco"
+        "state": "CA"
+        "zip": "94102"
+      "projects":
+        - "name": "Project Alpha"
+          "status": "completed"
+          "budget": "500000"
+          "team_size": "8"
+        - "name": "Project Beta"
+          "status": "in_progress"
+          "budget": "750000"
+          "team_size": "12"
+    - "id": "1002"
+      "name": "Bob Smith"
+      "role": "DevOps Engineer"
+      "skills": ["AWS", "Terraform", "Ansible", "Linux"]
+      "salary": "110000.75"
+      "active": "true"
+      "address":
+        "street": "456 Oak Ave"
+        "city": "New York"
+        "state": "NY"
+        "zip": "10001"
+      "projects":
+        - "name": "Project Gamma"
+          "status": "planning"
+          "budget": "300000"
+          "team_size": "5"
+    - "id": "1003"
+      "name": "Charlie Brown"
+      "role": "Data Scientist"
+      "skills": ["Python", "R", "TensorFlow", "SQL"]
+      "salary": "130000.0"
+      "active": "false"
+      "address": null
+      "projects": []
+  "departments":
+    "Engineering":
+      "head": "Dr. Emily White"
+      "floor": "3"
+      "rooms": ["301", "302", "303", "304"]
+    "Marketing":
+      "head": "John Davis"
+      "floor": "2"
+      "rooms": ["201", "202"]
+    "HR":
+      "head": "Sarah Lee"
+      "floor": "1"
+      "rooms": ["101", "102", "103"]
+  "settings":
+    "debug": "false"
+    "max_connections": "100"
+    "timeout": "30.5"
+    "allowed_origins": ["https://app.technova.com", "https://admin.technova.com"]
+    "database":
+      "host": "db.technova.internal"
+      "port": "5432"
+      "name": "technova_prod"
+      "credentials":
+        "username": "admin"
+        "password": "s3cr3t!"
+    "features":
+      - "name": "dark_mode"
+        "enabled": "true"
+        "version": "2.1"
+      - "name": "multi_factor_auth"
+        "enabled": "true"
+        "version": "1.0"
+      - "name": "beta_chat"
+        "enabled": "false"
+        "version": "0.9"
+  "notes": {
+这是一个多行字符串示例。
+它可以包含多行文本。
+并且保留换行符。
+  }
+  "description": {
+这是一个折叠块标量。 它会将换行符转换为空格。 但最终只有一个空格。
+  }
+  "special_chars": "包含特殊字符：!@#$%^&*()_+-=[]{}|;':\",./<>?`~"
+  "empty_value": null
+  "boolean_values": ["true", "false", "true", "false", "true", "false"]
+  "numbers":
+    "integer": "42"
+    "float": "3.14159"
+    "negative": "-273"
+    "scientific": "6.022e23"
+    "hex": "26"
+    "octal": "63"
+    "binary": "10"
+  "nested":
+    "level1":
+      "level2":
+        "level3":
+          "key": "deep value"
+          "list": ["item1", "item2", "item3"]
+  "mixed_list":
+    - "string"
+    - "123"
+    - "true"
+    - null
+    - ["nested", "list"]
+    - "key": "value"
+  "anchors":
+    "timeout": "30"
+    "retries": "3"
+  "server":
+    "timeout": "30"
+    "retries": "3"
+    "host": "server1.technova.com"
+    "port": "8080"
+  "key": "value"
+```

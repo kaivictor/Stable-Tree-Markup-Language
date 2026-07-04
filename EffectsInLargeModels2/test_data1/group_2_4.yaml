@@ -1,0 +1,140 @@
+# Application configuration
+app:
+  name: "MyApp"
+  version: "2.1.0"
+  description: |
+    This is a multi-line description.
+    It can have multiple lines.
+    And it's preserved in YAML.
+  features:
+    enable_feature_a: true
+    enable_feature_b: false
+    enable_feature_c: null
+
+# Database settings
+database:
+  primary:
+    host: "db1.example.com"
+    port: 5432
+    username: "admin"
+    password: "secret123"
+    pool:
+      min: 5
+      max: 20
+      timeout: 30.5
+    options:
+      - ssl: true
+      - connect_timeout: 10
+  replica:
+    - host: "db2.example.com"
+      port: 5432
+    - host: "db3.example.com"
+      port: 5432
+
+# Server configuration
+server:
+  listen: "0.0.0.0"
+  port: 8080
+  ssl:
+    enabled: true
+    cert: "/etc/ssl/certs/server.crt"
+    key: "/etc/ssl/private/server.key"
+  cors:
+    allowed_origins:
+      - "https://example.com"
+      - "https://app.example.com"
+    methods: ["GET", "POST", "PUT", "DELETE"]
+
+# Logging settings
+logging:
+  level: "info"
+  file: "/var/log/myapp/app.log"
+  format: "json"
+  rotation:
+    max_size: "100MB"
+    max_files: 10
+
+# User list
+users:
+  - username: "alice"
+    role: "admin"
+    permissions:
+      - "read"
+      - "write"
+      - "delete"
+    metadata:
+      department: "Engineering"
+      joined: "2020-01-15"
+  - username: "bob"
+    role: "user"
+    permissions:
+      - "read"
+    metadata:
+      department: "Sales"
+      joined: "2021-03-22"
+  - username: "charlie"
+    role: "moderator"
+    permissions:
+      - "read"
+      - "write"
+    metadata:
+      department: "Support"
+      joined: "2019-11-01"
+  - username: "dave"
+    role: "user"
+    permissions:
+      - "read"
+    metadata:
+      department: "Marketing"
+      joined: "2022-07-10"
+  - username: "eve"
+    role: "admin"
+    permissions:
+      - "read"
+      - "write"
+      - "delete"
+      - "manage"
+    metadata:
+      department: "IT"
+      joined: "2018-05-20"
+  - username: "frank"
+    role: "user"
+    permissions:
+      - "read"
+    metadata:
+      department: "HR"
+      joined: "2023-01-01"
+  - username: "grace"
+    role: "moderator"
+    permissions:
+      - "read"
+      - "write"
+      - "approve"
+    metadata:
+      department: "Finance"
+      joined: "2020-09-12"
+  - username: "heidi"
+    role: "user"
+    permissions:
+      - "read"
+    metadata:
+      department: "Legal"
+      joined: "2021-12-05"
+  - username: "ivan"
+    role: "admin"
+    permissions:
+      - "read"
+      - "write"
+      - "delete"
+      - "configure"
+    metadata:
+      department: "DevOps"
+      joined: "2017-06-30"
+  - username: "judy"
+    role: "user"
+    permissions:
+      - "read"
+      - "comment"
+    metadata:
+      department: "Design"
+      joined: "2022-09-18"

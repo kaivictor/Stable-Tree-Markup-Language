@@ -1,0 +1,432 @@
+{
+    "system": {
+        "name": "Enterprise Suite",
+        "version": "2.5.1",
+        "build": "2025-03-15T10:30:00Z",
+        "releaseDate": "2025-03-15",
+        "maintainer": "John Doe <john@example.com>",
+        "dependencies": [
+            "python>=3.9",
+            "flask>=2.0",
+            "sqlalchemy>=1.4"
+        ],
+        "features": {
+            "authentication": true,
+            "authorization": true,
+            "logging": true,
+            "caching": true,
+            "notifications": false
+        }
+    },
+    "users": [
+        {
+            "id": 1,
+            "username": "alice",
+            "email": "alice@example.com",
+            "profile": {
+                "firstName": "Alice",
+                "lastName": "Smith",
+                "age": 30,
+                "gender": "female",
+                "bio": "Alice is a software engineer with 10 years of experience. She specializes in backend development and cloud architecture. She enjoys hiking and reading sci-fi novels.",
+                "avatar": "https://example.com/avatars/alice.png"
+            },
+            "roles": [
+                "admin",
+                "developer"
+            ],
+            "permissions": [
+                "read",
+                "write",
+                "delete"
+            ],
+            "metadata": {
+                "created": "2024-01-01",
+                "lastLogin": "2025-03-14",
+                "status": "active"
+            },
+            "settings": {
+                "theme": "dark",
+                "language": "en",
+                "timezone": "UTC"
+            }
+        },
+        {
+            "id": 2,
+            "username": "bob",
+            "email": "bob@example.com",
+            "profile": {
+                "firstName": "Bob",
+                "lastName": "Johnson",
+                "age": 25,
+                "gender": "male",
+                "bio": "Bob is a junior developer fresh out of college. He is eager to learn and contribute. He loves open source and contributes to several projects.",
+                "avatar": "https://example.com/avatars/bob.png"
+            },
+            "roles": [
+                "developer"
+            ],
+            "permissions": [
+                "read",
+                "write"
+            ],
+            "metadata": {
+                "created": "2025-02-01",
+                "lastLogin": "2025-03-15",
+                "status": "active"
+            },
+            "settings": {
+                "theme": "light",
+                "language": "en",
+                "timezone": "America/New_York"
+            }
+        },
+        {
+            "id": 3,
+            "username": "charlie",
+            "email": "charlie@example.com",
+            "profile": {
+                "firstName": "Charlie",
+                "lastName": "Brown",
+                "age": 35,
+                "gender": "male",
+                "bio": "Charlie is a project manager with a background in software development. He coordinates multiple teams and ensures timely delivery. He is also a certified scrum master.",
+                "avatar": "https://example.com/avatars/charlie.png"
+            },
+            "roles": [
+                "manager",
+                "developer"
+            ],
+            "permissions": [
+                "read",
+                "write",
+                "manage"
+            ],
+            "metadata": {
+                "created": "2023-06-15",
+                "lastLogin": "2025-03-10",
+                "status": "active"
+            },
+            "settings": {
+                "theme": "dark",
+                "language": "en",
+                "timezone": "Europe/London"
+            }
+        }
+    ],
+    "projects": [
+        {
+            "id": 101,
+            "name": "Project Alpha",
+            "description": "Project Alpha is a flagship product aimed at revolutionizing the way businesses manage their workflows. It includes features like task management, real-time collaboration, and advanced analytics. The project is currently in beta phase with a planned release in Q3 2025.",
+            "status": "in_progress",
+            "startDate": "2024-09-01",
+            "endDate": "2025-09-30",
+            "budget": 500000.0,
+            "team": [
+                1,
+                2,
+                3
+            ],
+            "milestones": [
+                {
+                    "name": "MVP Release",
+                    "date": "2025-01-15",
+                    "completed": true
+                },
+                {
+                    "name": "Beta Release",
+                    "date": "2025-04-01",
+                    "completed": false
+                },
+                {
+                    "name": "Final Release",
+                    "date": "2025-09-30",
+                    "completed": false
+                }
+            ],
+            "tasks": [
+                1001,
+                1002,
+                1003
+            ]
+        },
+        {
+            "id": 102,
+            "name": "Project Beta",
+            "description": "Project Beta is an internal tool for automating deployment pipelines. It integrates with Jenkins and Docker to provide continuous integration and delivery. The project is in early development stage.",
+            "status": "planning",
+            "startDate": "2025-01-01",
+            "endDate": "2025-12-31",
+            "budget": 200000.0,
+            "team": [
+                1,
+                3
+            ],
+            "milestones": [
+                {
+                    "name": "Design Review",
+                    "date": "2025-03-01",
+                    "completed": true
+                },
+                {
+                    "name": "Prototype",
+                    "date": "2025-06-01",
+                    "completed": false
+                }
+            ],
+            "tasks": [
+                1004,
+                1005
+            ]
+        }
+    ],
+    "tasks": [
+        {
+            "id": 1001,
+            "title": "Implement user authentication",
+            "description": "Develop the login and registration system using JWT tokens. Ensure secure password hashing with bcrypt. Include OAuth2 support for Google and GitHub. Write unit tests and integration tests.",
+            "assignee": 1,
+            "priority": "high",
+            "status": "in_progress",
+            "estimatedHours": 40,
+            "actualHours": 35,
+            "subtasks": [
+                {
+                    "id": "1001-1",
+                    "title": "Design database schema",
+                    "status": "completed"
+                },
+                {
+                    "id": "1001-2",
+                    "title": "Implement JWT generation",
+                    "status": "completed"
+                },
+                {
+                    "id": "1001-3",
+                    "title": "Implement login endpoint",
+                    "status": "in_progress"
+                },
+                {
+                    "id": "1001-4",
+                    "title": "Implement registration endpoint",
+                    "status": "pending"
+                },
+                {
+                    "id": "1001-5",
+                    "title": "Write tests",
+                    "status": "pending"
+                }
+            ],
+            "comments": [
+                {
+                    "author": 2,
+                    "text": "Please ensure we handle token refresh properly.",
+                    "timestamp": "2025-03-10T14:30:00Z"
+                },
+                {
+                    "author": 1,
+                    "text": "I've added refresh token support. Will push soon.",
+                    "timestamp": "2025-03-11T09:15:00Z"
+                }
+            ]
+        },
+        {
+            "id": 1002,
+            "title": "Design dashboard UI",
+            "description": "Create wireframes and mockups for the main dashboard. Use Figma for design. The dashboard should display key metrics, recent activity, and quick actions. Follow the company design system.",
+            "assignee": 2,
+            "priority": "medium",
+            "status": "completed",
+            "estimatedHours": 30,
+            "actualHours": 28,
+            "subtasks": [
+                {
+                    "id": "1002-1",
+                    "title": "Create low-fidelity wireframes",
+                    "status": "completed"
+                },
+                {
+                    "id": "1002-2",
+                    "title": "Create high-fidelity mockups",
+                    "status": "completed"
+                },
+                {
+                    "id": "1002-3",
+                    "title": "Get feedback from stakeholders",
+                    "status": "completed"
+                }
+            ],
+            "comments": [
+                {
+                    "author": 3,
+                    "text": "The mockups look great! Let's proceed to development.",
+                    "timestamp": "2025-02-20T16:45:00Z"
+                }
+            ]
+        },
+        {
+            "id": 1003,
+            "title": "Set up CI/CD pipeline",
+            "description": "Configure Jenkins to automatically build and test the project on every push. Deploy to staging environment after successful tests. Use Docker for containerization. Notify team on Slack on failures.",
+            "assignee": 1,
+            "priority": "high",
+            "status": "pending",
+            "estimatedHours": 20,
+            "actualHours": 0,
+            "subtasks": [
+                {
+                    "id": "1003-1",
+                    "title": "Install Jenkins plugins",
+                    "status": "pending"
+                },
+                {
+                    "id": "1003-2",
+                    "title": "Write Jenkinsfile",
+                    "status": "pending"
+                },
+                {
+                    "id": "1003-3",
+                    "title": "Configure Docker registry",
+                    "status": "pending"
+                }
+            ],
+            "comments": []
+        },
+        {
+            "id": 1004,
+            "title": "Research deployment tools",
+            "description": "Evaluate different deployment tools like Ansible, Terraform, and Kubernetes. Prepare a comparison report with pros and cons. Recommend the best tool for our infrastructure.",
+            "assignee": 3,
+            "priority": "low",
+            "status": "completed",
+            "estimatedHours": 15,
+            "actualHours": 12,
+            "subtasks": [
+                {
+                    "id": "1004-1",
+                    "title": "Research Ansible",
+                    "status": "completed"
+                },
+                {
+                    "id": "1004-2",
+                    "title": "Research Terraform",
+                    "status": "completed"
+                },
+                {
+                    "id": "1004-3",
+                    "title": "Research Kubernetes",
+                    "status": "completed"
+                },
+                {
+                    "id": "1004-4",
+                    "title": "Write report",
+                    "status": "completed"
+                }
+            ],
+            "comments": [
+                {
+                    "author": 1,
+                    "text": "Great report! I think Terraform is the way to go.",
+                    "timestamp": "2025-03-05T11:00:00Z"
+                }
+            ]
+        },
+        {
+            "id": 1005,
+            "title": "Implement API rate limiting",
+            "description": "Add rate limiting to the API to prevent abuse. Use Redis as the backend for storing rate counters. Configure different limits for authenticated and unauthenticated users. Return appropriate HTTP status codes.",
+            "assignee": 1,
+            "priority": "medium",
+            "status": "in_progress",
+            "estimatedHours": 25,
+            "actualHours": 10,
+            "subtasks": [
+                {
+                    "id": "1005-1",
+                    "title": "Set up Redis",
+                    "status": "completed"
+                },
+                {
+                    "id": "1005-2",
+                    "title": "Implement middleware",
+                    "status": "in_progress"
+                },
+                {
+                    "id": "1005-3",
+                    "title": "Write tests",
+                    "status": "pending"
+                }
+            ],
+            "comments": [
+                {
+                    "author": 2,
+                    "text": "Remember to handle Redis connection failures gracefully.",
+                    "timestamp": "2025-03-12T08:30:00Z"
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "theme": "dark",
+        "language": "en",
+        "timezone": "UTC",
+        "notifications": {
+            "email": true,
+            "slack": true,
+            "sms": false
+        },
+        "pagination": {
+            "defaultPageSize": 20,
+            "maxPageSize": 100
+        }
+    },
+    "metadata": {
+        "createdAt": "2025-01-01T00:00:00Z",
+        "updatedAt": "2025-03-15T12:00:00Z",
+        "author": "System Administrator",
+        "version": "1.0.0"
+    },
+    "logging": {
+        "level": "INFO",
+        "format": "json",
+        "outputs": [
+            "console",
+            "file",
+            "elasticsearch"
+        ]
+    },
+    "database": {
+        "host": "db.example.com",
+        "port": 5432,
+        "name": "enterprise_db",
+        "user": "app_user",
+        "password": "secure_password_123",
+        "pool": {
+            "min": 5,
+            "max": 20,
+            "timeout": 30
+        }
+    },
+    "cache": {
+        "type": "redis",
+        "host": "redis.example.com",
+        "port": 6379,
+        "ttl": 3600
+    },
+    "security": {
+        "encryption": {
+            "algorithm": "AES-256-GCM",
+            "keyRotation": true
+        },
+        "authentication": {
+            "method": "JWT",
+            "tokenExpiry": 3600,
+            "refreshTokenExpiry": 86400
+        },
+        "authorization": {
+            "model": "RBAC",
+            "defaultRole": "viewer"
+        }
+    }
+}
