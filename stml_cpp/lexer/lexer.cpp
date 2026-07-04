@@ -447,16 +447,23 @@ void STMLLexer::_lex_scalar_or_null(const std::string& text, int indent)
 std::tuple<std::string, std::string, bool, int>
 STMLLexer::_try_quoted_key(const std::string& content, int indent)
 {
-    int end = _find_first_unescaped_quote(content, 1);
-    if (end == -1)
-        return {"", "", false, -1};
-    // Must be immediately followed by ':'
-    if (end + 1 >= static_cast<int>(content.size()) || content[end + 1] != ':')
-        return {"", "", false, -1};
-    std::string raw_key = content.substr(1, end - 1);
-    std::string key = _unescape(raw_key, indent + 1);
-    std::string rest = content.substr(end + 2);
-    return {std::move(key), std::move(rest), true, end + 1};
+    // 从位置1开始搜索闭合引号+冒号的组合
+    int pos = 1;
+    while (pos < static_cast<int>(content.size())) {
+        int end = _find_first_unescaped_quote(content, pos);
+        if (end == -1)
+            return {"", "", false, -1};
+        // 检查闭合引号后是否紧跟冒号
+        if (end + 1 < static_cast<int>(content.size()) && content[end + 1] == ':') {
+            std::string raw_key = content.substr(1, end - 1);
+            std::string key = _unescape(raw_key, indent + 1);
+            std::string rest = content.substr(end + 2);
+            return {std::move(key), std::move(rest), true, end + 1};
+        }
+        // 不是闭合引号+冒号，继续搜索下一个引号
+        pos = end + 1;
+    }
+    return {"", "", false, -1};
 }
 
 // =========================================================================

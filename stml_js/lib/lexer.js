@@ -347,13 +347,22 @@ class STMLLexer {
 
   // ---- Quoted-key attempt ----
   _tryQuotedKey(content, indent) {
-    const end = this._findFirstUnescapedQuote(content, 1);
-    if (end === -1) return ['', '', false, -1];
-    if (end + 1 >= content.length || content[end + 1] !== ':') return ['', '', false, -1];
-    const rawKey = content.slice(1, end);
-    const key = this._unescape(rawKey, indent + 1);
-    const rest = content.slice(end + 2);
-    return [key, rest, true, end + 1];
+    // 从位置1开始搜索闭合引号+冒号的组合
+    let pos = 1;
+    while (pos < content.length) {
+      const end = this._findFirstUnescapedQuote(content, pos);
+      if (end === -1) return ['', '', false, -1];
+      // 检查闭合引号后是否紧跟冒号
+      if (end + 1 < content.length && content[end + 1] === ':') {
+        const rawKey = content.slice(1, end);
+        const key = this._unescape(rawKey, indent + 1);
+        const rest = content.slice(end + 2);
+        return [key, rest, true, end + 1];
+      }
+      // 不是闭合引号+冒号，继续搜索下一个引号
+      pos = end + 1;
+    }
+    return ['', '', false, -1];
   }
 
   // ---- Structural colon scan ----

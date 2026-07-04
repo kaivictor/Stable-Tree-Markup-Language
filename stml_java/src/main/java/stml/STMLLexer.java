@@ -348,14 +348,19 @@ public class STMLLexer {
     }
 
     private QuotedKeyResult tryQuotedKey(String content, int indent) {
-        int end = findFirstUnescapedQuote(content, 1);
-        if (end == -1) return new QuotedKeyResult("", "", false, -1);
-        if (end + 1 >= content.length() || content.charAt(end + 1) != ':')
-            return new QuotedKeyResult("", "", false, -1);
-        String rawKey = content.substring(1, end);
-        String key = unescape(rawKey, indent + 1);
-        String rest = content.substring(end + 2);
-        return new QuotedKeyResult(key, rest, true, end + 1);
+        int pos = 1;
+        while (pos < content.length()) {
+            int end = findFirstUnescapedQuote(content, pos);
+            if (end == -1) return new QuotedKeyResult("", "", false, -1);
+            if (end + 1 < content.length() && content.charAt(end + 1) == ':') {
+                String rawKey = content.substring(1, end);
+                String key = unescape(rawKey, indent + 1);
+                String rest = content.substring(end + 2);
+                return new QuotedKeyResult(key, rest, true, end + 1);
+            }
+            pos = end + 1;
+        }
+        return new QuotedKeyResult("", "", false, -1);
     }
 
     // ---- Colon scan ----
